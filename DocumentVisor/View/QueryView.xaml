@@ -1,0 +1,228 @@
+﻿<UserControl x:Class="DocumentVisor.View.QueryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:DocumentVisor.View">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="../Resources/StringResource.xaml" ></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListView Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryGuid}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryName}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryInfo}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryDivision}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryDocumentType}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryPrivacy}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QuerySignPerson}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryExecutorPerson}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryInnerExectutorPersons}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryHasCd}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryDate}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryDocumentNum}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QuerySecretaryDate}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryInnerNum}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource QueryCentralSecretaryDate}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+        <StackPanel Grid.Column="0">
+            <!--QueryGuid-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryGuid"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryGuid-->
+            <!--QueryName-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryName"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryName-->
+            <!--QueryInfo-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryInfo"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryInfo-->
+            <!--QueryDivision-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryDivision"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryDivision-->
+            <!--QueryDocumentType-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryDocumentType"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryDocumentType-->
+            <!--QueryPrivacy-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryPrivacy"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryPrivacy-->
+            <!--QuerySignPerson-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QuerySignPerson"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QuerySignPerson-->
+            <!--QueryExecutorPerson-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryExecutorPerson"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryExecutorPerson-->
+            <!--QueryInnerExectutorPersons-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryInnerExectutorPersons"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryInnerExectutorPersons-->
+            <!--QueryHasCd-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryHasCd"></StaticResource>
+                </Label>
+                <RadioButton Grid.Column="1" Margin="5"></RadioButton>
+            </Grid>
+            <!--QueryHasCd-->
+            <!--QueryDate-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryDate"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryDate-->
+            <!--QuerySecretaryDate-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QuerySecretaryDate"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QuerySecretaryDate-->
+            <!--QueryInnerNum-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryInnerNum"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryInnerNum-->
+            <!--QueryCentralSecretaryDate-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="QueryCentralSecretaryDate"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <!--QueryCentralSecretaryDate-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0">asdasd</Button>
+                <Button Grid.Column="2">asdasd</Button>
+            </Grid>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

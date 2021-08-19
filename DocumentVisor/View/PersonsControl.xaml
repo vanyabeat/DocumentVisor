@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="DocumentVisor.View.PersonsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:view="clr-namespace:DocumentVisor.View"
+             xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel" d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="../Resources/StringResource.xaml" ></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListView Grid.Column="1" ItemsSource="{Binding AllPersons}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="{StaticResource PersonName}" DisplayMemberBinding="{Binding Path=Name}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource PersonInfo}" DisplayMemberBinding="{Binding Path=Info}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource PersonPhone}" DisplayMemberBinding="{Binding Path=Phone}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="{StaticResource PersonType}" DisplayMemberBinding="{Binding Path=Type}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Column="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="PersonName"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="PersonInfo"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="PersonPhone"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Margin="5">
+                    <StaticResource ResourceKey="PersonType"></StaticResource>
+                </Label>
+                <TextBox Grid.Column="1" Margin="5"></TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"><StaticResource ResourceKey="Insert"></StaticResource></Button>
+                <Button Grid.Column="2">asdasd</Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

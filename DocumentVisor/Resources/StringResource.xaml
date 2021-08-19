@@ -1,0 +1,41 @@
+﻿<ResourceDictionary 
+    xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="ApplicationName">DocumentVisor</system:String>
+    <system:String x:Key="Queries">Queries</system:String>
+    <system:String x:Key="Persons">Persons</system:String>
+    <system:String x:Key="PersonTypes">Person Types</system:String>
+    <system:String x:Key="Themes">Themes</system:String>
+    <system:String x:Key="Privacies">Privacies</system:String>
+    <system:String x:Key="DocumentTypes">Doc Types</system:String>
+    <!--CONNECTION STRING-->
+    <system:String x:Key="Insert">Insert</system:String>
+    <system:String x:Key="Complete">Complete</system:String>
+    <!--END CONNECTION STRING-->
+    <!--QUERY-->
+    <system:String x:Key="QueryGuid">GUID</system:String>
+    <system:String x:Key="QueryName">Name</system:String>
+    <system:String x:Key="QueryInfo">Info</system:String>
+    <system:String x:Key="QueryDocumentType">DocType</system:String>
+    <system:String x:Key="QueryPrivacy">Privacy</system:String>
+    <system:String x:Key="QuerySignPerson">SignPerson</system:String>
+    <system:String x:Key="QueryExecutorPerson">ExecPerson</system:String>
+    <system:String x:Key="QueryInnerExectutorPersons">InnerExecPersons</system:String>
+    <system:String x:Key="QueryHasCd">HasCD</system:String>
+    <system:String x:Key="QueryDate">Date</system:String>
+    <system:String x:Key="QueryDocumentNum">DocNum</system:String>
+    <system:String x:Key="QuerySecretaryDate">SecDate</system:String>
+    <system:String x:Key="QueryInnerNum">InnerNum</system:String>
+    <system:String x:Key="QueryCentralSecretaryDate">CSecDate</system:String>
+    <system:String x:Key="QueryDivision">Division</system:String>
+    <!--END QUERY-->
+
+    <!--PERSON-->
+    <system:String x:Key="PersonName">Name</system:String>
+    <system:String x:Key="PersonInfo">Info</system:String>
+    <system:String x:Key="PersonType">PersonType</system:String>
+    <system:String x:Key="PersonPhone">Phone</system:String>
+    <!--END PERSON-->
+
+</ResourceDictionary>
