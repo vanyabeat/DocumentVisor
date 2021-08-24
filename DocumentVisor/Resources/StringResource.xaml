@@ -2,6 +2,7 @@
     xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--BEGIN GUI STRING-->
     <system:String x:Key="ApplicationName">DocumentVisor</system:String>
     <system:String x:Key="Queries">Queries</system:String>
     <system:String x:Key="Persons">Persons</system:String>
@@ -9,10 +10,10 @@
     <system:String x:Key="Themes">Themes</system:String>
     <system:String x:Key="Privacies">Privacies</system:String>
     <system:String x:Key="DocumentTypes">Doc Types</system:String>
-    <!--CONNECTION STRING-->
     <system:String x:Key="Insert">Insert</system:String>
+    <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Complete">Complete</system:String>
-    <!--END CONNECTION STRING-->
+    <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
     <system:String x:Key="QueryName">Name</system:String>
@@ -30,12 +31,14 @@
     <system:String x:Key="QueryCentralSecretaryDate">CSecDate</system:String>
     <system:String x:Key="QueryDivision">Division</system:String>
     <!--END QUERY-->
-
     <!--PERSON-->
     <system:String x:Key="PersonName">Name</system:String>
     <system:String x:Key="PersonInfo">Info</system:String>
     <system:String x:Key="PersonType">PersonType</system:String>
     <system:String x:Key="PersonPhone">Phone</system:String>
+    <system:String x:Key="PersonNotExist">Person not exist</system:String>
+    <system:String x:Key="PersonDeleted">Good! Successful delete Person</system:String>
+    <system:String x:Key="PersonEdited">Good! Successful edit Person</system:String>
     <!--END PERSON-->
 
 </ResourceDictionary>

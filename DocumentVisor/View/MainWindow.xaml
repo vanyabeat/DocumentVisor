@@ -20,8 +20,8 @@
             <TabItem Header="{StaticResource Queries}">
                 <view:QueryView></view:QueryView>
             </TabItem>
-            <TabItem Header="{StaticResource Persons}">
-                <view:PersonsControl></view:PersonsControl>
+            <TabItem Name="PersonsTab" Header="{StaticResource Persons}">
+                <view:PersonsView></view:PersonsView>
             </TabItem>
             <TabItem Header="{StaticResource PersonTypes}"/>
             <TabItem Header="{StaticResource Privacies}"/>
