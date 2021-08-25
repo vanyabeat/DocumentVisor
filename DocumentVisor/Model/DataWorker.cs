@@ -25,10 +25,26 @@ namespace DocumentVisor.Model
 
             var result = Dictionary["Insert"].ToString();
             using ApplicationContext db = new ApplicationContext();
-            var checkIsExist = db.Persons.Any(el => el.Name == name && el.Type == personType);
+            var checkIsExist = db.Persons.Any(el => el.Name == name && el.Type == personType && el.Phone == phone);
             if (!checkIsExist)
             {
-                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, Type = personType });
+                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, TypeId = personType.Id });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string CreatePersonType(string name, string info)
+        {
+
+            var result = Dictionary["Insert"].ToString();
+            using ApplicationContext db = new ApplicationContext();
+            var checkIsExist = db.PersonTypes.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.PersonTypes.Add(new PersonType { Name = name, Info = info });
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }
@@ -108,6 +124,37 @@ namespace DocumentVisor.Model
         };
         #endregion
 
+        #region PersonTypes
+        public static List<PersonType> GetAllPersonTypes()
+        {
+            using var db = new ApplicationContext();
+            var result = db.PersonTypes.ToList();
+            return result;
+        }
+
+        public static string DeletePersonType(PersonType personType)
+        {
+            var result = Dictionary["PersonTypeNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                db.PersonTypes.Remove(personType);
+                db.SaveChanges();
+                result = $"{Dictionary["PersonTypeDeleted"]} {personType}";
+            }
+            return result;
+        }
+
+
+        #endregion
+
+        public static PersonType GetPersonTypeById(int typeId)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                PersonType pos = db.PersonTypes.FirstOrDefault(p => p.Id == typeId);
+                return pos;
+            }
+        }
     }
 
 

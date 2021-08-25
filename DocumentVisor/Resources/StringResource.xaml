@@ -13,6 +13,9 @@
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Complete">Complete</system:String>
+    <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
+    <system:String x:Key="ObjectNotFound">Object not found</system:String>
+    <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -40,5 +43,12 @@
     <system:String x:Key="PersonDeleted">Good! Successful delete Person</system:String>
     <system:String x:Key="PersonEdited">Good! Successful edit Person</system:String>
     <!--END PERSON-->
+    <!--PERSONTYPE-->
+    <system:String x:Key="PersonTypeName">PT Name</system:String>
+    <system:String x:Key="PersonTypeInfo">PT Info</system:String>
+    <system:String x:Key="PersonTypeNotExist">PersonType not exist</system:String>
+    <system:String x:Key="PersonTypeDeleted">Good! Successful delete PersonType</system:String>
+    <system:String x:Key="PersonTypeEdited">Good! Successful edit PersonType</system:String>
+    <!--END PERSONTYPE-->
 
 </ResourceDictionary>
