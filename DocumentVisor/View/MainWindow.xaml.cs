@@ -11,7 +11,7 @@ namespace DocumentVisor
     public partial class MainWindow : Window
     {
         public static ListView AllPersonsView;
-        public static ListView AllPersonsTypesView;
+        public static DataGrid AllPersonsTypesView;
         public static TabControl MainTabControl;
         public static StackPanel StackPanelPersonTypes;
         public MainWindow()
@@ -19,9 +19,10 @@ namespace DocumentVisor
             InitializeComponent();
             DataContext = new DataManageVm();
             AllPersonsView = PersonsListView;
-            AllPersonsTypesView = PersonTypesListView;
+            AllPersonsTypesView = PersonTypesDataGrid;
             MainTabControl = MainWindowTabControl;
             PersonTypeStackPanel = StackPanelPersonTypes;
         }
+
     }
 }

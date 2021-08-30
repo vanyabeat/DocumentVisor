@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -137,15 +138,34 @@ namespace DocumentVisor.Model
             var result = Dictionary["PersonTypeNotExist"].ToString();
             using (ApplicationContext db = new ApplicationContext())
             {
-                db.PersonTypes.Remove(personType);
-                db.SaveChanges();
-                result = $"{Dictionary["PersonTypeDeleted"]} {personType}";
+                try
+                {
+                    db.PersonTypes.Remove(personType);
+                    db.SaveChanges();
+                    result = $"{Dictionary["PersonTypeDeleted"]} {personType}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["PersonTypeDeleteError"]}\n{e.Message}";
+                }
+
             }
             return result;
         }
 
-
-        #endregion
+        public static string EditPersonType(PersonType oldPersonType, string newName, string newInfo)
+        {
+            string result = Dictionary["PersonTypeNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                PersonType personType = db.PersonTypes.FirstOrDefault(d => d.Id == oldPersonType.Id);
+                personType.Name = newName;
+                personType.Info = newInfo;
+                db.SaveChanges();
+                result = $"{Dictionary["PersonTypeEdited"]} {personType}";
+            }
+            return result;
+        }
 
         public static PersonType GetPersonTypeById(int typeId)
         {
@@ -155,6 +175,9 @@ namespace DocumentVisor.Model
                 return pos;
             }
         }
+        #endregion
+
+
     }
 
 

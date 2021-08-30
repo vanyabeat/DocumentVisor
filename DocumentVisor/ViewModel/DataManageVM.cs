@@ -107,13 +107,13 @@ namespace DocumentVisor.ViewModel
                     {
                         SetRedBlockControl(wnd, "PersonTypeNameTextBox");
                         UpdateAllDataView();
-
                     }
                     else
                     {
                         result = DataWorker.CreatePersonType(PersonTypeName, PersonTypeInfo);
                         UpdateAllDataView();
                         SetNullValuesToProperties();
+                        ClearStackPanelPersonTypesView(wnd);
                     }
                 });
             }
@@ -145,10 +145,13 @@ namespace DocumentVisor.ViewModel
             MainWindow.AllPersonsTypesView.Items.Clear();
             MainWindow.AllPersonsTypesView.ItemsSource = AllPersonTypes;
             MainWindow.AllPersonsTypesView.Items.Refresh();
-            //var a = MainWindow.StackPanelPersonTypes.FindName("PersonTypeInfoTextBox") as TextBox;
-            //a.Text = null;
         }
 
+        private void ClearStackPanelPersonTypesView(Window window)
+        {
+            ClearTextFromStackPanel(window, "PersonTypeNameTextBox");
+            ClearTextFromStackPanel(window, "PersonTypeInfoTextBox");
+        }
 
         #endregion
 
@@ -163,7 +166,7 @@ namespace DocumentVisor.ViewModel
                 return _deleteItem ?? new RelayCommand(obj =>
                 {
                     string result = Dictionary["ObjectNotFound"].ToString();
-
+                    var wnd = obj as Window;
                     switch (SelectedTabItem.Name)
                     {
                         case "PersonsTab" when SelectedPerson != null:
@@ -173,6 +176,7 @@ namespace DocumentVisor.ViewModel
                         case "PersonTypesTab" when SelectedPersonType != null:
                             result = DataWorker.DeletePersonType(SelectedPersonType);
                             UpdateAllDataView();
+                            ClearStackPanelPersonTypesView(wnd);
                             break;
                     }
                     // upd
@@ -192,7 +196,6 @@ namespace DocumentVisor.ViewModel
             // PersonType
             PersonTypeName = null;
             PersonTypeInfo = null;
-
         }
 
         #endregion
@@ -206,6 +209,12 @@ namespace DocumentVisor.ViewModel
         {
             var block = window.FindName(blockName) as Control;
             block.BorderBrush = Brushes.Crimson;
+        }
+
+        private void ClearTextFromStackPanel(Window window, string blockName)
+        {
+            var block = window.FindName(blockName) as TextBox;
+            block.Clear();
         }
 
         private void SetCenterPositionAndOpen(Window window)

@@ -16,6 +16,7 @@
     <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
     <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
+    <system:String x:Key="Response">Response</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -49,6 +50,7 @@
     <system:String x:Key="PersonTypeNotExist">PersonType not exist</system:String>
     <system:String x:Key="PersonTypeDeleted">Good! Successful delete PersonType</system:String>
     <system:String x:Key="PersonTypeEdited">Good! Successful edit PersonType</system:String>
+    <system:String x:Key="PersonTypeDeleteError">Fail! Maybe PersonType use in Persons</system:String>
     <!--END PERSONTYPE-->
 
 </ResourceDictionary>

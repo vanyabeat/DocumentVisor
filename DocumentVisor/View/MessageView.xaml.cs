@@ -27,6 +27,14 @@ namespace DocumentVisor.View
         {
             this.Close();
         }
+
+        private void Enter(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+               Close();
+            }
+        }
     }
 }
 
