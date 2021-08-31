@@ -111,7 +111,9 @@
                               SelectedItem="{Binding SelectedPersonType}"
                               ItemsSource="{Binding AllPersonTypes}"
                               AutoGenerateColumns="False"
-                              CanUserAddRows="False">
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              Style="{StaticResource {x:Type DataGrid}}">
 
                             <DataGrid.Columns>
                             <DataGridTextColumn Header="{StaticResource PersonTypeName}" Width="175" 
