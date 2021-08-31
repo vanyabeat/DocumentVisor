@@ -6,10 +6,9 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Media;
-using DocumentVisor.Annotations;
 using DocumentVisor.Model;
 using DocumentVisor.View;
-using static DocumentVisor.MainWindow;
+using static DocumentVisor.View.MainWindow;
 
 namespace DocumentVisor.ViewModel
 {
@@ -77,6 +76,34 @@ namespace DocumentVisor.ViewModel
         {
             ClearTextFromStackPanel(window, "PersonTypeNameTextBox");
             ClearTextFromStackPanel(window, "PersonTypeInfoTextBox");
+        }
+
+        private RelayCommand _editPersonType;
+        public RelayCommand EditUser
+        {
+            get
+            {
+                return _editPersonType ?? new RelayCommand(obj =>
+                    {
+                        Window window = obj as Window;
+                        string resultStr = "Не выбран сотрудник";
+                        string noPositionStr = "Не выбрана новая должность";
+                        if (SelectedPersonType != null)
+                        {
+
+                                resultStr = DataWorker.EditPersonType(SelectedPersonType, PersonTypeName, PersonTypeInfo);
+
+                                UpdateAllDataView();
+                                SetNullValuesToProperties();
+                                ShowMessageToUser(resultStr);
+                                window.Close();
+                                
+                        }
+                        else ShowMessageToUser(resultStr);
+
+                    }
+                );
+            }
         }
 		#endregion
 
@@ -234,10 +261,41 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(messageView);
         }
 
-		#endregion
+        private void OpenEditPersonTypeViewMethod(PersonType personType)
+        {
+            EditPersonTypeView editDepartmentWindow = new EditPersonTypeView(personType);
+            SetCenterPositionAndOpen(editDepartmentWindow);
+        }
+        private RelayCommand _openEditItemWnd;
+        public RelayCommand OpenEditItemWnd
+        {
+            get
+            {
+                return _openEditItemWnd ?? new RelayCommand(obj =>
+                    {
+                        //если сотрудник
+                        if (SelectedTabItem.Name == "PersonTypesTab" && SelectedPersonType != null)
+                        {
+                            OpenEditPersonTypeViewMethod(SelectedPersonType);
+                        }
+                        ////если позиция
+                        //if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                        //{
+                        //    OpenEditPositionWindowMethod(SelectedPosition);
+                        //}
+                        ////если отдел
+                        //if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                        //{
+                        //    OpenEditDepartmentWindowMethod(SelectedDepartment);
+                        //}
+                    }
+                );
+            }
+        }
+        #endregion
 
-		#region MVVM
-		public event PropertyChangedEventHandler PropertyChanged;
+        #region MVVM
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

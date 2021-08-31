@@ -12,6 +12,7 @@
     <system:String x:Key="DocumentTypes">Doc Types</system:String>
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Delete">Delete</system:String>
+    <system:String x:Key="Edit">Edit</system:String>
     <system:String x:Key="Complete">Complete</system:String>
     <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
@@ -45,74 +46,15 @@
     <system:String x:Key="PersonEdited">Good! Successful edit Person</system:String>
     <!--END PERSON-->
     <!--PERSONTYPE-->
-    <system:String x:Key="PersonTypeName">PT Name</system:String>
-    <system:String x:Key="PersonTypeInfo">PT Info</system:String>
+    <system:String x:Key="PersonTypeName">Type Name</system:String>
+    <system:String x:Key="PersonTypeInfo">Type Info</system:String>
+    <system:String x:Key="NewPersonTypeName">New Type Name</system:String>
+    <system:String x:Key="NewPersonTypeInfo">New Type Info</system:String>
     <system:String x:Key="PersonTypeNotExist">PersonType not exist</system:String>
     <system:String x:Key="PersonTypeDeleted">Good! Successful delete PersonType</system:String>
     <system:String x:Key="PersonTypeEdited">Good! Successful edit PersonType</system:String>
     <system:String x:Key="PersonTypeDeleteError">Fail! Maybe PersonType use in Persons</system:String>
+    <system:String x:Key="PersonTypeEditWindow">PersonType Edit Window</system:String>
+    
     <!--END PERSONTYPE-->
-
-    <Style TargetType="DataGrid">
-        <!-- Make the border and grid lines a little less imposing -->
-        <Setter Property="BorderBrush" Value="#DDDDDD" />
-        <Setter Property="HorizontalGridLinesBrush" Value="#DDDDDD" />
-        <Setter Property="VerticalGridLinesBrush" Value="#DDDDDD" />
-
-        <Setter Property="RowStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <!-- Highlight a grid row as the mouse passes over -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="LightCyan" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="CellStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <!-- Highlight selected rows -->
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#ff66ccff" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="Foreground" Value="Black" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Background" Value="#ff66ccff" />
-                            <Setter Property="BorderBrush" Value="Black" />
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="Foreground" Value="Black" />
-                        </Trigger>
-                    </Style.Triggers>
-                    <!-- Add some padding around the contents of a cell -->
-                    <Setter Property="Padding" Value="4,3,4,3" />
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="DataGridCell">
-                                <Border Padding="{TemplateBinding Padding}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            Background="{TemplateBinding Background}">
-                                    <ContentPresenter />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="FocusVisualStyle">
-                        <Setter.Value>
-                            <Style TargetType="Control">
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                            </Style>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

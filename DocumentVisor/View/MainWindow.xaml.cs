@@ -1,13 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DocumentVisor.ViewModel;
 
-namespace DocumentVisor
+namespace DocumentVisor.View
 {
-    /// <summary>
-    ///     Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public static ListView AllPersonsView;
