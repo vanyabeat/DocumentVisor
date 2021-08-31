@@ -27,7 +27,7 @@ namespace DocumentVisor.ViewModel
         public List<PersonType> AllPersonTypes
         {
             get => _allPersonTypes;
-            set
+            private set
             {
                 _allPersonTypes = value;
                 OnPropertyChanged(nameof(AllPersonTypes));
@@ -108,16 +108,12 @@ namespace DocumentVisor.ViewModel
 		#endregion
 
 		#region Persons
-
-		private List<Person> _allPersons = DataWorker.GetAllPersons();
-
-
-		public static Person SelectedPerson { get; set; }
-
-		public List<Person> AllPersons
+        private List<Person> _allPersons = DataWorker.GetAllPersons();
+        public static Person SelectedPerson { get; set; }
+        public List<Person> AllPersons
 		{
 			get => _allPersons;
-			set
+			private set
 			{
 				_allPersons = value;
 				OnPropertyChanged(nameof(AllPersons));
@@ -126,117 +122,155 @@ namespace DocumentVisor.ViewModel
 
 
 
-		#region Fields
+        #endregion
 
-		public static string PersonName { get; set; }
-		public static string PersonInfo { get; set; }
-		public static string PersonPhone { get; set; }
-		public static PersonType PersonType { get; set; }
+        #region Privacies
+        private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
+        public List<Privacy> AllPrivacies
+        {
+            get => _allPrivacies;
+            private set
+            {
+                _allPrivacies = value;
+                OnPropertyChanged(nameof(AllPrivacies));
+            }
+        }
+        public static Privacy SelectedPrivacy { get; set; }
+        public static string PrivacyName { get; set; }
+        public static string PrivacyInfo { get; set; }
 
+        private RelayCommand _addNewPrivacy;
 
+        public RelayCommand AddNewPrivacy
+        {
+            get
+            {
+                return _addNewPrivacy ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+                    var result = "";
+                    if (PrivacyName == null || PrivacyName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "PrivacyNameTextBox");
+                        UpdateAllDataView();
+                    }
+                    else
+                    {
+                        result = DataWorker.CreatePrivacy(PrivacyName, PrivacyInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelPersonTypesView(wnd);
+                    }
+                });
+            }
+        }
+        #endregion
+        #region Commands
 
-		#endregion
-
-		#region Commands
-
-		private RelayCommand _addNewPerson;
-		public RelayCommand AddNewPerson
-		{
-		   get
-			{
-				return _addNewPerson ?? new RelayCommand(obj =>
-				{
-					var wnd = obj as Window;
-					var result = "";
-					if(PersonName == null || PersonName.Replace(" ", "").Length == 0) SetRedBlockControl(wnd, "PersonNameTextBox");
+        private RelayCommand _addNewPerson;
+        public RelayCommand AddNewPerson
+        {
+            get
+            {
+                return _addNewPerson ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+                    var result = "";
+                    if (PersonName == null || PersonName.Replace(" ", "").Length == 0) SetRedBlockControl(wnd, "PersonNameTextBox");
                     if (PersonType == null)
-					{
-						MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
-					}
-					else
-					{
-						result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
-						UpdateAllDataView();
-						SetNullValuesToProperties();
-						ShowMessageToUser(result);
-					}
-				}
-				);
-			}
-		}
+                    {
+                        MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
+                    }
+                    else
+                    {
+                        result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
 
 
 
 
-		#endregion
+        #endregion
+        #region Fields
 
-		#region Updates
-		private void UpdateAllDataView()
-		{
-			UpdateAllPersonsView();
-			UpdateAllPersonTypesView();
-		}
-
-		private void UpdateAllPersonsView()
-		{
-			AllPersons = DataWorker.GetAllPersons();
-			AllPersonsView.ItemsSource = null;
-			AllPersonsView.Items.Clear();
-			AllPersonsView.ItemsSource = AllPersons;
-			AllPersonsView.Items.Refresh();
-		}
+        public static string PersonName { get; set; }
+        public static string PersonInfo { get; set; }
+        public static string PersonPhone { get; set; }
+        public static PersonType PersonType { get; set; }
 
 
 
-		#endregion
+        #endregion
+        #region Updates
+        private void UpdateAllDataView()
+        {
+            UpdateAllPersonsView();
+            UpdateAllPersonTypesView();
+        }
 
-		#region Deletes
-		private RelayCommand _deleteItem;
+        private void UpdateAllPersonsView()
+        {
+            AllPersons = DataWorker.GetAllPersons();
+            AllPersonsView.ItemsSource = null;
+            AllPersonsView.Items.Clear();
+            AllPersonsView.ItemsSource = AllPersons;
+            AllPersonsView.Items.Refresh();
+        }
 
-		public RelayCommand DeleteItem
-		{
-			get
-			{
 
-				return _deleteItem ?? new RelayCommand(obj =>
-				{
-					var result = Dictionary["ObjectNotFound"].ToString();
-					var wnd = obj as Window;
-					switch (SelectedTabItem.Name)
-					{
-						case "PersonsTab" when SelectedPerson != null:
-							result = DataWorker.DeletePerson(SelectedPerson);
-							UpdateAllDataView();
-							break;
-						case "PersonTypesTab" when SelectedPersonType != null:
-							result = DataWorker.DeletePersonType(SelectedPersonType);
-							UpdateAllDataView();
-							ClearStackPanelPersonTypesView(wnd);
-							break;
-					}
-					// upd
-					SetNullValuesToProperties();
-					ShowMessageToUser(result);
-				});
-			}
-		}
-		private void SetNullValuesToProperties()
-		{
-			//Person
-			PersonName = null;
-			PersonInfo = null;
-			PersonPhone = null;
-			PersonType = null;
 
-			// PersonType
-			PersonTypeName = null;
-			PersonTypeInfo = null;
-		}
+        #endregion
+        #region Deletes
+        private RelayCommand _deleteItem;
 
-		#endregion
-		#endregion
+        public RelayCommand DeleteItem
+        {
+            get
+            {
 
-		#region Utils
+                return _deleteItem ?? new RelayCommand(obj =>
+                {
+                    var result = Dictionary["ObjectNotFound"].ToString();
+                    var wnd = obj as Window;
+                    switch (SelectedTabItem.Name)
+                    {
+                        case "PersonsTab" when SelectedPerson != null:
+                            result = DataWorker.DeletePerson(SelectedPerson);
+                            UpdateAllDataView();
+                            break;
+                        case "PersonTypesTab" when SelectedPersonType != null:
+                            result = DataWorker.DeletePersonType(SelectedPersonType);
+                            UpdateAllDataView();
+                            ClearStackPanelPersonTypesView(wnd);
+                            break;
+                    }
+                    // upd
+                    SetNullValuesToProperties();
+                    ShowMessageToUser(result);
+                });
+            }
+        }
+        private void SetNullValuesToProperties()
+        {
+            //Person
+            PersonName = null;
+            PersonInfo = null;
+            PersonPhone = null;
+            PersonType = null;
+
+            // PersonType
+            PersonTypeName = null;
+            PersonTypeInfo = null;
+        }
+
+        #endregion
+        #region Utils
         private void SetRedBlockControl(Window window, string blockName)
         {
             var block = window.FindName(blockName) as Control;

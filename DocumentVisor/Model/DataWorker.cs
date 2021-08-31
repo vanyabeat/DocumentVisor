@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Automation;
 using DocumentVisor.Data;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace DocumentVisor.Model
 {
@@ -37,21 +33,6 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string CreatePersonType(string name, string info)
-        {
-
-            var result = Dictionary["Insert"].ToString();
-            using ApplicationContext db = new ApplicationContext();
-            var checkIsExist = db.PersonTypes.Any(el => el.Name == name);
-            if (!checkIsExist)
-            {
-                db.PersonTypes.Add(new PersonType { Name = name, Info = info });
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
-
-            return result;
-        }
 
         public static string DeletePerson(Person person)
         {
@@ -132,7 +113,21 @@ namespace DocumentVisor.Model
             var result = db.PersonTypes.ToList();
             return result;
         }
+        public static string CreatePersonType(string name, string info)
+        {
 
+            var result = Dictionary["Insert"].ToString();
+            using ApplicationContext db = new ApplicationContext();
+            var checkIsExist = db.PersonTypes.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.PersonTypes.Add(new PersonType { Name = name, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
         public static string DeletePersonType(PersonType personType)
         {
             var result = Dictionary["PersonTypeNotExist"].ToString();
@@ -152,13 +147,12 @@ namespace DocumentVisor.Model
             }
             return result;
         }
-
         public static string EditPersonType(PersonType oldPersonType, string newName, string newInfo)
         {
             string result = Dictionary["PersonTypeNotExist"].ToString();
             using (ApplicationContext db = new ApplicationContext())
             {
-                PersonType personType = db.PersonTypes.FirstOrDefault(d => d.Id == oldPersonType.Id);
+                var personType = db.PersonTypes.FirstOrDefault(d => d.Id == oldPersonType.Id);
                 personType.Name = newName;
                 personType.Info = newInfo;
                 db.SaveChanges();
@@ -166,7 +160,6 @@ namespace DocumentVisor.Model
             }
             return result;
         }
-
         public static PersonType GetPersonTypeById(int typeId)
         {
             using (ApplicationContext db = new ApplicationContext())
@@ -177,8 +170,74 @@ namespace DocumentVisor.Model
         }
         #endregion
 
+        #region Privacies
+        public static List<Privacy> GetAllPrivacies()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Privacies.ToList();
+            return result;
+        }
 
-    }
+        public static string CreatePrivacy(string name, string info)
+        {
+
+            var result = Dictionary["Insert"].ToString();
+            using ApplicationContext db = new ApplicationContext();
+            var checkIsExist = db.Privacies.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.Privacies.Add(new Privacy { Name = name, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+        public static string DeletePrivacy(Privacy privacy)
+        {
+            var result = Dictionary["PrivacyNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                try
+                {
+                    db.Privacies.Remove(privacy);
+                    db.SaveChanges();
+                    result = $"{Dictionary["PrivacyDeleted"]} {privacy}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["PrivacyDeleteError"]}\n{e.Message}";
+                }
+
+            }
+            return result;
+        }
+
+        public static string EditPrivacy(Privacy oldPrivacy, string newName, string newInfo)
+        {
+            string result = Dictionary["PrivacyNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var privacy = db.Privacies.FirstOrDefault(d => d.Id == oldPrivacy.Id);
+                privacy.Name = newName;
+                privacy.Info = newInfo;
+                db.SaveChanges();
+                result = $"{Dictionary["PrivacyEdited"]} {oldPrivacy}";
+            }
+            return result;
+        }
+
+        public static Privacy GetPrivacyById(int privacyId)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                Privacy pos = db.Privacies.FirstOrDefault(p => p.Id == privacyId);
+                return pos;
+            }
+        }
+        #endregion
+
+    } 
 
 
 }
