@@ -120,7 +120,14 @@ namespace DocumentVisor.ViewModel
 			}
 		}
 
-
+        private void UpdateAllPersonsView()
+        {
+            AllPersons = DataWorker.GetAllPersons();
+            AllPersonsView.ItemsSource = null;
+            AllPersonsView.Items.Clear();
+            AllPersonsView.ItemsSource = AllPersons;
+            AllPersonsView.Items.Refresh();
+        }
 
         #endregion
 
@@ -204,7 +211,14 @@ namespace DocumentVisor.ViewModel
         public static string PersonPhone { get; set; }
         public static PersonType PersonType { get; set; }
 
-
+        private void UpdateAllPrivacyView()
+        {
+            AllPrivacies = DataWorker.GetAllPrivacies();
+            AllPrivaciesView.ItemsSource = null;
+            AllPrivaciesView.Items.Clear();
+            AllPrivaciesView.ItemsSource = AllPersons;
+            AllPrivaciesView.Items.Refresh();
+        }
 
         #endregion
         #region Updates
@@ -212,18 +226,8 @@ namespace DocumentVisor.ViewModel
         {
             UpdateAllPersonsView();
             UpdateAllPersonTypesView();
+            UpdateAllPrivacyView();
         }
-
-        private void UpdateAllPersonsView()
-        {
-            AllPersons = DataWorker.GetAllPersons();
-            AllPersonsView.ItemsSource = null;
-            AllPersonsView.Items.Clear();
-            AllPersonsView.ItemsSource = AllPersons;
-            AllPersonsView.Items.Refresh();
-        }
-
-
 
         #endregion
         #region Deletes

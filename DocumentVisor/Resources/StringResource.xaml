@@ -55,6 +55,16 @@
     <system:String x:Key="PersonTypeEdited">Good! Successful edit PersonType</system:String>
     <system:String x:Key="PersonTypeDeleteError">Fail! Maybe PersonType use in Persons</system:String>
     <system:String x:Key="PersonTypeEditWindow">PersonType Edit Window</system:String>
-    
     <!--END PERSONTYPE-->
+    <!--BEGIN PRIVACY-->
+    <system:String x:Key="PrivacyName">Pr Name</system:String>
+    <system:String x:Key="PrivacyInfo">Pr Info</system:String>
+    <system:String x:Key="NewPrivacyName">New Privacy Name</system:String>
+    <system:String x:Key="NewPrivacyInfo">New Privacy Info</system:String>
+    <system:String x:Key="PrivacyNotExist">Privacy not exist</system:String>
+    <system:String x:Key="PrivacyDeleted">Good! Successful delete Privacy</system:String>
+    <system:String x:Key="PrivacyEdited">Good! Successful edit Privacy</system:String>
+    <system:String x:Key="PrivacyDeleteError">Fail! Maybe PersonType use in Persons</system:String>
+    <system:String x:Key="PrivacyEditWindow">Privacy Edit Window</system:String>
+    <!--END PRIVACY-->
 </ResourceDictionary>
