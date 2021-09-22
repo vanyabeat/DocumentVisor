@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentVisor.Model;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DocumentVisor.Data
+namespace DocumentVisor.Model.Data
 {
     public sealed class ApplicationContext : DbContext
     {
@@ -25,5 +24,13 @@ namespace DocumentVisor.Data
         {
             optionsBuilder.UseSqlite("Filename=Supervisor.db");
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned()).SelectMany(e => e.GetForeignKeys()))
+        //    {
+        //        relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        //    }
+        //}
     }
 }

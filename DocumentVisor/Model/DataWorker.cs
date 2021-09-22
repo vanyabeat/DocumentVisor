@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using DocumentVisor.Data;
+using DocumentVisor.Model.Data;
 
 namespace DocumentVisor.Model
 {
@@ -22,10 +22,10 @@ namespace DocumentVisor.Model
 
             var result = Dictionary["Insert"].ToString();
             using ApplicationContext db = new ApplicationContext();
-            var checkIsExist = db.Persons.Any(el => el.Name == name && el.Type == personType && el.Phone == phone);
+            var checkIsExist = db.Persons.Any(el => el.Name == name && el.Phone == phone && el.Type == personType);
             if (!checkIsExist)
             {
-                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, TypeId = personType.Id });
+                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, TypeId = personType.Id});
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }
@@ -46,57 +46,8 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string EditPersonName(Person oldPerson, string newName)
-        {
-            var result = Dictionary["PersonNotExist"].ToString();
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var person = db.Persons.FirstOrDefault(p => p.Id == oldPerson.Id);
-                person.Name = newName;
-                db.SaveChanges();
-                result = $"{Dictionary["PersonEdited"]} {person}";
-            }
-            return result;
-        }
 
-        public static string EditPersonPhone(Person oldPerson, string newPhone)
-        {
-            var result = Dictionary["PersonNotExist"].ToString();
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var person = db.Persons.FirstOrDefault(p => p.Id == oldPerson.Id);
-                person.Phone = newPhone;
-                db.SaveChanges();
-                result = $"{Dictionary["PersonEdited"]} {person}";
-            }
-            return result;
-        }
 
-        public static string EditPersonInfo(Person oldPerson, string newInfo)
-        {
-            var result = Dictionary["PersonNotExist"].ToString();
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var person = db.Persons.FirstOrDefault(p => p.Id == oldPerson.Id);
-                person.Info = newInfo;
-                db.SaveChanges();
-                result = $"{Dictionary["PersonEdited"]} {person}";
-            }
-            return result;
-        }
-
-        public static string EditPersonType(Person oldPerson, PersonType newType)
-        {
-            var result = Dictionary["PersonNotExist"].ToString();
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var person = db.Persons.FirstOrDefault(p => p.Id == oldPerson.Id);
-                person.Type = newType;
-                db.SaveChanges();
-                result = $"{Dictionary["PersonEdited"]} {person}";
-            }
-            return result;
-        }
         #endregion
 
         #region System

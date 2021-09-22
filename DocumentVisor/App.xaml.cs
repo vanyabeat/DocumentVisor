@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using DocumentVisor.Data;
+using DocumentVisor.Model.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentVisor

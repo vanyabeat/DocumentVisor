@@ -6,7 +6,7 @@ namespace DocumentVisor.View
 {
     public partial class MainWindow : Window
     {
-        public static ListView AllPersonsView;
+        public static DataGrid AllPersonsView;
         public static DataGrid AllPersonsTypesView;
         public static DataGrid AllPrivaciesView;
         public static TabControl MainTabControl;
@@ -15,7 +15,7 @@ namespace DocumentVisor.View
         {
             InitializeComponent();
             DataContext = new DataManageVm();
-            AllPersonsView = PersonsListView;
+            AllPersonsView = PersonsDataGrid;
             AllPersonsTypesView = PersonTypesDataGrid;
             AllPrivaciesView = PrivaciesDataGrid;
             MainTabControl = MainWindowTabControl;

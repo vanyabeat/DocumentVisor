@@ -13,7 +13,7 @@ using static DocumentVisor.View.MainWindow;
 namespace DocumentVisor.ViewModel
 {
 	public class DataManageVm : INotifyPropertyChanged
-	{
+	{    
 		private static readonly ResourceDictionary Dictionary = new ResourceDictionary()
 		{
 			Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
@@ -78,36 +78,41 @@ namespace DocumentVisor.ViewModel
             ClearTextFromStackPanel(window, "PersonTypeInfoTextBox");
         }
 
+        private void ClearStackPanelPersonView(Window window)
+        {
+            ClearTextFromStackPanel(window, "PersonNameTextBox");
+            ClearTextFromStackPanel(window, "PersonInfoTextBox");
+        }
+
+        private void ClearStackPanelPrivaciesView(Window window)
+        {
+            ClearTextFromStackPanel(window, "PrivacyNameTextBox");
+            ClearTextFromStackPanel(window, "PrivacyInfoTextBox");
+        }
+
         private RelayCommand _editPersonType;
-        public RelayCommand EditUser
+        public RelayCommand EditPersonType
         {
             get
             {
                 return _editPersonType ?? new RelayCommand(obj =>
                     {
-                        Window window = obj as Window;
-                        string resultStr = "Не выбран сотрудник";
-                        string noPositionStr = "Не выбрана новая должность";
+                        var window = obj as Window;
                         if (SelectedPersonType != null)
                         {
+                            var result = DataWorker.EditPersonType(SelectedPersonType, PersonTypeName, PersonTypeInfo);
 
-                                resultStr = DataWorker.EditPersonType(SelectedPersonType, PersonTypeName, PersonTypeInfo);
-
-                                UpdateAllDataView();
-                                SetNullValuesToProperties();
-                                ShowMessageToUser(resultStr);
-                                window.Close();
-                                
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
                         }
-                        else ShowMessageToUser(resultStr);
-
                     }
                 );
             }
         }
 		#endregion
-
-		#region Persons
+        #region Persons
         private List<Person> _allPersons = DataWorker.GetAllPersons();
         public static Person SelectedPerson { get; set; }
         public List<Person> AllPersons
@@ -130,7 +135,6 @@ namespace DocumentVisor.ViewModel
         }
 
         #endregion
-
         #region Privacies
         private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
         public List<Privacy> AllPrivacies
@@ -166,9 +170,32 @@ namespace DocumentVisor.ViewModel
                         result = DataWorker.CreatePrivacy(PrivacyName, PrivacyInfo);
                         UpdateAllDataView();
                         SetNullValuesToProperties();
-                        ClearStackPanelPersonTypesView(wnd);
+                        ClearStackPanelPrivaciesView(wnd);
                     }
                 });
+            }
+        }
+
+        private RelayCommand _editPrivacy;
+        public RelayCommand EditPrivacy
+        {
+            get
+            {
+                return _editPersonType ?? new RelayCommand(obj =>
+                    {
+                        var window = obj as Window;
+                        if (SelectedPrivacy != null)
+                        {
+                            var result = DataWorker.EditPrivacy(SelectedPrivacy, PrivacyName, PrivacyInfo);
+
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+
+                        }
+                        window.Close();
+                    }
+                );
             }
         }
         #endregion
@@ -216,7 +243,7 @@ namespace DocumentVisor.ViewModel
             AllPrivacies = DataWorker.GetAllPrivacies();
             AllPrivaciesView.ItemsSource = null;
             AllPrivaciesView.Items.Clear();
-            AllPrivaciesView.ItemsSource = AllPersons;
+            AllPrivaciesView.ItemsSource = AllPrivacies;
             AllPrivaciesView.Items.Refresh();
         }
 
@@ -247,11 +274,17 @@ namespace DocumentVisor.ViewModel
                         case "PersonsTab" when SelectedPerson != null:
                             result = DataWorker.DeletePerson(SelectedPerson);
                             UpdateAllDataView();
+                            ClearStackPanelPersonView(wnd);
                             break;
                         case "PersonTypesTab" when SelectedPersonType != null:
                             result = DataWorker.DeletePersonType(SelectedPersonType);
                             UpdateAllDataView();
                             ClearStackPanelPersonTypesView(wnd);
+                            break;
+                        case "PrivaciesTab" when SelectedPrivacy != null:
+                            result = DataWorker.DeletePrivacy(SelectedPrivacy);
+                            UpdateAllDataView();
+                            ClearStackPanelPrivaciesView(wnd);
                             break;
                     }
                     // upd
@@ -271,6 +304,10 @@ namespace DocumentVisor.ViewModel
             // PersonType
             PersonTypeName = null;
             PersonTypeInfo = null;
+
+            // Privacy
+            PrivacyInfo = null;
+            PrivacyName = null;
         }
 
         #endregion
@@ -304,6 +341,12 @@ namespace DocumentVisor.ViewModel
             EditPersonTypeView editDepartmentWindow = new EditPersonTypeView(personType);
             SetCenterPositionAndOpen(editDepartmentWindow);
         }
+        private void OpenEditPrivacyViewMethod(Privacy privacy)
+        {
+            EditPrivacyView editPrivacyWindow = new EditPrivacyView(privacy);
+            SetCenterPositionAndOpen(editPrivacyWindow);
+        }
+
         private RelayCommand _openEditItemWnd;
         public RelayCommand OpenEditItemWnd
         {
@@ -311,10 +354,18 @@ namespace DocumentVisor.ViewModel
             {
                 return _openEditItemWnd ?? new RelayCommand(obj =>
                     {
-                        //если сотрудник
-                        if (SelectedTabItem.Name == "PersonTypesTab" && SelectedPersonType != null)
+                        switch (SelectedTabItem.Name)
                         {
-                            OpenEditPersonTypeViewMethod(SelectedPersonType);
+                            
+                            case "PersonTypesTab" when SelectedPersonType != null:
+                                OpenEditPersonTypeViewMethod(SelectedPersonType);
+                                return;
+                            case "PrivaciesTab" when SelectedPrivacy != null:
+                                OpenEditPrivacyViewMethod(SelectedPrivacy);
+                                return;
+                            default:
+                                ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
+                                return;
                         }
                         ////если позиция
                         //if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
@@ -331,7 +382,6 @@ namespace DocumentVisor.ViewModel
             }
         }
         #endregion
-
         #region MVVM
         public event PropertyChangedEventHandler PropertyChanged;
 

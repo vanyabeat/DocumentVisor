@@ -25,29 +25,25 @@
                         <ColumnDefinition Width="0.4*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="PersonsListView" Grid.Column="1" SelectedItem="{Binding SelectedPerson}" ItemsSource="{Binding AllPersons}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="150" Header="{StaticResource PersonName}" DisplayMemberBinding="{Binding Path=Name}"></GridViewColumn>
-                                <GridViewColumn Width="150" Header="{StaticResource PersonInfo}" DisplayMemberBinding="{Binding Path=Info}"></GridViewColumn>
-                                <GridViewColumn Width="100" Header="{StaticResource PersonPhone}" DisplayMemberBinding="{Binding Path=Phone}"></GridViewColumn>
-                                <GridViewColumn Width="100" Header="{StaticResource PersonType}" DisplayMemberBinding="{Binding Path=PersonType}"></GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="{StaticResource Delete }" Command="{Binding DeleteItem}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                    <MenuItem.Icon>
-                                        <Image>
-                                            <Image.Source>
-                                                <BitmapImage UriSource="../Resources/del.png"></BitmapImage>
-                                            </Image.Source>
-                                        </Image>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                    </ListView>
+
+                    <DataGrid x:Name="PersonsDataGrid"
+                              Grid.Column="1"
+                              SelectedItem="{Binding SelectedPerson}"
+                              ItemsSource="{Binding AllPersons}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{StaticResource PersonName}" Width="175" 
+                                                Binding="{Binding Path=Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="{StaticResource PersonPhone}" 
+                                                Binding="{Binding Path=Phone}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="{StaticResource PersonInfo}" 
+                                                Binding="{Binding Path=Info}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="{StaticResource PersonType}" 
+                                                Binding="{Binding Path=PersonType}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <StackPanel Grid.Column="0">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -95,9 +91,10 @@
                                 <ColumnDefinition Width="0.1*"></ColumnDefinition>
                                 <ColumnDefinition Width="0.45*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="{StaticResource Insert}" Command="{Binding AddNewPerson}" 
-                                    CommandParameter="{Binding ElementName=DocumentVisorWindow}"/>
-                            <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"/>
+                            <Button Content="{StaticResource Insert}" Command="{Binding AddNewPerson}" 
+                                    CommandParameter="{Binding ElementName=DocumentVisorWindow}" HorizontalAlignment="Center"/>
+                            <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}" 
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" HorizontalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -114,8 +111,8 @@
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               IsReadOnly="True">
-                            <DataGrid.ContextMenu>
-                                <ContextMenu>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
                                 <MenuItem Header="{StaticResource Edit}"  Command="{Binding OpenEditItemWnd}">
                                     <MenuItem.Icon>
                                         <Image>
@@ -126,8 +123,8 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
-                            </DataGrid.ContextMenu>
-                            <DataGrid.Columns>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
                             <DataGridTextColumn Header="{StaticResource PersonTypeName}" Width="175" 
                                                     Binding="{Binding Path=Name}"></DataGridTextColumn>
                             <DataGridTextColumn Header="{StaticResource PersonTypeInfo}" 
@@ -236,7 +233,7 @@
                             <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" HorizontalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
-                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="{StaticResource Themes}"/>
         </TabControl>

@@ -39,7 +39,7 @@
                 <TextBox Text="{Binding PersonTypeInfo}"/>
             </StackPanel>
             <Button Content="{StaticResource Edit}"
-					Command="{Binding EditUser}"
+					Command="{Binding EditPersonType}"
 					CommandParameter="{Binding ElementName=EditPersonTypeWnd}" HorizontalAlignment="Center" Margin="0,249,0,0" VerticalAlignment="Top" Width="128"/>
         </Grid>
     </Grid>

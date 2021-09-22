@@ -18,6 +18,8 @@
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
     <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <system:String x:Key="Response">Response</system:String>
+    <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
+    
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -57,8 +59,8 @@
     <system:String x:Key="PersonTypeEditWindow">PersonType Edit Window</system:String>
     <!--END PERSONTYPE-->
     <!--BEGIN PRIVACY-->
-    <system:String x:Key="PrivacyName">Pr Name</system:String>
-    <system:String x:Key="PrivacyInfo">Pr Info</system:String>
+    <system:String x:Key="PrivacyName">Privacy Name</system:String>
+    <system:String x:Key="PrivacyInfo">Privacy Info</system:String>
     <system:String x:Key="NewPrivacyName">New Privacy Name</system:String>
     <system:String x:Key="NewPrivacyInfo">New Privacy Info</system:String>
     <system:String x:Key="PrivacyNotExist">Privacy not exist</system:String>

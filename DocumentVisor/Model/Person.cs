@@ -8,19 +8,16 @@ namespace DocumentVisor.Model
         public string Name { get; set; }
         public string Info { get; set; }
         public string Phone { get; set; }
+
         public int TypeId { get; set; }
         public virtual PersonType Type { get; set; }
+
         [NotMapped]
-        public PersonType PersonType
-        {
-            get
-            {
-                return DataWorker.GetPersonTypeById(TypeId);
-            }
-        }
+        public PersonType PersonType => DataWorker.GetPersonTypeById(TypeId);
+
         public override string ToString()
         {
-            return $"{Type} {Name} ({Phone})";
+            return $"{PersonType} {Name} ({Phone})";
         }
     }
 }
