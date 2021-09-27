@@ -16,7 +16,6 @@
     <system:String x:Key="Complete">Complete</system:String>
     <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
-    <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <system:String x:Key="Response">Response</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     
@@ -51,6 +50,7 @@
     <system:String x:Key="NewPersonInfo">New Person Info</system:String>
     <system:String x:Key="NewPersonPhone">New Person Phone</system:String>
     <system:String x:Key="NewPersonType">New Person Type</system:String>
+    <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <!--END PERSON-->
     <!--PERSONTYPE-->
     <system:String x:Key="PersonTypeName">Type Name</system:String>
@@ -84,5 +84,6 @@
     <system:String x:Key="ThemeEdited">Good! Successful edit Theme</system:String>
     <system:String x:Key="ThemeDeleteError">Fail! Maybe Theme use in Queries</system:String>
     <system:String x:Key="ThemeEditWindow">Theme Edit Window</system:String>
+    <system:String x:Key="ThemeNameNeedToSelect">Need select theme name</system:String>
     <!--END THEME-->
 </ResourceDictionary>

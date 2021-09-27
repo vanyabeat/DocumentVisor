@@ -212,7 +212,41 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static string CreateTheme(string name, string info)
+        {
 
+            var result = Dictionary["Insert"].ToString();
+            using ApplicationContext db = new ApplicationContext();
+            var checkIsExist = db.Themes.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.Themes.Add(new Theme { Name = name, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string DeleteTheme(Theme theme)
+        {
+            var result = Dictionary["PrivacyNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                try
+                {
+                    db.Themes.Remove(theme);
+                    db.SaveChanges();
+                    result = $"{Dictionary["ThemeDeleted"]} {theme}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["ThemeDeleteError"]}\n{e.Message}";
+                }
+
+            }
+            return result;
+        }
         #endregion
     } 
 

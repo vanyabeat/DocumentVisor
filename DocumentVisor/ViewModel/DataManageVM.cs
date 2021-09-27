@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -74,20 +75,28 @@ namespace DocumentVisor.ViewModel
 
         private void ClearStackPanelPersonTypesView(Window window)
         {
-            ClearTextFromStackPanel(window, "PersonTypeNameTextBox");
-            ClearTextFromStackPanel(window, "PersonTypeInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonTypeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonTypeInfoTextBox");
         }
 
         private void ClearStackPanelPersonView(Window window)
         {
-            ClearTextFromStackPanel(window, "PersonNameTextBox");
-            ClearTextFromStackPanel(window, "PersonInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonPhoneTextBox");
+            ClearTextFromStackPanelComboBox(window, "PersonTypeComboBox");
         }
 
         private void ClearStackPanelPrivaciesView(Window window)
         {
-            ClearTextFromStackPanel(window, "PrivacyNameTextBox");
-            ClearTextFromStackPanel(window, "PrivacyInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "PrivacyNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PrivacyInfoTextBox");
+        }
+
+        private void ClearStackPanelThemesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "ThemeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "ThemeInfoTextBox");
         }
 
         private RelayCommand _editPersonType;
@@ -153,6 +162,7 @@ namespace DocumentVisor.ViewModel
                             result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
+                            ClearStackPanelPersonView(wnd);
                             ShowMessageToUser(result);
                         }
                     }
@@ -181,6 +191,11 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+        public static string PersonName { get; set; }
+        public static string PersonInfo { get; set; }
+        public static string PersonPhone { get; set; }
+        public static PersonType PersonType { get; set; }
         #endregion
         #region Privacies
         private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
@@ -257,15 +272,48 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllThemes));
             }
         }
+        private RelayCommand _addNewTheme;
+        public RelayCommand AddNewTheme
+        {
+            get
+            {
+                return _addNewTheme ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if (ThemeName == null || ThemeName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "ThemeNameTextBox");
+                        ShowMessageToUser(Dictionary["ThemeNameNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.CreateTheme(ThemeName, ThemeInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelThemesView(wnd);
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
+        public static string ThemeName { get; set; }
+        public static string ThemeInfo { get; set; }
         public static Theme SelectedTheme { get; set; }
 
+        private void UpdateAllThemeView()
+        {
+            AllThemes = DataWorker.GetAllThemes();
+            AllThemesView.ItemsSource = null;
+            AllThemesView.Items.Clear();
+            AllThemesView.ItemsSource = AllThemes;
+            AllThemesView.Items.Refresh();
+        }
         #endregion
         #region Fields
 
-        public static string PersonName { get; set; }
-        public static string PersonInfo { get; set; }
-        public static string PersonPhone { get; set; }
-        public static PersonType PersonType { get; set; }
+
 
         private void UpdateAllPrivacyView()
         {
@@ -283,6 +331,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllPersonsView();
             UpdateAllPersonTypesView();
             UpdateAllPrivacyView();
+            UpdateAllThemeView();
         }
 
         #endregion
@@ -315,6 +364,11 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             ClearStackPanelPrivaciesView(wnd);
                             break;
+                        case "ThemesTab" when SelectedTheme != null:
+                            result = DataWorker.DeleteTheme(SelectedTheme);
+                            UpdateAllDataView();
+                            ClearStackPanelThemesView(wnd);
+                            break;
                     }
                     // upd
                     SetNullValuesToProperties();
@@ -337,6 +391,10 @@ namespace DocumentVisor.ViewModel
             // Privacy
             PrivacyInfo = null;
             PrivacyName = null;
+
+            //Themes
+            ThemeInfo = null;
+            ThemeName = null;
         }
 
         #endregion
@@ -347,10 +405,16 @@ namespace DocumentVisor.ViewModel
             block.BorderBrush = Brushes.Crimson;
         }
 
-        private void ClearTextFromStackPanel(Window window, string blockName)
+        private void ClearTextFromStackPanelTextBox(Window window, string blockName)
         {
             var block = window.FindName(blockName) as TextBox;
             block.Clear();
+        }
+
+        private void ClearTextFromStackPanelComboBox(Window window, string blockName)
+        {
+            var block = window.FindName(blockName) as ComboBox;
+            block.SelectedItem = null;
         }
 
         private void SetCenterPositionAndOpen(Window window)

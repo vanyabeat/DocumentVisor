@@ -9,6 +9,7 @@ namespace DocumentVisor.View
         public static DataGrid AllPersonsView;
         public static DataGrid AllPersonsTypesView;
         public static DataGrid AllPrivaciesView;
+        public static DataGrid AllThemesView;
         public static TabControl MainTabControl;
         public static StackPanel StackPanelPersonTypes;
         public MainWindow()
@@ -18,6 +19,7 @@ namespace DocumentVisor.View
             AllPersonsView = PersonsDataGrid;
             AllPersonsTypesView = PersonTypesDataGrid;
             AllPrivaciesView = PrivaciesDataGrid;
+            AllThemesView = ThemesDataGrid;
             MainTabControl = MainWindowTabControl;
             PersonTypeStackPanel = StackPanelPersonTypes;
         }
