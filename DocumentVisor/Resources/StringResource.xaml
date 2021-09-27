@@ -46,6 +46,11 @@
     <system:String x:Key="PersonNotExist">Person not exist</system:String>
     <system:String x:Key="PersonDeleted">Good! Successful delete Person</system:String>
     <system:String x:Key="PersonEdited">Good! Successful edit Person</system:String>
+    <system:String x:Key="PersonEditWindow">Person Edit Window</system:String>
+    <system:String x:Key="NewPersonName">New Person Name</system:String>
+    <system:String x:Key="NewPersonInfo">New Person Info</system:String>
+    <system:String x:Key="NewPersonPhone">New Person Phone</system:String>
+    <system:String x:Key="NewPersonType">New Person Type</system:String>
     <!--END PERSON-->
     <!--PERSONTYPE-->
     <system:String x:Key="PersonTypeName">Type Name</system:String>
@@ -66,7 +71,18 @@
     <system:String x:Key="PrivacyNotExist">Privacy not exist</system:String>
     <system:String x:Key="PrivacyDeleted">Good! Successful delete Privacy</system:String>
     <system:String x:Key="PrivacyEdited">Good! Successful edit Privacy</system:String>
-    <system:String x:Key="PrivacyDeleteError">Fail! Maybe PersonType use in Persons</system:String>
+    <system:String x:Key="PrivacyDeleteError">Fail! Maybe Privacy use in Queries</system:String>
     <system:String x:Key="PrivacyEditWindow">Privacy Edit Window</system:String>
     <!--END PRIVACY-->
+    <!--BEGIN THEME-->
+    <system:String x:Key="ThemeName">Theme Name</system:String>
+    <system:String x:Key="ThemeInfo">Theme Info</system:String>
+    <system:String x:Key="NewThemeName">New Theme Name</system:String>
+    <system:String x:Key="NewThemeInfo">New Theme Info</system:String>
+    <system:String x:Key="ThemeNotExist">Theme not exist</system:String>
+    <system:String x:Key="ThemeDeleted">Good! Successful delete Theme</system:String>
+    <system:String x:Key="ThemeEdited">Good! Successful edit Theme</system:String>
+    <system:String x:Key="ThemeDeleteError">Fail! Maybe Theme use in Queries</system:String>
+    <system:String x:Key="ThemeEditWindow">Theme Edit Window</system:String>
+    <!--END THEME-->
 </ResourceDictionary>

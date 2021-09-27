@@ -46,7 +46,23 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static string EditPerson(Person oldPerson, string newName, string newInfo, string newPhone, PersonType newType)
+        {
+            string result = Dictionary["PersonTypeNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var person = db.Persons.FirstOrDefault(d => d.Id == oldPerson.Id);
+                person.Name = newName;
+                person.Info = newInfo;
+                person.Phone = newPhone;
+                person.TypeId = newType.Id;
+                person.Type = newType;
 
+                db.SaveChanges();
+                result = $"{Dictionary["PersonEdited"]} {person}";
+            }
+            return result;
+        }
 
         #endregion
 
@@ -188,6 +204,16 @@ namespace DocumentVisor.Model
         }
         #endregion
 
+        #region Themes
+        public static List<Theme> GetAllThemes()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Themes.ToList();
+            return result;
+        }
+
+
+        #endregion
     } 
 
 

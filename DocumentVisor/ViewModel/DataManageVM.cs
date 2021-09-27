@@ -134,6 +134,53 @@ namespace DocumentVisor.ViewModel
             AllPersonsView.Items.Refresh();
         }
 
+        private RelayCommand _addNewPerson;
+        public RelayCommand AddNewPerson
+        {
+            get
+            {
+                return _addNewPerson ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as Window;
+                        var result = "";
+                        if (PersonName == null || PersonName.Replace(" ", "").Length == 0) SetRedBlockControl(wnd, "PersonNameTextBox");
+                        if (PersonType == null)
+                        {
+                            MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
+                        }
+                        else
+                        {
+                            result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                        }
+                    }
+                );
+            }
+        }
+
+        private RelayCommand _editPerson;
+        public RelayCommand EditPerson
+        {
+            get
+            {
+                return _editPerson ?? new RelayCommand(obj =>
+                    {
+                        var window = obj as Window;
+                        if (SelectedPerson != null)
+                        {
+                            var result = DataWorker.EditPerson(SelectedPerson, PersonName, PersonInfo, PersonPhone, PersonType);
+
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
+                    }
+                );
+            }
+        }
         #endregion
         #region Privacies
         private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
@@ -199,36 +246,18 @@ namespace DocumentVisor.ViewModel
             }
         }
         #endregion
-        #region Commands
-
-        private RelayCommand _addNewPerson;
-        public RelayCommand AddNewPerson
+        #region Themes
+        private List<Theme> _allThemes = DataWorker.GetAllThemes();
+        public List<Theme> AllThemes
         {
-            get
+            get => _allThemes;
+            private set
             {
-                return _addNewPerson ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
-                    var result = "";
-                    if (PersonName == null || PersonName.Replace(" ", "").Length == 0) SetRedBlockControl(wnd, "PersonNameTextBox");
-                    if (PersonType == null)
-                    {
-                        MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
-                    }
-                    else
-                    {
-                        result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                    }
-                }
-                );
+                _allThemes = value;
+                OnPropertyChanged(nameof(AllThemes));
             }
         }
-
-
-
+        public static Theme SelectedTheme { get; set; }
 
         #endregion
         #region Fields
@@ -347,6 +376,12 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(editPrivacyWindow);
         }
 
+        private void OpenEditPersonViewMethod(Person person)
+        {
+            EditPersonView editPersonWindow = new EditPersonView(person);
+            SetCenterPositionAndOpen(editPersonWindow);
+        }
+
         private RelayCommand _openEditItemWnd;
         public RelayCommand OpenEditItemWnd
         {
@@ -356,7 +391,9 @@ namespace DocumentVisor.ViewModel
                     {
                         switch (SelectedTabItem.Name)
                         {
-                            
+                            case "PersonsTab" when SelectedPerson != null:
+                                OpenEditPersonViewMethod(SelectedPerson);
+                                return;
                             case "PersonTypesTab" when SelectedPersonType != null:
                                 OpenEditPersonTypeViewMethod(SelectedPersonType);
                                 return;
@@ -367,16 +404,6 @@ namespace DocumentVisor.ViewModel
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
                                 return;
                         }
-                        ////если позиция
-                        //if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
-                        //{
-                        //    OpenEditPositionWindowMethod(SelectedPosition);
-                        //}
-                        ////если отдел
-                        //if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
-                        //{
-                        //    OpenEditDepartmentWindowMethod(SelectedDepartment);
-                        //}
                     }
                 );
             }

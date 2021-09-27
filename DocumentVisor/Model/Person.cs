@@ -17,7 +17,7 @@ namespace DocumentVisor.Model
 
         public override string ToString()
         {
-            return $"{PersonType} {Name} ({Phone})";
+            return $"{Name} ({Phone}) \n{PersonType}";
         }
     }
 }

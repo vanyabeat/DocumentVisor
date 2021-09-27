@@ -33,6 +33,20 @@
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{StaticResource Edit}"  Command="{Binding OpenEditItemWnd}">
+                                    <MenuItem.Icon>
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="../Resources/edit.png"></BitmapImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{StaticResource PersonName}" Width="175" 
                                                 Binding="{Binding Path=Name}"></DataGridTextColumn>
@@ -43,6 +57,10 @@
                             <DataGridTextColumn Header="{StaticResource PersonType}" 
                                                 Binding="{Binding Path=PersonType}"></DataGridTextColumn>
                         </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding DeleteItem}" 
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                        </DataGrid.InputBindings>
                     </DataGrid>
                     <StackPanel Grid.Column="0">
                         <Grid>
@@ -235,7 +253,74 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="{StaticResource Themes}"/>
+            <TabItem x:Name="ThemesTab" Header="{StaticResource Themes}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="ThemesDataGrid" Grid.Column="1"
+                              SelectedItem="{Binding SelectedTheme}"
+                              ItemsSource="{Binding AllPrivacies}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{StaticResource Edit}"  Command="{Binding OpenEditItemWnd}">
+                                    <MenuItem.Icon>
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="../Resources/edit.png"></BitmapImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{StaticResource PrivacyName}" Width="175" 
+                                                    Binding="{Binding Path=Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="{StaticResource PrivacyInfo}" 
+                                                    Binding="{Binding Path=Info}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding DeleteItem}" 
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                        </DataGrid.InputBindings>
+
+                    </DataGrid>
+                    <StackPanel x:Name="ThemesStackPanel" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource PrivacyName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Name="ThemesNameTextBox" Text="{Binding PrivacyName}" Grid.Column="1" Margin="5,5,5,5"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*"></ColumnDefinition>
+                                <ColumnDefinition Width="29*"/>
+                                <ColumnDefinition Width="140*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource PrivacyInfo}" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Name="ThemesInfoTextBox" Text="{Binding PrivacyInfo}" Grid.Column="2" Margin="5,5,5,5"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="{StaticResource Insert}" Command="{Binding AddNewPrivacy}"
+                                    CommandParameter="{Binding ElementName=DocumentVisorWindow}" HorizontalAlignment="Center"/>
+                            <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
