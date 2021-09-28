@@ -16,7 +16,7 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string CreatePerson(string name, string info, string phone, PersonType personType)
+        public static string CreatePerson(string name, string info, string phone, string rank, PersonType personType)
         {
 
 
@@ -25,7 +25,7 @@ namespace DocumentVisor.Model
             var checkIsExist = db.Persons.Any(el => el.Name == name && el.Phone == phone && el.Type == personType);
             if (!checkIsExist)
             {
-                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, TypeId = personType.Id});
+                db.Persons.Add(new Person { Name = name, Phone = phone, Info = info, Rank = rank, TypeId = personType.Id});
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }
@@ -46,7 +46,7 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string EditPerson(Person oldPerson, string newName, string newInfo, string newPhone, PersonType newType)
+        public static string EditPerson(Person oldPerson, string newName, string newInfo, string newPhone, string newRank, PersonType newType)
         {
             string result = Dictionary["PersonTypeNotExist"].ToString();
             using (ApplicationContext db = new ApplicationContext())
@@ -57,6 +57,7 @@ namespace DocumentVisor.Model
                 person.Phone = newPhone;
                 person.TypeId = newType.Id;
                 person.Type = newType;
+                person.Rank = newRank;
 
                 db.SaveChanges();
                 result = $"{Dictionary["PersonEdited"]} {person}";
@@ -244,6 +245,20 @@ namespace DocumentVisor.Model
                     result = $"{Dictionary["ThemeDeleteError"]}\n{e.Message}";
                 }
 
+            }
+            return result;
+        }
+
+        public static string EditTheme(Theme oldTheme, string themeName, string themeInfo)
+        {
+            string result = Dictionary["PrivacyNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var privacy = db.Themes.FirstOrDefault(d => d.Id == oldTheme.Id);
+                privacy.Name = themeName;
+                privacy.Info = themeInfo;
+                db.SaveChanges();
+                result = $"{Dictionary["PrivacyEdited"]} {oldTheme}";
             }
             return result;
         }

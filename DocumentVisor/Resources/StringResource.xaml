@@ -42,6 +42,7 @@
     <system:String x:Key="PersonInfo">Info</system:String>
     <system:String x:Key="PersonType">PersonType</system:String>
     <system:String x:Key="PersonPhone">Phone</system:String>
+    <system:String x:Key="PersonRank">Rank</system:String>
     <system:String x:Key="PersonNotExist">Person not exist</system:String>
     <system:String x:Key="PersonDeleted">Good! Successful delete Person</system:String>
     <system:String x:Key="PersonEdited">Good! Successful edit Person</system:String>
@@ -49,6 +50,7 @@
     <system:String x:Key="NewPersonName">New Person Name</system:String>
     <system:String x:Key="NewPersonInfo">New Person Info</system:String>
     <system:String x:Key="NewPersonPhone">New Person Phone</system:String>
+    <system:String x:Key="NewPersonRank">New Person Rank</system:String>
     <system:String x:Key="NewPersonType">New Person Type</system:String>
     <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <!--END PERSON-->

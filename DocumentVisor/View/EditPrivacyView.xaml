@@ -34,7 +34,7 @@
 						VerticalAlignment="Center"
 						Width="200">
                 <TextBlock Text="{StaticResource NewPrivacyName}"/>
-                <TextBox Text="{Binding PrivacyName }"/>
+                <TextBox Text="{Binding PrivacyName}"/>
                 <TextBlock Text="{StaticResource NewPrivacyInfo}"/>
                 <TextBox Text="{Binding PrivacyInfo}"/>
             </StackPanel>

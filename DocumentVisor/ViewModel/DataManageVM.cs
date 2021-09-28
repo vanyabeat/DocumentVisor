@@ -13,9 +13,9 @@ using static DocumentVisor.View.MainWindow;
 
 namespace DocumentVisor.ViewModel
 {
-	public class DataManageVm : INotifyPropertyChanged
-	{    
-		private static readonly ResourceDictionary Dictionary = new ResourceDictionary()
+    public class DataManageVm : INotifyPropertyChanged
+    {
+        private static readonly ResourceDictionary Dictionary = new ResourceDictionary()
 		{
 			Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
 		};
@@ -126,7 +126,7 @@ namespace DocumentVisor.ViewModel
         public static Person SelectedPerson { get; set; }
         public List<Person> AllPersons
 		{
-			get => _allPersons;
+            get => _allPersons;
 			private set
 			{
 				_allPersons = value;
@@ -159,7 +159,7 @@ namespace DocumentVisor.ViewModel
                         }
                         else
                         {
-                            result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonType);
+                            result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonRank, PersonType);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             ClearStackPanelPersonView(wnd);
@@ -180,7 +180,7 @@ namespace DocumentVisor.ViewModel
                         var window = obj as Window;
                         if (SelectedPerson != null)
                         {
-                            var result = DataWorker.EditPerson(SelectedPerson, PersonName, PersonInfo, PersonPhone, PersonType);
+                            var result = DataWorker.EditPerson(SelectedPerson, PersonName, PersonInfo, PersonPhone, PersonRank, PersonType);
 
                             UpdateAllDataView();
                             SetNullValuesToProperties();
@@ -195,6 +195,7 @@ namespace DocumentVisor.ViewModel
         public static string PersonName { get; set; }
         public static string PersonInfo { get; set; }
         public static string PersonPhone { get; set; }
+        public static string PersonRank { get; set; }
         public static PersonType PersonType { get; set; }
         #endregion
         #region Privacies
@@ -309,6 +310,28 @@ namespace DocumentVisor.ViewModel
             AllThemesView.Items.Clear();
             AllThemesView.ItemsSource = AllThemes;
             AllThemesView.Items.Refresh();
+        }
+
+        private RelayCommand _editTheme;
+        public RelayCommand EditTheme
+        {
+            get
+            {
+                return _editTheme ?? new RelayCommand(obj =>
+                    {
+                        var window = obj as Window;
+                        if (SelectedTheme != null)
+                        {
+                            var result = DataWorker.EditTheme(SelectedTheme, ThemeName, ThemeInfo);
+
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
+                    }
+                );
+            }
         }
         #endregion
         #region Fields
@@ -431,19 +454,25 @@ namespace DocumentVisor.ViewModel
 
         private void OpenEditPersonTypeViewMethod(PersonType personType)
         {
-            EditPersonTypeView editDepartmentWindow = new EditPersonTypeView(personType);
+            var editDepartmentWindow = new EditPersonTypeView(personType);
             SetCenterPositionAndOpen(editDepartmentWindow);
         }
         private void OpenEditPrivacyViewMethod(Privacy privacy)
         {
-            EditPrivacyView editPrivacyWindow = new EditPrivacyView(privacy);
+            var editPrivacyWindow = new EditPrivacyView(privacy);
             SetCenterPositionAndOpen(editPrivacyWindow);
         }
 
         private void OpenEditPersonViewMethod(Person person)
         {
-            EditPersonView editPersonWindow = new EditPersonView(person);
+            var editPersonWindow = new EditPersonView(person);
             SetCenterPositionAndOpen(editPersonWindow);
+        }
+
+        private void OpenEditThemeViewMethod(Theme theme)
+        {
+            var editThemeWindow = new EditThemeView(theme);
+            SetCenterPositionAndOpen(editThemeWindow);
         }
 
         private RelayCommand _openEditItemWnd;
@@ -463,6 +492,9 @@ namespace DocumentVisor.ViewModel
                                 return;
                             case "PrivaciesTab" when SelectedPrivacy != null:
                                 OpenEditPrivacyViewMethod(SelectedPrivacy);
+                                return;
+                            case "ThemesTab" when SelectedTheme != null:
+                                OpenEditThemeViewMethod(SelectedTheme);
                                 return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());

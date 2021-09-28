@@ -54,6 +54,8 @@
                                                 Binding="{Binding Path=Phone}"></DataGridTextColumn>
                             <DataGridTextColumn Header="{StaticResource PersonInfo}" 
                                                 Binding="{Binding Path=Info}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="{StaticResource PersonRank}" 
+                                                Binding="{Binding Path=Rank}"></DataGridTextColumn>
                             <DataGridTextColumn Header="{StaticResource PersonType}" 
                                                 Binding="{Binding Path=PersonType}"></DataGridTextColumn>
                         </DataGrid.Columns>
@@ -92,6 +94,16 @@
                                 <StaticResource ResourceKey="PersonPhone"></StaticResource>
                             </Label>
                             <TextBox Name="PersonPhoneTextBox" Text="{Binding PersonPhone}" Grid.Column="1" Margin="5"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5">
+                                <StaticResource ResourceKey="PersonRank"></StaticResource>
+                            </Label>
+                            <TextBox Name="PersonRankTextBox" Text="{Binding PersonRank}" Grid.Column="1" Margin="5"></TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>

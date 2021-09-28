@@ -8,7 +8,7 @@ namespace DocumentVisor.Model
         public string Name { get; set; }
         public string Info { get; set; }
         public string Phone { get; set; }
-
+        public string Rank { get; set; }
         public int TypeId { get; set; }
         public virtual PersonType Type { get; set; }
 
@@ -17,7 +17,7 @@ namespace DocumentVisor.Model
 
         public override string ToString()
         {
-            return $"{Name} ({Phone}) \n{PersonType}";
+            return $"{Name}\n({Rank})";
         }
     }
 }

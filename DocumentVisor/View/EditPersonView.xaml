@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DocumentVisor.View"
         mc:Ignorable="d"
         x:Name="EditPersonWnd"
-        Height="420" Width="320"
+        Height="500" Width="320"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -39,12 +39,14 @@
                 <TextBox Text="{Binding PersonInfo}"/>
                 <TextBlock Text="{StaticResource NewPersonPhone}"/>
                 <TextBox Text="{Binding PersonPhone}"/>
-                <TextBlock Text="{StaticResource NewPersonPhone}"/>
+                <TextBlock Text="{StaticResource NewPersonRank}"/>
+                <TextBox Text="{Binding PersonRank}"/>
+                <TextBlock Text="{StaticResource NewPersonType}"/>
                 <ComboBox SelectedItem="{Binding PersonType}" ItemsSource="{Binding AllPersonTypes}" />
             </StackPanel>
             <Button Content="{StaticResource Edit}"
                     Command="{Binding EditPerson}"
-                    CommandParameter="{Binding ElementName=EditPersonWnd}" HorizontalAlignment="Center" Margin="0,292,0,0" VerticalAlignment="Top" Width="128"/>
+                    CommandParameter="{Binding ElementName=EditPersonWnd}" HorizontalAlignment="Center" Margin="0,372,0,0" VerticalAlignment="Top" Width="128"/>
         </Grid>
     </Grid>
 </Window>

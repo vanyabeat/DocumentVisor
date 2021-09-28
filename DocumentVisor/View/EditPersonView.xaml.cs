@@ -27,6 +27,7 @@ namespace DocumentVisor.View
             DataManageVm.PersonName = personToEdit.Name;
             DataManageVm.PersonPhone = personToEdit.Phone;
             DataManageVm.PersonInfo = personToEdit.Info;
+            DataManageVm.PersonRank = personToEdit.Rank;
             DataManageVm.PersonType = personToEdit.PersonType;
         }
     }
