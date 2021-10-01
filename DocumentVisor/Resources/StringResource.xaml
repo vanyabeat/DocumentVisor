@@ -8,6 +8,7 @@
     <system:String x:Key="Persons">Persons</system:String>
     <system:String x:Key="PersonTypes">Person Types</system:String>
     <system:String x:Key="Themes">Themes</system:String>
+    <system:String x:Key="Divisions">Divisions</system:String>
     <system:String x:Key="Privacies">Privacies</system:String>
     <system:String x:Key="DocumentTypes">Doc Types</system:String>
     <system:String x:Key="Insert">Insert</system:String>
@@ -18,7 +19,6 @@
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
     <system:String x:Key="Response">Response</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
-    
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -88,4 +88,18 @@
     <system:String x:Key="ThemeEditWindow">Theme Edit Window</system:String>
     <system:String x:Key="ThemeNameNeedToSelect">Need select theme name</system:String>
     <!--END THEME-->
+    <!--BEGIN DIVISION-->
+    <system:String x:Key="DivisionName">Div Name</system:String>
+    <system:String x:Key="DivisionInfo">Div Info</system:String>
+    <system:String x:Key="DivisionAddress">Div Address</system:String>
+    <system:String x:Key="NewDivisionName">New Div Name</system:String>
+    <system:String x:Key="NewDivisionInfo">New Div Info</system:String>
+    <system:String x:Key="NewDivisionAddress">New Div Address</system:String>
+    <system:String x:Key="DivisionNotExist">Div not exist</system:String>
+    <system:String x:Key="DivisionDeleted">Good! Successful delete Div</system:String>
+    <system:String x:Key="DivisionEdited">Good! Successful edit Div</system:String>
+    <system:String x:Key="DivisionDeleteError">Fail! Maybe Theme use in Queries</system:String>
+    <system:String x:Key="DivisionEditWindow">Div Edit Window</system:String>
+    <system:String x:Key="DivisionNameNeedToSelect">Need select Div name</system:String>
+    <!--END DIVISION-->
 </ResourceDictionary>

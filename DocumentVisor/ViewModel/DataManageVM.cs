@@ -19,9 +19,7 @@ namespace DocumentVisor.ViewModel
 		{
 			Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
 		};
-
-		//public static DataManageVm Instance { get; } = new DataManageVm();
-		public TabItem SelectedTabItem { get; set; }
+        public TabItem SelectedTabItem { get; set; }
 
 		#region PersonTypes
 		private List<PersonType> _allPersonTypes = DataWorker.GetAllPersonTypes();
@@ -84,6 +82,7 @@ namespace DocumentVisor.ViewModel
             ClearTextFromStackPanelTextBox(window, "PersonNameTextBox");
             ClearTextFromStackPanelTextBox(window, "PersonInfoTextBox");
             ClearTextFromStackPanelTextBox(window, "PersonPhoneTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonRankTextBox");
             ClearTextFromStackPanelComboBox(window, "PersonTypeComboBox");
         }
 
@@ -120,10 +119,15 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
-		#endregion
+        #endregion
         #region Persons
-        private List<Person> _allPersons = DataWorker.GetAllPersons();
+        public static string PersonName { get; set; }
+        public static string PersonInfo { get; set; }
+        public static string PersonPhone { get; set; }
+        public static string PersonRank { get; set; }
+        public static PersonType PersonType { get; set; }
         public static Person SelectedPerson { get; set; }
+        private List<Person> _allPersons = DataWorker.GetAllPersons();
         public List<Person> AllPersons
 		{
             get => _allPersons;
@@ -133,7 +137,6 @@ namespace DocumentVisor.ViewModel
 				OnPropertyChanged(nameof(AllPersons));
 			}
 		}
-
         private void UpdateAllPersonsView()
         {
             AllPersons = DataWorker.GetAllPersons();
@@ -169,7 +172,6 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
-
         private RelayCommand _editPerson;
         public RelayCommand EditPerson
         {
@@ -191,12 +193,6 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
-
-        public static string PersonName { get; set; }
-        public static string PersonInfo { get; set; }
-        public static string PersonPhone { get; set; }
-        public static string PersonRank { get; set; }
-        public static PersonType PersonType { get; set; }
         #endregion
         #region Privacies
         private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
@@ -244,7 +240,7 @@ namespace DocumentVisor.ViewModel
         {
             get
             {
-                return _editPersonType ?? new RelayCommand(obj =>
+                return _editPrivacy ?? new RelayCommand(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedPrivacy != null)
@@ -257,6 +253,87 @@ namespace DocumentVisor.ViewModel
 
                         }
                         window.Close();
+                    }
+                );
+            }
+        }
+
+        private void UpdateAllPrivacyView()
+        {
+            AllPrivacies = DataWorker.GetAllPrivacies();
+            AllPrivaciesView.ItemsSource = null;
+            AllPrivaciesView.Items.Clear();
+            AllPrivaciesView.ItemsSource = AllPrivacies;
+            AllPrivaciesView.Items.Refresh();
+        }
+        #endregion
+        #region Divisions
+        private List<Division> _allDivisions = DataWorker.GetAllDivisions();
+        public List<Division> AllDivisions
+        {
+            get => _allDivisions;
+            private set
+            {
+                _allDivisions = value;
+                OnPropertyChanged(nameof(AllDivisions));
+            }
+        }
+        private RelayCommand _addNewDivision;
+        public RelayCommand AddNewDivision
+        {
+            get
+            {
+                return _addNewDivision ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if (DivisionName == null || DivisionName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "DivisionNameTextBox");
+                        ShowMessageToUser(Dictionary["DivisionNameNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.CreateDivision(DivisionName, DivisionAddress, DivisionAddress);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelThemesView(wnd);
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
+        public static string DivisionName { get; set; }
+        public static string DivisionInfo { get; set; }
+        public static string DivisionAddress { get; set; }
+        public static Division SelectedDivision { get; set; }
+        private void UpdateAllDivisionView()
+        {
+            AllDivisions = DataWorker.GetAllDivisions();
+            AllDivisionsView.ItemsSource = null;
+            AllDivisionsView.Items.Clear();
+            AllDivisionsView.ItemsSource = AllDivisions;
+            AllDivisionsView.Items.Refresh();
+        }
+
+        private RelayCommand _editDivision;
+        public RelayCommand EditDivision
+        {
+            get
+            {
+                return _editDivision ?? new RelayCommand(obj =>
+                    {
+                        var window = obj as Window;
+                        if (SelectedDivision != null)
+                        {
+                            var result = DataWorker.EditDivision(SelectedDivision, DivisionName, DivisionAddress, DivisionInfo);
+
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
                 );
             }
@@ -302,7 +379,6 @@ namespace DocumentVisor.ViewModel
         public static string ThemeName { get; set; }
         public static string ThemeInfo { get; set; }
         public static Theme SelectedTheme { get; set; }
-
         private void UpdateAllThemeView()
         {
             AllThemes = DataWorker.GetAllThemes();
@@ -318,34 +394,37 @@ namespace DocumentVisor.ViewModel
             get
             {
                 return _editTheme ?? new RelayCommand(obj =>
+                {
+                    var window = obj as Window;
+                    if (SelectedTheme != null)
                     {
-                        var window = obj as Window;
-                        if (SelectedTheme != null)
-                        {
-                            var result = DataWorker.EditTheme(SelectedTheme, ThemeName, ThemeInfo);
+                        var result = DataWorker.EditTheme(SelectedTheme, ThemeName, ThemeInfo);
 
-                            UpdateAllDataView();
-                            SetNullValuesToProperties();
-                            ShowMessageToUser(result);
-                            window.Close();
-                        }
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                        window.Close();
                     }
+                }
                 );
             }
         }
+
+
         #endregion
-        #region Fields
 
-
-
-        private void UpdateAllPrivacyView()
+        #region Queries
+        private List<Query> _allQueries = DataWorker.GetAllQueries();
+        public List<Query> AllQueries
         {
-            AllPrivacies = DataWorker.GetAllPrivacies();
-            AllPrivaciesView.ItemsSource = null;
-            AllPrivaciesView.Items.Clear();
-            AllPrivaciesView.ItemsSource = AllPrivacies;
-            AllPrivaciesView.Items.Refresh();
+            get => _allQueries;
+            private set
+            {
+                _allQueries = value;
+                OnPropertyChanged(nameof(AllQueries));
+            }
         }
+
 
         #endregion
         #region Updates
@@ -355,6 +434,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllPersonTypesView();
             UpdateAllPrivacyView();
             UpdateAllThemeView();
+            UpdateAllDivisionView();
         }
 
         #endregion
@@ -392,6 +472,11 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             ClearStackPanelThemesView(wnd);
                             break;
+                        case "DivisionsTab" when SelectedDivision != null:
+                            result = DataWorker.DeleteDivision(SelectedDivision);
+                            UpdateAllDataView();
+                            ClearStackPanelThemesView(wnd);
+                            break;
                     }
                     // upd
                     SetNullValuesToProperties();
@@ -406,18 +491,19 @@ namespace DocumentVisor.ViewModel
             PersonInfo = null;
             PersonPhone = null;
             PersonType = null;
-
             // PersonType
             PersonTypeName = null;
             PersonTypeInfo = null;
-
             // Privacy
             PrivacyInfo = null;
             PrivacyName = null;
-
-            //Themes
+            // Themes
             ThemeInfo = null;
             ThemeName = null;
+            // Divisions
+            DivisionName = null;
+            DivisionInfo = null;
+            DivisionAddress = null;
         }
 
         #endregion
@@ -475,6 +561,12 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(editThemeWindow);
         }
 
+        private void OpenEditDivisionViewMethod(Division div)
+        {
+            var editDivisionWindow = new EditDivisionView(div);
+            SetCenterPositionAndOpen(editDivisionWindow);
+        }
+
         private RelayCommand _openEditItemWnd;
         public RelayCommand OpenEditItemWnd
         {
@@ -495,6 +587,9 @@ namespace DocumentVisor.ViewModel
                                 return;
                             case "ThemesTab" when SelectedTheme != null:
                                 OpenEditThemeViewMethod(SelectedTheme);
+                                return;
+                            case "DivisionsTab" when SelectedDivision != null:
+                                OpenEditDivisionViewMethod(SelectedDivision);
                                 return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());

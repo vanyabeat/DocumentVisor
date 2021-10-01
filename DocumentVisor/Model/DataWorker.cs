@@ -33,7 +33,6 @@ namespace DocumentVisor.Model
             return result;
         }
 
-
         public static string DeletePerson(Person person)
         {
             var result = Dictionary["PersonNotExist"].ToString();
@@ -64,7 +63,6 @@ namespace DocumentVisor.Model
             }
             return result;
         }
-
         #endregion
 
         #region System
@@ -262,6 +260,77 @@ namespace DocumentVisor.Model
             }
             return result;
         }
+        #endregion
+
+        #region Divisions
+        public static List<Division> GetAllDivisions()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Divisions.ToList();
+            return result;
+        }
+
+        public static string CreateDivision(string name, string address, string info)
+        {
+
+            var result = Dictionary["Insert"].ToString();
+            using ApplicationContext db = new ApplicationContext();
+            var checkIsExist = db.Divisions.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.Divisions.Add(new Division { Name = name, Address = address, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string DeleteDivision(Division division)
+        {
+            var result = Dictionary["PrivacyNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                try
+                {
+                    db.Divisions.Remove(division);
+                    db.SaveChanges();
+                    result = $"{Dictionary["DivisionDeleted"]} {division}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["DivisionDeleteError"]}\n{e.Message}";
+                }
+
+            }
+            return result;
+        }
+
+        public static string EditDivision(Division oldDiv, string divName, string divAddress, string divInfo)
+        {
+            string result = Dictionary["DivisionNotExist"].ToString();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var privacy = db.Divisions.FirstOrDefault(d => d.Id == oldDiv.Id);
+                privacy.Name = divName;
+                privacy.Info = divInfo;
+                privacy.Address = divAddress;
+                db.SaveChanges();
+                result = $"{Dictionary["PrivacyEdited"]} {oldDiv}";
+            }
+            return result;
+        }
+        #endregion
+
+        #region Queries
+        public static List<Query> GetAllQueries()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Queries.ToList();
+            return result;
+        }
+
+
         #endregion
     } 
 

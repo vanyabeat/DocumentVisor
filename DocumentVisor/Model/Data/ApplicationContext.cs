@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DocumentVisor.Model.Data
 {
@@ -14,6 +12,7 @@ namespace DocumentVisor.Model.Data
         public DbSet<Theme> Themes { get; set; }
         public DbSet<Division> Divisions { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         public ApplicationContext()
         {
@@ -25,12 +24,12 @@ namespace DocumentVisor.Model.Data
             optionsBuilder.UseSqlite("Filename=Supervisor.db");
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned()).SelectMany(e => e.GetForeignKeys()))
-        //    {
-        //        relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        //    }
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned()).SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
     }
 }
