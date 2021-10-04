@@ -25,16 +25,12 @@ namespace DocumentVisor.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Enter(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
-               Close();
-            }
+            if (e.Key == Key.Return) Close();
         }
     }
 }
-

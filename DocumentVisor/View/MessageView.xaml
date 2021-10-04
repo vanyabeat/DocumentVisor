@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DocumentVisor.View"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
@@ -13,24 +12,24 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary
-                    Source="/Resources/StringResource.xaml" ></ResourceDictionary>
+                    Source="/Resources/StringResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Window.Title>
-        <StaticResource ResourceKey="Response"/>
+        <StaticResource ResourceKey="Response" />
     </Window.Title>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="MessageText" Grid.Row="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   TextWrapping="Wrap"/>
-        <Button Content="OK" Click="Button_Click" HorizontalAlignment="Center" Height="28" Margin="0,143,0,0" VerticalAlignment="Top" Width="172"/>
+                   TextWrapping="Wrap" />
+        <Button Content="OK" Click="Button_Click" HorizontalAlignment="Center" Height="28" Margin="0,143,0,0"
+                VerticalAlignment="Top" Width="172" />
     </Grid>
 </Window>
-

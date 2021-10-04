@@ -15,20 +15,18 @@ using DocumentVisor.ViewModel;
 namespace DocumentVisor.View
 {
     /// <summary>
-    /// Логика взаимодействия для EditPersonView.xaml
+    /// Логика взаимодействия для EditDivisionView.xaml
     /// </summary>
-    public partial class EditPersonView : Window
+    public partial class EditDivisionView : Window
     {
-        public EditPersonView(Person personToEdit)
+        public EditDivisionView(Division divisionToEdit)
         {
             InitializeComponent();
             DataContext = new DataManageVm();
-            DataManageVm.SelectedPerson = personToEdit;
-            DataManageVm.PersonName = personToEdit.Name;
-            DataManageVm.PersonPhone = personToEdit.Phone;
-            DataManageVm.PersonInfo = personToEdit.Info;
-            DataManageVm.PersonRank = personToEdit.Rank;
-            DataManageVm.PersonType = personToEdit.PersonType;
+            DataManageVm.SelectedDivision = divisionToEdit;
+            DataManageVm.DivisionName = divisionToEdit.Name;
+            DataManageVm.DivisionInfo = divisionToEdit.Info;
+            DataManageVm.DivisionAddress = divisionToEdit.Address;
         }
     }
 }

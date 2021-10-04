@@ -26,10 +26,8 @@ namespace DocumentVisor.Model.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned()).SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned())
+                .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

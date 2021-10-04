@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DocumentVisor.View"
         mc:Ignorable="d"
         x:Name="EditPersonWnd"
         Height="500" Width="320"
@@ -16,37 +15,38 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary
-                    Source="/Resources/StringResource.xaml" ></ResourceDictionary>
+                    Source="/Resources/StringResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Window.Title>
-        <StaticResource ResourceKey="PersonEditWindow"/>
+        <StaticResource ResourceKey="PersonEditWindow" />
     </Window.Title>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="200">
-                <TextBlock Text="{StaticResource NewPersonName}"/>
-                <TextBox Text="{Binding PersonName }"/>
-                <TextBlock Text="{StaticResource NewPersonInfo}"/>
-                <TextBox Text="{Binding PersonInfo}"/>
-                <TextBlock Text="{StaticResource NewPersonPhone}"/>
-                <TextBox Text="{Binding PersonPhone}"/>
-                <TextBlock Text="{StaticResource NewPersonRank}"/>
-                <TextBox Text="{Binding PersonRank}"/>
-                <TextBlock Text="{StaticResource NewPersonType}"/>
+                <TextBlock Text="{StaticResource NewPersonName}" />
+                <TextBox Text="{Binding PersonName }" />
+                <TextBlock Text="{StaticResource NewPersonInfo}" />
+                <TextBox Text="{Binding PersonInfo}" />
+                <TextBlock Text="{StaticResource NewPersonPhone}" />
+                <TextBox Text="{Binding PersonPhone}" />
+                <TextBlock Text="{StaticResource NewPersonRank}" />
+                <TextBox Text="{Binding PersonRank}" />
+                <TextBlock Text="{StaticResource NewPersonType}" />
                 <ComboBox SelectedItem="{Binding PersonType}" ItemsSource="{Binding AllPersonTypes}" />
             </StackPanel>
             <Button Content="{StaticResource Edit}"
                     Command="{Binding EditPerson}"
-                    CommandParameter="{Binding ElementName=EditPersonWnd}" HorizontalAlignment="Center" Margin="0,372,0,0" VerticalAlignment="Top" Width="128"/>
+                    CommandParameter="{Binding ElementName=EditPersonWnd}" HorizontalAlignment="Center"
+                    Margin="0,372,0,0" VerticalAlignment="Top" Width="128" />
         </Grid>
     </Grid>
 </Window>

@@ -13,6 +13,7 @@ namespace DocumentVisor.View
         public static DataGrid AllDivisionsView;
         public static TabControl MainTabControl;
         public static StackPanel StackPanelPersonTypes;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +26,5 @@ namespace DocumentVisor.View
             MainTabControl = MainWindowTabControl;
             PersonTypeStackPanel = StackPanelPersonTypes;
         }
-
     }
 }

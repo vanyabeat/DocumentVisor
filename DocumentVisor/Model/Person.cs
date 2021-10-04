@@ -12,8 +12,7 @@ namespace DocumentVisor.Model
         public int TypeId { get; set; }
         public virtual PersonType Type { get; set; }
 
-        [NotMapped]
-        public PersonType PersonType => DataWorker.GetPersonTypeById(TypeId);
+        [NotMapped] public PersonType PersonType => DataWorker.GetPersonTypeById(TypeId);
 
         public override string ToString()
         {

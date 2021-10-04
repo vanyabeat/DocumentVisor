@@ -16,13 +16,16 @@ namespace DocumentVisor.ViewModel
     public class DataManageVm : INotifyPropertyChanged
     {
         private static readonly ResourceDictionary Dictionary = new ResourceDictionary()
-		{
-			Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
-		};
+        {
+            Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
+        };
+
         public TabItem SelectedTabItem { get; set; }
 
-		#region PersonTypes
-		private List<PersonType> _allPersonTypes = DataWorker.GetAllPersonTypes();
+        #region PersonTypes
+
+        private List<PersonType> _allPersonTypes = DataWorker.GetAllPersonTypes();
+
         public List<PersonType> AllPersonTypes
         {
             get => _allPersonTypes;
@@ -32,11 +35,12 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllPersonTypes));
             }
         }
+
         public static PersonType SelectedPersonType { get; set; }
         public static string PersonTypeName { get; set; }
         public static string PersonTypeInfo { get; set; }
 
-		private RelayCommand _addNewPersonType;
+        private RelayCommand _addNewPersonType;
 
         public RelayCommand AddNewPersonType
         {
@@ -99,6 +103,7 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _editPersonType;
+
         public RelayCommand EditPersonType
         {
             get
@@ -119,8 +124,11 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         #endregion
+
         #region Persons
+
         public static string PersonName { get; set; }
         public static string PersonInfo { get; set; }
         public static string PersonPhone { get; set; }
@@ -128,15 +136,17 @@ namespace DocumentVisor.ViewModel
         public static PersonType PersonType { get; set; }
         public static Person SelectedPerson { get; set; }
         private List<Person> _allPersons = DataWorker.GetAllPersons();
+
         public List<Person> AllPersons
-		{
+        {
             get => _allPersons;
-			private set
-			{
-				_allPersons = value;
-				OnPropertyChanged(nameof(AllPersons));
-			}
-		}
+            private set
+            {
+                _allPersons = value;
+                OnPropertyChanged(nameof(AllPersons));
+            }
+        }
+
         private void UpdateAllPersonsView()
         {
             AllPersons = DataWorker.GetAllPersons();
@@ -147,6 +157,7 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _addNewPerson;
+
         public RelayCommand AddNewPerson
         {
             get
@@ -155,14 +166,16 @@ namespace DocumentVisor.ViewModel
                     {
                         var wnd = obj as Window;
                         var result = "";
-                        if (PersonName == null || PersonName.Replace(" ", "").Length == 0) SetRedBlockControl(wnd, "PersonNameTextBox");
+                        if (PersonName == null || PersonName.Replace(" ", "").Length == 0)
+                            SetRedBlockControl(wnd, "PersonNameTextBox");
                         if (PersonType == null)
                         {
                             MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
                         }
                         else
                         {
-                            result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonRank, PersonType);
+                            result = DataWorker.CreatePerson(PersonName, PersonInfo, PersonPhone, PersonRank,
+                                PersonType);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             ClearStackPanelPersonView(wnd);
@@ -172,7 +185,9 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         private RelayCommand _editPerson;
+
         public RelayCommand EditPerson
         {
             get
@@ -182,7 +197,8 @@ namespace DocumentVisor.ViewModel
                         var window = obj as Window;
                         if (SelectedPerson != null)
                         {
-                            var result = DataWorker.EditPerson(SelectedPerson, PersonName, PersonInfo, PersonPhone, PersonRank, PersonType);
+                            var result = DataWorker.EditPerson(SelectedPerson, PersonName, PersonInfo, PersonPhone,
+                                PersonRank, PersonType);
 
                             UpdateAllDataView();
                             SetNullValuesToProperties();
@@ -193,9 +209,13 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         #endregion
+
         #region Privacies
+
         private List<Privacy> _allPrivacies = DataWorker.GetAllPrivacies();
+
         public List<Privacy> AllPrivacies
         {
             get => _allPrivacies;
@@ -205,6 +225,7 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllPrivacies));
             }
         }
+
         public static Privacy SelectedPrivacy { get; set; }
         public static string PrivacyName { get; set; }
         public static string PrivacyInfo { get; set; }
@@ -236,6 +257,7 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _editPrivacy;
+
         public RelayCommand EditPrivacy
         {
             get
@@ -250,8 +272,8 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             ShowMessageToUser(result);
-
                         }
+
                         window.Close();
                     }
                 );
@@ -266,9 +288,13 @@ namespace DocumentVisor.ViewModel
             AllPrivaciesView.ItemsSource = AllPrivacies;
             AllPrivaciesView.Items.Refresh();
         }
+
         #endregion
+
         #region Divisions
+
         private List<Division> _allDivisions = DataWorker.GetAllDivisions();
+
         public List<Division> AllDivisions
         {
             get => _allDivisions;
@@ -278,36 +304,40 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllDivisions));
             }
         }
+
         private RelayCommand _addNewDivision;
+
         public RelayCommand AddNewDivision
         {
             get
             {
                 return _addNewDivision ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
+                    {
+                        var wnd = obj as Window;
 
-                    if (DivisionName == null || DivisionName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "DivisionNameTextBox");
-                        ShowMessageToUser(Dictionary["DivisionNameNeedToSelect"].ToString());
+                        if (DivisionName == null || DivisionName.Replace(" ", "").Length == 0)
+                        {
+                            SetRedBlockControl(wnd, "DivisionNameTextBox");
+                            ShowMessageToUser(Dictionary["DivisionNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateDivision(DivisionName, DivisionAddress, DivisionAddress);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ClearStackPanelThemesView(wnd);
+                            ShowMessageToUser(result);
+                        }
                     }
-                    else
-                    {
-                        var result = DataWorker.CreateDivision(DivisionName, DivisionAddress, DivisionAddress);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ClearStackPanelThemesView(wnd);
-                        ShowMessageToUser(result);
-                    }
-                }
                 );
             }
         }
+
         public static string DivisionName { get; set; }
         public static string DivisionInfo { get; set; }
         public static string DivisionAddress { get; set; }
         public static Division SelectedDivision { get; set; }
+
         private void UpdateAllDivisionView()
         {
             AllDivisions = DataWorker.GetAllDivisions();
@@ -318,6 +348,7 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _editDivision;
+
         public RelayCommand EditDivision
         {
             get
@@ -327,7 +358,8 @@ namespace DocumentVisor.ViewModel
                         var window = obj as Window;
                         if (SelectedDivision != null)
                         {
-                            var result = DataWorker.EditDivision(SelectedDivision, DivisionName, DivisionAddress, DivisionInfo);
+                            var result = DataWorker.EditDivision(SelectedDivision, DivisionName, DivisionAddress,
+                                DivisionInfo);
 
                             UpdateAllDataView();
                             SetNullValuesToProperties();
@@ -338,9 +370,13 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         #endregion
+
         #region Themes
+
         private List<Theme> _allThemes = DataWorker.GetAllThemes();
+
         public List<Theme> AllThemes
         {
             get => _allThemes;
@@ -350,35 +386,39 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllThemes));
             }
         }
+
         private RelayCommand _addNewTheme;
+
         public RelayCommand AddNewTheme
         {
             get
             {
                 return _addNewTheme ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
+                    {
+                        var wnd = obj as Window;
 
-                    if (ThemeName == null || ThemeName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "ThemeNameTextBox");
-                        ShowMessageToUser(Dictionary["ThemeNameNeedToSelect"].ToString());
+                        if (ThemeName == null || ThemeName.Replace(" ", "").Length == 0)
+                        {
+                            SetRedBlockControl(wnd, "ThemeNameTextBox");
+                            ShowMessageToUser(Dictionary["ThemeNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateTheme(ThemeName, ThemeInfo);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ClearStackPanelThemesView(wnd);
+                            ShowMessageToUser(result);
+                        }
                     }
-                    else
-                    {
-                        var result = DataWorker.CreateTheme(ThemeName, ThemeInfo);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ClearStackPanelThemesView(wnd);
-                        ShowMessageToUser(result);
-                    }
-                }
                 );
             }
         }
+
         public static string ThemeName { get; set; }
         public static string ThemeInfo { get; set; }
         public static Theme SelectedTheme { get; set; }
+
         private void UpdateAllThemeView()
         {
             AllThemes = DataWorker.GetAllThemes();
@@ -389,32 +429,34 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _editTheme;
+
         public RelayCommand EditTheme
         {
             get
             {
                 return _editTheme ?? new RelayCommand(obj =>
-                {
-                    var window = obj as Window;
-                    if (SelectedTheme != null)
                     {
-                        var result = DataWorker.EditTheme(SelectedTheme, ThemeName, ThemeInfo);
+                        var window = obj as Window;
+                        if (SelectedTheme != null)
+                        {
+                            var result = DataWorker.EditTheme(SelectedTheme, ThemeName, ThemeInfo);
 
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                        window.Close();
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
-                }
                 );
             }
         }
 
-
         #endregion
 
         #region Queries
+
         private List<Query> _allQueries = DataWorker.GetAllQueries();
+
         public List<Query> AllQueries
         {
             get => _allQueries;
@@ -425,9 +467,10 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-
         #endregion
+
         #region Updates
+
         private void UpdateAllDataView()
         {
             UpdateAllPersonsView();
@@ -438,14 +481,15 @@ namespace DocumentVisor.ViewModel
         }
 
         #endregion
+
         #region Deletes
+
         private RelayCommand _deleteItem;
 
         public RelayCommand DeleteItem
         {
             get
             {
-
                 return _deleteItem ?? new RelayCommand(obj =>
                 {
                     var result = Dictionary["ObjectNotFound"].ToString();
@@ -478,12 +522,14 @@ namespace DocumentVisor.ViewModel
                             ClearStackPanelThemesView(wnd);
                             break;
                     }
+
                     // upd
                     SetNullValuesToProperties();
                     ShowMessageToUser(result);
                 });
             }
         }
+
         private void SetNullValuesToProperties()
         {
             //Person
@@ -507,7 +553,9 @@ namespace DocumentVisor.ViewModel
         }
 
         #endregion
+
         #region Utils
+
         private void SetRedBlockControl(Window window, string blockName)
         {
             var block = window.FindName(blockName) as Control;
@@ -532,6 +580,7 @@ namespace DocumentVisor.ViewModel
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.ShowDialog();
         }
+
         private void ShowMessageToUser(string message)
         {
             var messageView = new MessageView(message);
@@ -543,6 +592,7 @@ namespace DocumentVisor.ViewModel
             var editDepartmentWindow = new EditPersonTypeView(personType);
             SetCenterPositionAndOpen(editDepartmentWindow);
         }
+
         private void OpenEditPrivacyViewMethod(Privacy privacy)
         {
             var editPrivacyWindow = new EditPrivacyView(privacy);
@@ -568,6 +618,7 @@ namespace DocumentVisor.ViewModel
         }
 
         private RelayCommand _openEditItemWnd;
+
         public RelayCommand OpenEditItemWnd
         {
             get
@@ -599,8 +650,11 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         #endregion
+
         #region MVVM
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -608,7 +662,7 @@ namespace DocumentVisor.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
 
-	}
+        #endregion
+    }
 }

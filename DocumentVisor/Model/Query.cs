@@ -8,7 +8,9 @@ namespace DocumentVisor.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public string Info { get; set; }
+
         public string Guid { get; set; }
+
         //public DocumentType Type { get; set; }
         //public Privacy Privacy { get; set; }
         //public Person SignPerson { get; set; }
@@ -21,6 +23,5 @@ namespace DocumentVisor.Model
         //public string DocumentInnerNum { get; set; }
         //public DateTime CentralSecretaryDate { get; set; }
         public Division Division { get; set; }
-
     }
 }
