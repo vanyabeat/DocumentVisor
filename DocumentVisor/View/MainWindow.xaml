@@ -539,15 +539,15 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="DocumentTypesTab" Header="{StaticResource DocumentTypes}">
+            <TabItem x:Name="QueryTypesTab" Header="{StaticResource QueryTypes}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.4*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="DocumentTypesDataGrid" Grid.Column="1"
-                              SelectedItem="{Binding SelectedDocumentType}"
-                              ItemsSource="{Binding AllDocumentTypes}"
+                    <DataGrid x:Name="QueryTypesDataGrid" Grid.Column="1"
+                              SelectedItem="{Binding SelectedQueryType}"
+                              ItemsSource="{Binding AllQueryTypes}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               IsReadOnly="True">
@@ -565,9 +565,9 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{StaticResource DocumentTypeName}" Width="175"
+                            <DataGridTextColumn Header="{StaticResource QueryTypeName}" Width="175"
                                                 Binding="{Binding Path=Name}" />
-                            <DataGridTextColumn Header="{StaticResource DocumentTypeInfo}"
+                            <DataGridTextColumn Header="{StaticResource QueryTypeInfo}"
                                                 Binding="{Binding Path=Info}" />
                         </DataGrid.Columns>
                         <DataGrid.InputBindings>
@@ -576,15 +576,15 @@
                         </DataGrid.InputBindings>
 
                     </DataGrid>
-                    <StackPanel x:Name="DocumentTypesStackPanel" Grid.Column="0">
+                    <StackPanel x:Name="QueryTypesStackPanel" Grid.Column="0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.3*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Margin="5" Content="{StaticResource DocumentTypeName}" HorizontalAlignment="Center"
+                            <Label Margin="5" Content="{StaticResource QueryTypeName}" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
-                            <TextBox Name="DocumentTypeNameTextBox" Text="{Binding DocumentTypeName}" Grid.Column="1"
+                            <TextBox Name="QueryTypeNameTextBox" Text="{Binding QueryTypeName}" Grid.Column="1"
                                      Margin="5,5,5,5" />
                         </Grid>
                         <Grid>
@@ -593,9 +593,9 @@
                                 <ColumnDefinition Width="29*" />
                                 <ColumnDefinition Width="140*" />
                             </Grid.ColumnDefinitions>
-                            <Label Margin="5" Content="{StaticResource DocumentTypeInfo}" Grid.ColumnSpan="2"
+                            <Label Margin="5" Content="{StaticResource QueryTypeInfo}" Grid.ColumnSpan="2"
                                    HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBox Name="DocumentTypeInfoTextBox" Text="{Binding DocumentTypeInfo}" Grid.Column="2"
+                            <TextBox Name="QueryTypeInfoTextBox" Text="{Binding QueryTypeInfo}" Grid.Column="2"
                                      Margin="5,5,5,5" />
                         </Grid>
                         <Grid>
@@ -605,7 +605,96 @@
                                 <ColumnDefinition Width="0.45*" />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Content="{StaticResource Insert}"
-                                    Command="{Binding AddNewDocumentType}"
+                                    Command="{Binding AddNewQueryType}"
+                                    CommandParameter="{Binding ElementName=DocumentVisorWindow}"
+                                    HorizontalAlignment="Center" />
+                            <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                    HorizontalAlignment="Center" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="ActionsTab" Header="{StaticResource Action}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="ActionsDataGrid" Grid.Column="1"
+                              SelectedItem="{Binding SelectedAction}"
+                              ItemsSource="{Binding AllActions}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{StaticResource Edit}" Command="{Binding OpenEditItemWnd}">
+                                    <MenuItem.Icon>
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="../Resources/edit.png" />
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{StaticResource ActionName}" Width="175"
+                                                Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Header="{StaticResource ActionNumber}"
+                                                Binding="{Binding Path=Number}" />
+                            <DataGridTextColumn Header="{StaticResource ActionInfo}"
+                                                Binding="{Binding Path=Info}" />
+                        </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding DeleteItem}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                        </DataGrid.InputBindings>
+
+                    </DataGrid>
+                    <StackPanel x:Name="ActionsStackPanel" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ActionName}" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                            <TextBox Name="ActionNameTextBox" Text="{Binding ActionName}" Grid.Column="1"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*" />
+                                <ColumnDefinition Width="29*" />
+                                <ColumnDefinition Width="140*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ActionInfo}" Grid.ColumnSpan="2"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBox Name="ActionNumberTextBox" Text="{Binding ActionInfo}" Grid.Column="2"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*" />
+                                <ColumnDefinition Width="29*" />
+                                <ColumnDefinition Width="140*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ActionNumber}" Grid.ColumnSpan="2"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBox Name="ActionInfoTextBox" Text="{Binding ActionNumber}" Grid.Column="2"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.45*" />
+                                <ColumnDefinition Width="0.1*" />
+                                <ColumnDefinition Width="0.45*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="{StaticResource Insert}"
+                                    Command="{Binding AddNewAction}"
                                     CommandParameter="{Binding ElementName=DocumentVisorWindow}"
                                     HorizontalAlignment="Center" />
                             <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"

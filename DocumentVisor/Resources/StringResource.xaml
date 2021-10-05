@@ -10,8 +10,9 @@
     <system:String x:Key="Themes">Themes</system:String>
     <system:String x:Key="Divisions">Divisions</system:String>
     <system:String x:Key="Privacies">Privacies</system:String>
-    <system:String x:Key="DocumentTypes">DocumentTypes</system:String>
+    <system:String x:Key="QueryTypes">QueryTypes</system:String>
     <system:String x:Key="Articles">Articles</system:String>
+    <system:String x:Key="Action">Action</system:String>
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Edit">Edit</system:String>
@@ -25,7 +26,7 @@
     <system:String x:Key="QueryGuid">GUID</system:String>
     <system:String x:Key="QueryName">Name</system:String>
     <system:String x:Key="QueryInfo">Info</system:String>
-    <system:String x:Key="QueryDocumentType">DocType</system:String>
+    <system:String x:Key="QueryQueryType">DocType</system:String>
     <system:String x:Key="QueryPrivacy">Privacy</system:String>
     <system:String x:Key="QuerySignPerson">SignPerson</system:String>
     <system:String x:Key="QueryExecutorPerson">ExecPerson</system:String>
@@ -56,8 +57,8 @@
     <system:String x:Key="PersonTypeNeedSelect">Need select person type</system:String>
     <!--END PERSON-->
     <!--PERSONTYPE-->
-    <system:String x:Key="PersonTypeName">Type Name</system:String>
-    <system:String x:Key="PersonTypeInfo">Type Info</system:String>
+    <system:String x:Key="PersonTypeName">Name</system:String>
+    <system:String x:Key="PersonTypeInfo">Info</system:String>
     <system:String x:Key="NewPersonTypeName">New Type Name</system:String>
     <system:String x:Key="NewPersonTypeInfo">New Type Info</system:String>
     <system:String x:Key="PersonTypeNotExist">PersonType not exist</system:String>
@@ -67,8 +68,8 @@
     <system:String x:Key="PersonTypeEditWindow">PersonType Edit Window</system:String>
     <!--END PERSONTYPE-->
     <!--BEGIN PRIVACY-->
-    <system:String x:Key="PrivacyName">Privacy Name</system:String>
-    <system:String x:Key="PrivacyInfo">Privacy Info</system:String>
+    <system:String x:Key="PrivacyName">Name</system:String>
+    <system:String x:Key="PrivacyInfo">Info</system:String>
     <system:String x:Key="NewPrivacyName">New Privacy Name</system:String>
     <system:String x:Key="NewPrivacyInfo">New Privacy Info</system:String>
     <system:String x:Key="PrivacyNotExist">Privacy not exist</system:String>
@@ -78,8 +79,8 @@
     <system:String x:Key="PrivacyEditWindow">Privacy Edit Window</system:String>
     <!--END PRIVACY-->
     <!--BEGIN THEME-->
-    <system:String x:Key="ThemeName">Theme Name</system:String>
-    <system:String x:Key="ThemeInfo">Theme Info</system:String>
+    <system:String x:Key="ThemeName">Name</system:String>
+    <system:String x:Key="ThemeInfo">Info</system:String>
     <system:String x:Key="NewThemeName">New Theme Name</system:String>
     <system:String x:Key="NewThemeInfo">New Theme Info</system:String>
     <system:String x:Key="ThemeNotExist">Theme not exist</system:String>
@@ -90,9 +91,9 @@
     <system:String x:Key="ThemeNameNeedToSelect">Need select theme name</system:String>
     <!--END THEME-->
     <!--BEGIN DIVISION-->
-    <system:String x:Key="DivisionName">Div Name</system:String>
-    <system:String x:Key="DivisionInfo">Div Info</system:String>
-    <system:String x:Key="DivisionAddress">Div Address</system:String>
+    <system:String x:Key="DivisionName">Name</system:String>
+    <system:String x:Key="DivisionInfo">Info</system:String>
+    <system:String x:Key="DivisionAddress">Address</system:String>
     <system:String x:Key="NewDivisionName">New Div Name</system:String>
     <system:String x:Key="NewDivisionInfo">New Div Info</system:String>
     <system:String x:Key="NewDivisionAddress">New Div Address</system:String>
@@ -104,9 +105,9 @@
     <system:String x:Key="DivisionNameNeedToSelect">Need select Div name</system:String>
     <!--END DIVISION-->
     <!--BEGIN ARTICLE-->
-    <system:String x:Key="ArticleName">Article Name</system:String>
-    <system:String x:Key="ArticleInfo">Article Info</system:String>
-    <system:String x:Key="ArticleExtendedName">Article ExtName</system:String>
+    <system:String x:Key="ArticleName">Name</system:String>
+    <system:String x:Key="ArticleInfo">Info</system:String>
+    <system:String x:Key="ArticleExtendedName">ExtName</system:String>
     <system:String x:Key="NewArticleName">New Article Name</system:String>
     <system:String x:Key="NewArticleInfo">New Article Info</system:String>
     <system:String x:Key="NewArticleExtendedName">New Article ExtName</system:String>
@@ -118,15 +119,28 @@
     <system:String x:Key="ArticleNameNeedToSelect">Need select Article name</system:String>
     <!--END ARTICLE-->
     <!--BEGIN ARTICLE-->
-    <system:String x:Key="DocumentTypeName">DocumentType Name</system:String>
-    <system:String x:Key="DocumentTypeInfo">DocumentType Info</system:String>
-    <system:String x:Key="NewDocumentTypeName">New DocumentType Name</system:String>
-    <system:String x:Key="NewDocumentTypeInfo">NewDocumentType Info</system:String>
-    <system:String x:Key="DocumentTypeNotExist">DocumentType not exist</system:String>
-    <system:String x:Key="DocumentTypeDeleted">Good! Successful delete DocumentType</system:String>
-    <system:String x:Key="DocumentTypeEdited">Good! Successful edit DocumentType</system:String>
-    <system:String x:Key="DocumentTypeDeleteError">Fail! Maybe Theme use in Queries</system:String>
-    <system:String x:Key="DocumentTypeEditWindow">DocumentType Edit Window</system:String>
-    <system:String x:Key="DocumentTypeNameNeedToSelect">Need select DocumentType name</system:String>
+    <system:String x:Key="QueryTypeName">Name</system:String>
+    <system:String x:Key="QueryTypeInfo">Info</system:String>
+    <system:String x:Key="NewQueryTypeName">New QueryType Name</system:String>
+    <system:String x:Key="NewQueryTypeInfo">NewQueryType Info</system:String>
+    <system:String x:Key="QueryTypeNotExist">QueryType not exist</system:String>
+    <system:String x:Key="QueryTypeDeleted">Good! Successful delete QueryType</system:String>
+    <system:String x:Key="QueryTypeEdited">Good! Successful edit QueryType</system:String>
+    <system:String x:Key="QueryTypeDeleteError">Fail! Maybe Theme use in Queries</system:String>
+    <system:String x:Key="QueryTypeEditWindow">QueryType Edit Window</system:String>
+    <system:String x:Key="QueryTypeNameNeedToSelect">Need select QueryType name</system:String>
     <!--END ARTICLE-->
+    <!--BEGIN ACTION-->
+    <system:String x:Key="ActionName">Name</system:String>
+    <system:String x:Key="ActionInfo">Info</system:String>
+    <system:String x:Key="ActionNumber">Info</system:String>
+    <system:String x:Key="NewActionName">New Action Name</system:String>
+    <system:String x:Key="NewActionInfo">New Action Info</system:String>
+    <system:String x:Key="ActionNotExist">Action not exist</system:String>
+    <system:String x:Key="ActionDeleted">Good! Successful delete Action</system:String>
+    <system:String x:Key="ActionEdited">Good! Successful edit Action</system:String>
+    <system:String x:Key="ActionDeleteError">Fail! Maybe Theme use in Queries</system:String>
+    <system:String x:Key="ActionEditWindow">Action Edit Window</system:String>
+    <system:String x:Key="ActionNameNeedToSelect">Need select Action name</system:String>
+    <!--END ACTION-->
 </ResourceDictionary>

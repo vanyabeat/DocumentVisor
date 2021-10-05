@@ -8,6 +8,7 @@ using System.Windows.Media;
 using DocumentVisor.Model;
 using DocumentVisor.View;
 using static DocumentVisor.View.MainWindow;
+using Action = DocumentVisor.Model.Action;
 
 namespace DocumentVisor.ViewModel
 {
@@ -507,41 +508,41 @@ namespace DocumentVisor.ViewModel
 
         #endregion
 
-        #region DocumentType
+        #region QueryType
 
-        private List<DocumentType> _allDocumentTypes = DataWorker.GetAllDocumentTypes();
+        private List<QueryType> _allQueryTypes = DataWorker.GetAllQueryTypes();
 
-        public List<DocumentType> AllDocumentTypes
+        public List<QueryType> AllQueryTypes
         {
-            get => _allDocumentTypes;
+            get => _allQueryTypes;
             private set
             {
-                _allDocumentTypes = value;
-                OnPropertyChanged(nameof(AllDocumentTypes));
+                _allQueryTypes = value;
+                OnPropertyChanged(nameof(AllQueryTypes));
             }
         }
 
-        private RelayCommand _addNewDocumentType;
+        private RelayCommand _addNewQueryType;
 
-        public RelayCommand AddNewDocumentType
+        public RelayCommand AddNewQueryType
         {
             get
             {
-                return _addNewDocumentType ?? new RelayCommand(obj =>
+                return _addNewQueryType ?? new RelayCommand(obj =>
                 {
                     var wnd = obj as Window;
 
-                    if (DocumentTypeName == null || DocumentTypeName.Replace(" ", "").Length == 0)
+                    if (QueryTypeName == null || QueryTypeName.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControl(wnd, "DocumentTypeNameTextBox");
-                        ShowMessageToUser(Dictionary["DocumentTypeNameNeedToSelect"].ToString());
+                        SetRedBlockControl(wnd, "QueryTypeNameTextBox");
+                        ShowMessageToUser(Dictionary["QueryTypeNameNeedToSelect"].ToString());
                     }
                     else
                     {
-                        var result = DataWorker.CreateDocumentType(DocumentTypeName, DocumentTypeInfo);
+                        var result = DataWorker.CreateQueryType(QueryTypeName, QueryTypeInfo);
                         UpdateAllDataView();
                         SetNullValuesToProperties();
-                        ClearStackPanelDocumentTypeView(wnd);
+                        ClearStackPanelQueryTypeView(wnd);
                         ShowMessageToUser(result);
                     }
                 }
@@ -549,31 +550,112 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        public static string DocumentTypeInfo { get; set; }
-        public static string DocumentTypeName { get; set; }
-        public static DocumentType SelectedDocumentType { get; set; }
+        public static string QueryTypeInfo { get; set; }
+        public static string QueryTypeName { get; set; }
+        public static QueryType SelectedQueryType { get; set; }
 
-        private void UpdateAllDocumentTypesView()
+        private void UpdateAllQueryTypesView()
         {
-            AllDocumentTypes = DataWorker.GetAllDocumentTypes();
-            AllDocumentTypesView.ItemsSource = null;
-            AllDocumentTypesView.Items.Clear();
-            AllDocumentTypesView.ItemsSource = AllDocumentTypes;
-            AllDocumentTypesView.Items.Refresh();
+            AllQueryTypes = DataWorker.GetAllQueryTypes();
+            AllQueryTypesView.ItemsSource = null;
+            AllQueryTypesView.Items.Clear();
+            AllQueryTypesView.ItemsSource = AllQueryTypes;
+            AllQueryTypesView.Items.Refresh();
         }
 
-        private RelayCommand _editDocumentType;
+        private RelayCommand _editQueryType;
 
-        public RelayCommand EditDocumentType
+        public RelayCommand EditQueryType
         {
             get
             {
-                return _editDocumentType ?? new RelayCommand(obj =>
+                return _editQueryType ?? new RelayCommand(obj =>
                 {
                     var window = obj as Window;
-                    if (SelectedDocumentType != null)
+                    if (SelectedQueryType != null)
                     {
-                        var result = DataWorker.EditDocumentType(SelectedDocumentType, DocumentTypeName, DocumentTypeInfo);
+                        var result = DataWorker.EditQueryType(SelectedQueryType, QueryTypeName, QueryTypeInfo);
+
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                        window.Close();
+                    }
+                }
+                );
+            }
+        }
+
+        #endregion
+
+        #region Actions
+
+        private List<Action> _allActions = DataWorker.GetAllActions();
+
+        public List<Action> AllActions
+        {
+            get => _allActions;
+            private set
+            {
+                _allActions = value;
+                OnPropertyChanged(nameof(AllActions));
+            }
+        }
+
+        private RelayCommand _addNewAction;
+
+        public RelayCommand AddNewAction
+        {
+            get
+            {
+                return _addNewAction ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if ( ActionName == null || ActionName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "ActionNameTextBox");
+                        ShowMessageToUser(Dictionary["ActionNameNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.CreateAction(ActionName, ActionNumber, ActionInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelActionsView(wnd);
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
+
+        public static string ActionName { get; set; }
+        public static string ActionInfo { get; set; }
+        public static string ActionNumber { get; set; }
+        public static Action SelectedAction { get; set; }
+
+        private void UpdateAllActionView()
+        {
+            AllActions = DataWorker.GetAllActions();
+            AllActionsView.ItemsSource = null;
+            AllActionsView.Items.Clear();
+            AllActionsView.ItemsSource = AllActions;
+            AllActionsView.Items.Refresh();
+        }
+
+        private RelayCommand _editAction;
+
+        public RelayCommand EditAction
+        {
+            get
+            {
+                return _editAction ?? new RelayCommand(obj =>
+                {
+                    var window = obj as Window;
+                    if (SelectedAction != null)
+                    {
+                        var result = DataWorker.EditAction(SelectedAction, ActionName, ActionNumber, ActionInfo);
 
                         UpdateAllDataView();
                         SetNullValuesToProperties();
@@ -589,18 +671,6 @@ namespace DocumentVisor.ViewModel
 
         #region Queries
 
-        private List<Query> _allQueries = DataWorker.GetAllQueries();
-
-        public List<Query> AllQueries
-        {
-            get => _allQueries;
-            private set
-            {
-                _allQueries = value;
-                OnPropertyChanged(nameof(AllQueries));
-            }
-        }
-
         #endregion
 
         #region Updates
@@ -613,7 +683,8 @@ namespace DocumentVisor.ViewModel
             UpdateAllThemeView();
             UpdateAllDivisionView();
             UpdateAllArticleView();
-            UpdateAllDocumentTypesView();
+            UpdateAllQueryTypesView();
+            UpdateAllActionView();
         }
 
         #endregion
@@ -662,10 +733,15 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             ClearStackPanelArticlesView(wnd);
                             break;
-                        case "DocumentTypesTab" when SelectedDocumentType != null:
-                            result = DataWorker.DeleteDocumentType(SelectedDocumentType);
+                        case "QueryTypesTab" when SelectedQueryType != null:
+                            result = DataWorker.DeleteQueryType(SelectedQueryType);
                             UpdateAllDataView();
-                            ClearStackPanelDocumentTypeView(wnd);
+                            ClearStackPanelQueryTypeView(wnd);
+                            break;
+                        case "ActionsTab" when SelectedAction != null:
+                            result = DataWorker.DeleteAction(SelectedAction);
+                            UpdateAllDataView();
+                            ClearStackPanelActionsView(wnd);
                             break;
                     }
 
@@ -700,9 +776,13 @@ namespace DocumentVisor.ViewModel
             ArticleExtendedName = null;
             ArticleInfo = null;
             ArticleName = null;
-            /// DocumentType
-            DocumentTypeInfo = null;
-            DocumentTypeName = null;
+            // QueryType
+            QueryTypeInfo = null;
+            QueryTypeName = null;
+            // Actions
+            ActionInfo = null;
+            ActionName = null;
+            ActionNumber = null;
         }
 
         #endregion
@@ -805,8 +885,8 @@ namespace DocumentVisor.ViewModel
                             case "ArticlesTab" when SelectedArticle != null:
                                 OpenEditArticleViewMethod(SelectedArticle);
                                 return;
-                            case "DocumentTypesTab" when SelectedDocumentType != null:
-                                //OpenEditDocumentTypeViewMethod(SelectedDocumentType);
+                            case "QueryTypesTab" when SelectedQueryType != null:
+                                //OpenEditQueryTypeViewMethod(SelectedQueryType);
                                 return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
@@ -861,13 +941,20 @@ namespace DocumentVisor.ViewModel
             ClearTextFromStackPanelTextBox(window, "ArticleExtendedNameTextBox");
         }
 
-        private void ClearStackPanelDocumentTypeView(Window window)
+        private void ClearStackPanelQueryTypeView(Window window)
         {
-            ClearTextFromStackPanelTextBox(window, "DocumentTypeNameTextBox");
-            ClearTextFromStackPanelTextBox(window, "DocumentTypeInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "QueryTypeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "QueryTypeInfoTextBox");
         }
 
+        private void ClearStackPanelActionsView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "ActionNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "ActionInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "ActionNumberTextBox");
+        }
 
+        
         #endregion
 
         #region MVVM

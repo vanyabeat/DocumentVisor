@@ -341,17 +341,6 @@ namespace DocumentVisor.Model
 
         #endregion
 
-        #region Queries
-
-        public static List<Query> GetAllQueries()
-        {
-            using var db = new ApplicationContext();
-            var result = db.Queries.ToList();
-            return result;
-        }
-
-        #endregion
-
         #region Articles
 
         public static List<Article> GetAllArticles()
@@ -415,23 +404,23 @@ namespace DocumentVisor.Model
 
         #endregion
 
-        #region DocumentTypes
+        #region QueryTypes
 
-        public static List<DocumentType> GetAllDocumentTypes()
+        public static List<QueryType> GetAllQueryTypes()
         {
             using var db = new ApplicationContext();
-            var result = db.DocumentTypes.ToList();
+            var result = db.QueryTypes.ToList();
             return result;
         }
 
-        public static string CreateDocumentType(string name, string info)
+        public static string CreateQueryType(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
             using var db = new ApplicationContext();
-            var checkIsExist = db.DocumentTypes.Any(el => el.Name == name);
+            var checkIsExist = db.QueryTypes.Any(el => el.Name == name);
             if (!checkIsExist)
             {
-                db.DocumentTypes.Add(new DocumentType { Name = name, Info = info });
+                db.QueryTypes.Add(new QueryType { Name = name, Info = info });
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }
@@ -439,36 +428,98 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string DeleteDocumentType(DocumentType docType)
+        public static string DeleteQueryType(QueryType docType)
         {
-            var result = Dictionary["DocumentTypeNotExist"].ToString();
+            var result = Dictionary["QueryTypeNotExist"].ToString();
             using (var db = new ApplicationContext())
             {
                 try
                 {
-                    db.DocumentTypes.Remove(docType);
+                    db.QueryTypes.Remove(docType);
                     db.SaveChanges();
-                    result = $"{Dictionary["DocumentTypeDeleted"]} {docType}";
+                    result = $"{Dictionary["QueryTypeDeleted"]} {docType}";
                 }
                 catch (Exception e)
                 {
-                    result = $"{Dictionary["DocumentTypeDeleteError"]}\n{e.Message}";
+                    result = $"{Dictionary["QueryTypeDeleteError"]}\n{e.Message}";
                 }
             }
 
             return result;
         }
 
-        public static string EditDocumentType(DocumentType oldDocType, string docTypeName, string docTypeInfo)
+        public static string EditQueryType(QueryType oldDocType, string docTypeName, string docTypeInfo)
         {
             var result = Dictionary["PrivacyNotExist"].ToString();
             using (var db = new ApplicationContext())
             {
-                var type = db.DocumentTypes.FirstOrDefault(d => d.Id == oldDocType.Id);
+                var type = db.QueryTypes.FirstOrDefault(d => d.Id == oldDocType.Id);
                 type.Name = docTypeName;
                 type.Info = docTypeInfo;
                 db.SaveChanges();
-                result = $"{Dictionary["DocumentTypeEdited"]} {oldDocType}";
+                result = $"{Dictionary["QueryTypeEdited"]} {oldDocType}";
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Actions
+
+        public static List<Action> GetAllActions()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Actions.ToList();
+            return result;
+        }
+
+        public static string CreateAction(string name, string number, string info)
+        {
+            var result = Dictionary["Insert"].ToString();
+            using var db = new ApplicationContext();
+            var checkIsExist = db.Actions.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.Actions.Add(new Action { Name = name, Number = number, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string DeleteAction(Action action)
+        {
+            var result = Dictionary["ActionNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                try
+                {
+                    db.Actions.Remove(action);
+                    db.SaveChanges();
+                    result = $"{Dictionary["ActionDeleted"]} {action}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["ActionDeleteError"]}\n{e.Message}";
+                }
+            }
+
+            return result;
+        }
+
+        public static string EditAction(Action oldAction, string actionName, string actionNumber, string actionInfo)
+        {
+            var result = Dictionary["ActionNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                var action = db.Actions.FirstOrDefault(d => d.Id == oldAction.Id);
+                action.Name = actionName;
+                action.Info = actionInfo;
+                action.Number = actionNumber;
+                db.SaveChanges();
+                result = $"{Dictionary["ActionEdited"]} {oldAction}";
             }
 
             return result;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentVisor.Model
 {
@@ -13,6 +14,8 @@ namespace DocumentVisor.Model
         public virtual PersonType Type { get; set; }
 
         [NotMapped] public PersonType PersonType => DataWorker.GetPersonTypeById(TypeId);
+
+        public ICollection<QueryPerson> QueryPersons { get; set; }
 
         public override string ToString()
         {
