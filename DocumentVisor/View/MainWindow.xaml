@@ -211,6 +211,95 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="ArticlesTab" Header="{StaticResource Articles}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="ArticlesDataGrid" Grid.Column="1"
+                              SelectedItem="{Binding SelectedArticle}"
+                              ItemsSource="{Binding AllArticles}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{StaticResource Edit}" Command="{Binding OpenEditItemWnd}">
+                                    <MenuItem.Icon>
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="../Resources/edit.png" />
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{StaticResource ArticleName}" Width="175"
+                                                Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Header="{StaticResource ArticleExtendedName}"
+                                                Binding="{Binding Path=ExtendedName}" />
+                            <DataGridTextColumn Header="{StaticResource ArticleInfo}"
+                                                Binding="{Binding Path=Info}" />
+                        </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding DeleteItem}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                        </DataGrid.InputBindings>
+
+                    </DataGrid>
+                    <StackPanel x:Name="ArticlesStackPanel" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ArticleName}" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                            <TextBox Name="ArticleNameTextBox" Text="{Binding ArticleName}" Grid.Column="1"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*" />
+                                <ColumnDefinition Width="29*" />
+                                <ColumnDefinition Width="140*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ArticleExtendedName}" Grid.ColumnSpan="2"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBox Name="ArticleInfoTextBox" Text="{Binding ArticleExtendedName}" Grid.Column="2"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*" />
+                                <ColumnDefinition Width="29*" />
+                                <ColumnDefinition Width="140*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="5" Content="{StaticResource ArticleInfo}" Grid.ColumnSpan="2"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBox Name="ArticleExtendedNameTextBox" Text="{Binding ArticleInfo}" Grid.Column="2"
+                                     Margin="5,5,5,5" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.45*" />
+                                <ColumnDefinition Width="0.1*" />
+                                <ColumnDefinition Width="0.45*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="{StaticResource Insert}"
+                                    Command="{Binding AddNewArticle}"
+                                    CommandParameter="{Binding ElementName=DocumentVisorWindow}"
+                                    HorizontalAlignment="Center" />
+                            <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                    HorizontalAlignment="Center" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="PrivaciesTab" Header="{StaticResource Privacies}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -450,15 +539,15 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ArticlesTab" Header="{StaticResource Divisions}">
+            <TabItem x:Name="DocumentTypesTab" Header="{StaticResource DocumentTypes}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.4*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="ArticlesDataGrid" Grid.Column="1"
-                              SelectedItem="{Binding SelectedDivision}"
-                              ItemsSource="{Binding AllDivisions}"
+                    <DataGrid x:Name="DocumentTypesDataGrid" Grid.Column="1"
+                              SelectedItem="{Binding SelectedDocumentType}"
+                              ItemsSource="{Binding AllDocumentTypes}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               IsReadOnly="True">
@@ -476,11 +565,9 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{StaticResource DivisionName}" Width="175"
+                            <DataGridTextColumn Header="{StaticResource DocumentTypeName}" Width="175"
                                                 Binding="{Binding Path=Name}" />
-                            <DataGridTextColumn Header="{StaticResource DivisionAddress}"
-                                                Binding="{Binding Path=Address}" />
-                            <DataGridTextColumn Header="{StaticResource DivisionInfo}"
+                            <DataGridTextColumn Header="{StaticResource DocumentTypeInfo}"
                                                 Binding="{Binding Path=Info}" />
                         </DataGrid.Columns>
                         <DataGrid.InputBindings>
@@ -489,15 +576,15 @@
                         </DataGrid.InputBindings>
 
                     </DataGrid>
-                    <StackPanel x:Name="ArticlesStackPanel" Grid.Column="0">
+                    <StackPanel x:Name="DocumentTypesStackPanel" Grid.Column="0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.3*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Margin="5" Content="{StaticResource DivisionName}" HorizontalAlignment="Center"
+                            <Label Margin="5" Content="{StaticResource DocumentTypeName}" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
-                            <TextBox Name="ArticlesNameTextBox" Text="{Binding DivisionName}" Grid.Column="1"
+                            <TextBox Name="DocumentTypeNameTextBox" Text="{Binding DocumentTypeName}" Grid.Column="1"
                                      Margin="5,5,5,5" />
                         </Grid>
                         <Grid>
@@ -506,20 +593,9 @@
                                 <ColumnDefinition Width="29*" />
                                 <ColumnDefinition Width="140*" />
                             </Grid.ColumnDefinitions>
-                            <Label Margin="5" Content="{StaticResource DivisionAddress}" Grid.ColumnSpan="2"
+                            <Label Margin="5" Content="{StaticResource DocumentTypeInfo}" Grid.ColumnSpan="2"
                                    HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBox Name="ArticlesInfoTextBox" Text="{Binding DivisionAddress}" Grid.Column="2"
-                                     Margin="5,5,5,5" />
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="13*" />
-                                <ColumnDefinition Width="29*" />
-                                <ColumnDefinition Width="140*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Margin="5" Content="{StaticResource DivisionInfo}" Grid.ColumnSpan="2"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBox Name="ArticlesExtendedNameTextBox" Text="{Binding DivisionInfo}" Grid.Column="2"
+                            <TextBox Name="DocumentTypeInfoTextBox" Text="{Binding DocumentTypeInfo}" Grid.Column="2"
                                      Margin="5,5,5,5" />
                         </Grid>
                         <Grid>
@@ -529,7 +605,7 @@
                                 <ColumnDefinition Width="0.45*" />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Content="{StaticResource Insert}"
-                                    Command="{Binding AddNewDivision}"
+                                    Command="{Binding AddNewDocumentType}"
                                     CommandParameter="{Binding ElementName=DocumentVisorWindow}"
                                     HorizontalAlignment="Center" />
                             <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"

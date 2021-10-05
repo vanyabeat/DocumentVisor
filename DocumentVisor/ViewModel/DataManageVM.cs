@@ -1,10 +1,8 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DocumentVisor.Model;
@@ -75,32 +73,7 @@ namespace DocumentVisor.ViewModel
             AllPersonsTypesView.Items.Refresh();
         }
 
-        private void ClearStackPanelPersonTypesView(Window window)
-        {
-            ClearTextFromStackPanelTextBox(window, "PersonTypeNameTextBox");
-            ClearTextFromStackPanelTextBox(window, "PersonTypeInfoTextBox");
-        }
 
-        private void ClearStackPanelPersonView(Window window)
-        {
-            ClearTextFromStackPanelTextBox(window, "PersonNameTextBox");
-            ClearTextFromStackPanelTextBox(window, "PersonInfoTextBox");
-            ClearTextFromStackPanelTextBox(window, "PersonPhoneTextBox");
-            ClearTextFromStackPanelTextBox(window, "PersonRankTextBox");
-            ClearTextFromStackPanelComboBox(window, "PersonTypeComboBox");
-        }
-
-        private void ClearStackPanelPrivaciesView(Window window)
-        {
-            ClearTextFromStackPanelTextBox(window, "PrivacyNameTextBox");
-            ClearTextFromStackPanelTextBox(window, "PrivacyInfoTextBox");
-        }
-
-        private void ClearStackPanelThemesView(Window window)
-        {
-            ClearTextFromStackPanelTextBox(window, "ThemeNameTextBox");
-            ClearTextFromStackPanelTextBox(window, "ThemeInfoTextBox");
-        }
 
         private RelayCommand _editPersonType;
 
@@ -453,6 +426,167 @@ namespace DocumentVisor.ViewModel
 
         #endregion
 
+        #region Articles
+
+        private List<Article> _allArticles = DataWorker.GetAllArticles();
+
+        public List<Article> AllArticles
+        {
+            get => _allArticles;
+            private set
+            {
+                _allArticles = value;
+                OnPropertyChanged(nameof(AllArticles));
+            }
+        }
+
+        private RelayCommand _addNewArticle;
+
+        public RelayCommand AddNewArticle
+        {
+            get
+            {
+                return _addNewArticle ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if (ArticleName == null || ArticleName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "ArticlesNameTextBox");
+                        ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.CreateArticle(ArticleName, ArticleExtendedName, ArticleInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelArticlesView(wnd);
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
+
+        public static string ArticleName { get; set; }
+        public static string ArticleInfo { get; set; }
+        public static string ArticleExtendedName { get; set; }
+        public static Article SelectedArticle { get; set; }
+
+        private void UpdateAllArticleView()
+        {
+            AllArticles = DataWorker.GetAllArticles();
+            AllArticlesView.ItemsSource = null;
+            AllArticlesView.Items.Clear();
+            AllArticlesView.ItemsSource = AllArticles;
+            AllArticlesView.Items.Refresh();
+        }
+
+        private RelayCommand _editArticle;
+
+        public RelayCommand EditArticle
+        {
+            get
+            {
+                return _editArticle ?? new RelayCommand(obj =>
+                {
+                    var window = obj as Window;
+                    if (SelectedArticle != null)
+                    {
+                        var result = DataWorker.EditArticle(SelectedArticle, ArticleName, ArticleExtendedName, ArticleInfo);
+
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                        window.Close();
+                    }
+                }
+                );
+            }
+        }
+
+        #endregion
+
+        #region DocumentType
+
+        private List<DocumentType> _allDocumentTypes = DataWorker.GetAllDocumentTypes();
+
+        public List<DocumentType> AllDocumentTypes
+        {
+            get => _allDocumentTypes;
+            private set
+            {
+                _allDocumentTypes = value;
+                OnPropertyChanged(nameof(AllDocumentTypes));
+            }
+        }
+
+        private RelayCommand _addNewDocumentType;
+
+        public RelayCommand AddNewDocumentType
+        {
+            get
+            {
+                return _addNewDocumentType ?? new RelayCommand(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if (DocumentTypeName == null || DocumentTypeName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "DocumentTypeNameTextBox");
+                        ShowMessageToUser(Dictionary["DocumentTypeNameNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.CreateDocumentType(DocumentTypeName, DocumentTypeInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelDocumentTypeView(wnd);
+                        ShowMessageToUser(result);
+                    }
+                }
+                );
+            }
+        }
+
+        public static string DocumentTypeInfo { get; set; }
+        public static string DocumentTypeName { get; set; }
+        public static DocumentType SelectedDocumentType { get; set; }
+
+        private void UpdateAllDocumentTypesView()
+        {
+            AllDocumentTypes = DataWorker.GetAllDocumentTypes();
+            AllDocumentTypesView.ItemsSource = null;
+            AllDocumentTypesView.Items.Clear();
+            AllDocumentTypesView.ItemsSource = AllDocumentTypes;
+            AllDocumentTypesView.Items.Refresh();
+        }
+
+        private RelayCommand _editDocumentType;
+
+        public RelayCommand EditDocumentType
+        {
+            get
+            {
+                return _editDocumentType ?? new RelayCommand(obj =>
+                {
+                    var window = obj as Window;
+                    if (SelectedDocumentType != null)
+                    {
+                        var result = DataWorker.EditDocumentType(SelectedDocumentType, DocumentTypeName, DocumentTypeInfo);
+
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                        window.Close();
+                    }
+                }
+                );
+            }
+        }
+
+        #endregion
+
         #region Queries
 
         private List<Query> _allQueries = DataWorker.GetAllQueries();
@@ -478,6 +612,8 @@ namespace DocumentVisor.ViewModel
             UpdateAllPrivacyView();
             UpdateAllThemeView();
             UpdateAllDivisionView();
+            UpdateAllArticleView();
+            UpdateAllDocumentTypesView();
         }
 
         #endregion
@@ -519,7 +655,17 @@ namespace DocumentVisor.ViewModel
                         case "DivisionsTab" when SelectedDivision != null:
                             result = DataWorker.DeleteDivision(SelectedDivision);
                             UpdateAllDataView();
-                            ClearStackPanelThemesView(wnd);
+                            ClearStackPanelDivisionsView(wnd);
+                            break;
+                        case "ArticlesTab" when SelectedArticle != null:
+                            result = DataWorker.DeleteArticle(SelectedArticle);
+                            UpdateAllDataView();
+                            ClearStackPanelArticlesView(wnd);
+                            break;
+                        case "DocumentTypesTab" when SelectedDocumentType != null:
+                            result = DataWorker.DeleteDocumentType(SelectedDocumentType);
+                            UpdateAllDataView();
+                            ClearStackPanelDocumentTypeView(wnd);
                             break;
                     }
 
@@ -550,6 +696,13 @@ namespace DocumentVisor.ViewModel
             DivisionName = null;
             DivisionInfo = null;
             DivisionAddress = null;
+            // Article
+            ArticleExtendedName = null;
+            ArticleInfo = null;
+            ArticleName = null;
+            /// DocumentType
+            DocumentTypeInfo = null;
+            DocumentTypeName = null;
         }
 
         #endregion
@@ -617,6 +770,13 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(editDivisionWindow);
         }
 
+
+        private void OpenEditArticleViewMethod(Article article)
+        {
+            var editArticleWindow = new EditArticleView(article);
+            SetCenterPositionAndOpen(editArticleWindow);
+        }
+
         private RelayCommand _openEditItemWnd;
 
         public RelayCommand OpenEditItemWnd
@@ -642,6 +802,12 @@ namespace DocumentVisor.ViewModel
                             case "DivisionsTab" when SelectedDivision != null:
                                 OpenEditDivisionViewMethod(SelectedDivision);
                                 return;
+                            case "ArticlesTab" when SelectedArticle != null:
+                                OpenEditArticleViewMethod(SelectedArticle);
+                                return;
+                            case "DocumentTypesTab" when SelectedDocumentType != null:
+                                //OpenEditDocumentTypeViewMethod(SelectedDocumentType);
+                                return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
                                 return;
@@ -650,6 +816,57 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+        #endregion
+
+        #region Flushes
+        private void ClearStackPanelPersonTypesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "PersonTypeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonTypeInfoTextBox");
+        }
+
+        private void ClearStackPanelPersonView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "PersonNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonPhoneTextBox");
+            ClearTextFromStackPanelTextBox(window, "PersonRankTextBox");
+            ClearTextFromStackPanelComboBox(window, "PersonTypeComboBox");
+        }
+
+        private void ClearStackPanelPrivaciesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "PrivacyNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "PrivacyInfoTextBox");
+        }
+
+        private void ClearStackPanelThemesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "ThemeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "ThemeInfoTextBox");
+        }
+
+        private void ClearStackPanelDivisionsView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "DivisionNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "DivisionInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "DivisionAddressTextBox");
+        }
+
+        private void ClearStackPanelArticlesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "ArticleNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "ArticleInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "ArticleExtendedNameTextBox");
+        }
+
+        private void ClearStackPanelDocumentTypeView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "DocumentTypeNameTextBox");
+            ClearTextFromStackPanelTextBox(window, "DocumentTypeInfoTextBox");
+        }
+
 
         #endregion
 

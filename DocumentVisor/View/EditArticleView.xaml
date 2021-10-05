@@ -1,0 +1,48 @@
+﻿<Window x:Class="DocumentVisor.View.EditArticleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
+        x:Name="EditArticleWnd"
+        mc:Ignorable="d"
+        Height="400" Width="320"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="/Resources/StringResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Title>
+        <StaticResource ResourceKey="ArticleEditWindow" />
+    </Window.Title>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="200">
+                <TextBlock Text="{StaticResource NewArticleName}" />
+                <TextBox Text="{Binding ArticleName }" />
+                <TextBlock Text="{StaticResource NewArticleExtendedName}" />
+                <TextBox Text="{Binding ArticleExtendedName}" />
+                <TextBlock Text="{StaticResource NewArticleInfo}" />
+                <TextBox Text="{Binding ArticleInfo}" />
+            </StackPanel>
+            <Button Grid.Row="0" Content="{StaticResource Edit}"
+                    Command="{Binding EditArticle}"
+                    CommandParameter="{Binding ElementName=EditArticleWnd}" HorizontalAlignment="Center"
+                    Margin="0,275,0,0" VerticalAlignment="Top" Width="128" />
+        </Grid>
+    </Grid>
+</Window>

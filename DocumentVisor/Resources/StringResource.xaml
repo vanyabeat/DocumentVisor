@@ -10,7 +10,8 @@
     <system:String x:Key="Themes">Themes</system:String>
     <system:String x:Key="Divisions">Divisions</system:String>
     <system:String x:Key="Privacies">Privacies</system:String>
-    <system:String x:Key="DocumentTypes">Doc Types</system:String>
+    <system:String x:Key="DocumentTypes">DocumentTypes</system:String>
+    <system:String x:Key="Articles">Articles</system:String>
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Edit">Edit</system:String>
@@ -106,14 +107,26 @@
     <system:String x:Key="ArticleName">Article Name</system:String>
     <system:String x:Key="ArticleInfo">Article Info</system:String>
     <system:String x:Key="ArticleExtendedName">Article ExtName</system:String>
-    <system:String x:Key="NewArticleName">Article Div Name</system:String>
-    <system:String x:Key="NewArticleInfo">Article Div Info</system:String>
-    <system:String x:Key="NewArticleExtendedName">Article Div ExtName</system:String>
+    <system:String x:Key="NewArticleName">New Article Name</system:String>
+    <system:String x:Key="NewArticleInfo">New Article Info</system:String>
+    <system:String x:Key="NewArticleExtendedName">New Article ExtName</system:String>
     <system:String x:Key="ArticleNotExist">Article not exist</system:String>
     <system:String x:Key="ArticleDeleted">Good! Successful delete Article</system:String>
     <system:String x:Key="ArticleEdited">Good! Successful edit Article</system:String>
     <system:String x:Key="ArticleDeleteError">Fail! Maybe Theme use in Queries</system:String>
     <system:String x:Key="ArticleEditWindow">Article Edit Window</system:String>
     <system:String x:Key="ArticleNameNeedToSelect">Need select Article name</system:String>
+    <!--END ARTICLE-->
+    <!--BEGIN ARTICLE-->
+    <system:String x:Key="DocumentTypeName">DocumentType Name</system:String>
+    <system:String x:Key="DocumentTypeInfo">DocumentType Info</system:String>
+    <system:String x:Key="NewDocumentTypeName">New DocumentType Name</system:String>
+    <system:String x:Key="NewDocumentTypeInfo">NewDocumentType Info</system:String>
+    <system:String x:Key="DocumentTypeNotExist">DocumentType not exist</system:String>
+    <system:String x:Key="DocumentTypeDeleted">Good! Successful delete DocumentType</system:String>
+    <system:String x:Key="DocumentTypeEdited">Good! Successful edit DocumentType</system:String>
+    <system:String x:Key="DocumentTypeDeleteError">Fail! Maybe Theme use in Queries</system:String>
+    <system:String x:Key="DocumentTypeEditWindow">DocumentType Edit Window</system:String>
+    <system:String x:Key="DocumentTypeNameNeedToSelect">Need select DocumentType name</system:String>
     <!--END ARTICLE-->
 </ResourceDictionary>

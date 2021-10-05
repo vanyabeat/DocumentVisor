@@ -415,6 +415,67 @@ namespace DocumentVisor.Model
 
         #endregion
 
+        #region DocumentTypes
+
+        public static List<DocumentType> GetAllDocumentTypes()
+        {
+            using var db = new ApplicationContext();
+            var result = db.DocumentTypes.ToList();
+            return result;
+        }
+
+        public static string CreateDocumentType(string name, string info)
+        {
+            var result = Dictionary["Insert"].ToString();
+            using var db = new ApplicationContext();
+            var checkIsExist = db.DocumentTypes.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.DocumentTypes.Add(new DocumentType { Name = name, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string DeleteDocumentType(DocumentType docType)
+        {
+            var result = Dictionary["DocumentTypeNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                try
+                {
+                    db.DocumentTypes.Remove(docType);
+                    db.SaveChanges();
+                    result = $"{Dictionary["DocumentTypeDeleted"]} {docType}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["DocumentTypeDeleteError"]}\n{e.Message}";
+                }
+            }
+
+            return result;
+        }
+
+        public static string EditDocumentType(DocumentType oldDocType, string docTypeName, string docTypeInfo)
+        {
+            var result = Dictionary["PrivacyNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                var type = db.DocumentTypes.FirstOrDefault(d => d.Id == oldDocType.Id);
+                type.Name = docTypeName;
+                type.Info = docTypeInfo;
+                db.SaveChanges();
+                result = $"{Dictionary["DocumentTypeEdited"]} {oldDocType}";
+            }
+
+            return result;
+        }
+
+        #endregion
+
         #region Queries
 
         //public static List<Query> GetAllQueries()
