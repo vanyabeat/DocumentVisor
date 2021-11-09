@@ -39,7 +39,7 @@ namespace DocumentVisor.ViewModel
         public static string PersonTypeName { get; set; }
         public static string PersonTypeInfo { get; set; }
 
-        private RelayCommand _addNewPersonType;
+        private RelayCommand _addNewPersonType = null;
 
         public RelayCommand AddNewPersonType
         {
@@ -76,7 +76,7 @@ namespace DocumentVisor.ViewModel
 
 
 
-        private RelayCommand _editPersonType;
+        private RelayCommand _editPersonType = null;
 
         public RelayCommand EditPersonType
         {
@@ -130,7 +130,7 @@ namespace DocumentVisor.ViewModel
             AllPersonsView.Items.Refresh();
         }
 
-        private RelayCommand _addNewPerson;
+        private RelayCommand _addNewPerson = null;
 
         public RelayCommand AddNewPerson
         {
@@ -141,10 +141,10 @@ namespace DocumentVisor.ViewModel
                         var wnd = obj as Window;
                         var result = "";
                         if (PersonName == null || PersonName.Replace(" ", "").Length == 0)
-                            SetRedBlockControl(wnd, "PersonNameTextBox");
-                        if (PersonType == null)
                         {
-                            MessageBox.Show(Dictionary["PersonTypeNeedSelect"].ToString());
+                            SetRedBlockControl(wnd, "PersonNameTextBox");
+                            ShowMessageToUser(Dictionary["PersonTypeNeedSelect"].ToString());
+
                         }
                         else
                         {
@@ -160,7 +160,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _editPerson;
+        private RelayCommand _editPerson = null;
 
         public RelayCommand EditPerson
         {
@@ -204,7 +204,7 @@ namespace DocumentVisor.ViewModel
         public static string PrivacyName { get; set; }
         public static string PrivacyInfo { get; set; }
 
-        private RelayCommand _addNewPrivacy;
+        private RelayCommand _addNewPrivacy = null;
 
         public RelayCommand AddNewPrivacy
         {
@@ -230,7 +230,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _editPrivacy;
+        private RelayCommand _editPrivacy = null;
 
         public RelayCommand EditPrivacy
         {
@@ -279,7 +279,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewDivision;
+        private RelayCommand _addNewDivision = null;
 
         public RelayCommand AddNewDivision
         {
@@ -321,7 +321,7 @@ namespace DocumentVisor.ViewModel
             AllDivisionsView.Items.Refresh();
         }
 
-        private RelayCommand _editDivision;
+        private RelayCommand _editDivision = null;
 
         public RelayCommand EditDivision
         {
@@ -361,7 +361,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewTheme;
+        private RelayCommand _addNewTheme = null;
 
         public RelayCommand AddNewTheme
         {
@@ -402,7 +402,7 @@ namespace DocumentVisor.ViewModel
             AllThemesView.Items.Refresh();
         }
 
-        private RelayCommand _editTheme;
+        private RelayCommand _editTheme = null;
 
         public RelayCommand EditTheme
         {
@@ -441,7 +441,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewArticle;
+        private RelayCommand _addNewArticle = null;
 
         public RelayCommand AddNewArticle
         {
@@ -453,7 +453,7 @@ namespace DocumentVisor.ViewModel
 
                     if (ArticleName == null || ArticleName.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControl(wnd, "ArticlesNameTextBox");
+                        SetRedBlockControl(wnd, "ArticleNameTextBox");
                         ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
                     }
                     else
@@ -483,7 +483,7 @@ namespace DocumentVisor.ViewModel
             AllArticlesView.Items.Refresh();
         }
 
-        private RelayCommand _editArticle;
+        private RelayCommand _editArticle = null;
 
         public RelayCommand EditArticle
         {
@@ -522,7 +522,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewQueryType;
+        private RelayCommand _addNewQueryType = null;
 
         public RelayCommand AddNewQueryType
         {
@@ -563,7 +563,7 @@ namespace DocumentVisor.ViewModel
             AllQueryTypesView.Items.Refresh();
         }
 
-        private RelayCommand _editQueryType;
+        private RelayCommand _editQueryType = null;
 
         public RelayCommand EditQueryType
         {
@@ -602,7 +602,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewAction;
+        private RelayCommand _addNewAction = null;
 
         public RelayCommand AddNewAction
         {
@@ -644,7 +644,7 @@ namespace DocumentVisor.ViewModel
             AllActionsView.Items.Refresh();
         }
 
-        private RelayCommand _editAction;
+        private RelayCommand _editAction = null;
 
         public RelayCommand EditAction
         {
@@ -682,16 +682,16 @@ namespace DocumentVisor.ViewModel
             UpdateAllPrivacyView();
             UpdateAllThemeView();
             UpdateAllDivisionView();
-            UpdateAllArticleView();
             UpdateAllQueryTypesView();
             UpdateAllActionView();
+            UpdateAllArticleView();
         }
 
         #endregion
 
         #region Deletes
 
-        private RelayCommand _deleteItem;
+        private RelayCommand _deleteItem = null;
 
         public RelayCommand DeleteItem
         {
@@ -773,9 +773,9 @@ namespace DocumentVisor.ViewModel
             DivisionInfo = null;
             DivisionAddress = null;
             // Article
+            ArticleName = null;
             ArticleExtendedName = null;
             ArticleInfo = null;
-            ArticleName = null;
             // QueryType
             QueryTypeInfo = null;
             QueryTypeName = null;
@@ -816,48 +816,59 @@ namespace DocumentVisor.ViewModel
 
         private void ShowMessageToUser(string message)
         {
-            var messageView = new MessageView(message);
-            SetCenterPositionAndOpen(messageView);
+            var wnd = new MessageView(message);
+            SetCenterPositionAndOpen(wnd);
         }
 
         private void OpenEditPersonTypeViewMethod(PersonType personType)
         {
-            var editDepartmentWindow = new EditPersonTypeView(personType);
-            SetCenterPositionAndOpen(editDepartmentWindow);
+            var wnd = new EditPersonTypeView(personType);
+            SetCenterPositionAndOpen(wnd);
         }
 
         private void OpenEditPrivacyViewMethod(Privacy privacy)
         {
-            var editPrivacyWindow = new EditPrivacyView(privacy);
-            SetCenterPositionAndOpen(editPrivacyWindow);
+            var wnd = new EditPrivacyView(privacy);
+            SetCenterPositionAndOpen(wnd);
         }
 
         private void OpenEditPersonViewMethod(Person person)
         {
-            var editPersonWindow = new EditPersonView(person);
-            SetCenterPositionAndOpen(editPersonWindow);
+            var wnd = new EditPersonView(person);
+            SetCenterPositionAndOpen(wnd);
         }
 
         private void OpenEditThemeViewMethod(Theme theme)
         {
-            var editThemeWindow = new EditThemeView(theme);
-            SetCenterPositionAndOpen(editThemeWindow);
+            var wnd = new EditThemeView(theme);
+            SetCenterPositionAndOpen(wnd);
         }
 
         private void OpenEditDivisionViewMethod(Division div)
         {
-            var editDivisionWindow = new EditDivisionView(div);
-            SetCenterPositionAndOpen(editDivisionWindow);
+            var wnd = new EditDivisionView(div);
+            SetCenterPositionAndOpen(wnd);
         }
 
 
         private void OpenEditArticleViewMethod(Article article)
         {
-            var editArticleWindow = new EditArticleView(article);
-            SetCenterPositionAndOpen(editArticleWindow);
+            var wnd = new EditArticleView(article);
+            SetCenterPositionAndOpen(wnd);
         }
 
-        private RelayCommand _openEditItemWnd;
+        private void OpenEditQueryTypeViewMethod(QueryType queryType)
+        {
+            var wnd = new EditQueryTypeView(queryType);
+            SetCenterPositionAndOpen(wnd);
+        }
+        private void OpenEditActionViewMethod(Action action)
+        {
+            var wnd = new EditActionView(action);
+            SetCenterPositionAndOpen(wnd);
+        }
+
+        private RelayCommand _openEditItemWnd = null;
 
         public RelayCommand OpenEditItemWnd
         {
@@ -886,7 +897,10 @@ namespace DocumentVisor.ViewModel
                                 OpenEditArticleViewMethod(SelectedArticle);
                                 return;
                             case "QueryTypesTab" when SelectedQueryType != null:
-                                //OpenEditQueryTypeViewMethod(SelectedQueryType);
+                                OpenEditQueryTypeViewMethod(SelectedQueryType);
+                                return;
+                            case "ActionsTab" when SelectedAction != null:
+                                OpenEditActionViewMethod(SelectedAction);
                                 return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());

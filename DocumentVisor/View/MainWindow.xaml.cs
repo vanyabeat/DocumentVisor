@@ -14,8 +14,7 @@ namespace DocumentVisor.View
         public static DataGrid AllArticlesView;
         public static DataGrid AllQueryTypesView;
         public static DataGrid AllActionsView;
-        public static TabControl MainTabControl;
-        public static StackPanel StackPanelPersonTypes;
+        public static TabControl AllMainTabControl;
 
         public MainWindow()
         {
@@ -28,9 +27,8 @@ namespace DocumentVisor.View
             AllDivisionsView = DivisionsDataGrid;
             AllArticlesView = ArticlesDataGrid;
             AllQueryTypesView = QueryTypesDataGrid;
-            AllActionsView = ArticlesDataGrid;
-            MainTabControl = MainWindowTabControl;
-            PersonTypeStackPanel = StackPanelPersonTypes;
+            AllActionsView = ActionsDataGrid;
+            AllMainTabControl = MainWindowTabControl;
         }
     }
 }

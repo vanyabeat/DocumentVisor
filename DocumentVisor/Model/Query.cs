@@ -24,7 +24,8 @@ namespace DocumentVisor.Model
         public ICollection<QueryPerson> QueryPersons { get; set; }
         public ICollection<QueryArticle> QueryArticles { get; set; }
         public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }
-        public byte[] IncludedData { get; set; }
         public int HasCd { get; set; }
+        public bool IsVarious { get; set; }
+        public bool IsEmpty { get; set; }
     }
 }

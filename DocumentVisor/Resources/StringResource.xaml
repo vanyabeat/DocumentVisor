@@ -133,9 +133,10 @@
     <!--BEGIN ACTION-->
     <system:String x:Key="ActionName">Name</system:String>
     <system:String x:Key="ActionInfo">Info</system:String>
-    <system:String x:Key="ActionNumber">Info</system:String>
+    <system:String x:Key="ActionNumber">Number</system:String>
     <system:String x:Key="NewActionName">New Action Name</system:String>
     <system:String x:Key="NewActionInfo">New Action Info</system:String>
+    <system:String x:Key="NewActionNumber">New Action Number</system:String>
     <system:String x:Key="ActionNotExist">Action not exist</system:String>
     <system:String x:Key="ActionDeleted">Good! Successful delete Action</system:String>
     <system:String x:Key="ActionEdited">Good! Successful edit Action</system:String>
