@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using DocumentVisor.Model;
 using DocumentVisor.View;
+using static System.Guid;
 using static DocumentVisor.View.MainWindow;
 using Action = DocumentVisor.Model.Action;
 
@@ -670,7 +671,35 @@ namespace DocumentVisor.ViewModel
         #endregion
 
         #region Queries
+        public static string QueryName { get; set; }
+        public static string QueryGuid { get; set; }
+        
+        private RelayCommand _createGuid = null;
 
+        public RelayCommand CreateGuid
+        {
+            get
+            {
+                return _createGuid ?? new RelayCommand(obj =>
+                    {
+                        var window = obj as Window;
+                        QueryGuid = GenerateRandomGuid();
+                        var textBox = window.FindName("QueryGuidTextBox") as TextBox;
+                        textBox.Text = QueryGuid;
+                        // if (SelectedArticle != null)
+                        // {
+                        //     var result = DataWorker.EditArticle(SelectedArticle, ArticleName, ArticleExtendedName, ArticleInfo);
+                        //
+                        //     UpdateAllDataView();
+                        //     SetNullValuesToProperties();
+                        //     ShowMessageToUser(result);
+                        //     window.Close();
+                        // }
+                    }
+                );
+            }
+        }
+        private List<Query> _allQueries = DataWorker.GetAllQueries();
         #endregion
 
         #region Updates
@@ -789,6 +818,13 @@ namespace DocumentVisor.ViewModel
 
         #region Utils
 
+        private string GenerateRandomGuid()
+        {
+            var time = DateTime.Now;
+            var guid = NewGuid().ToString().Substring(0, 7);
+            return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1,3)}_{guid}";
+
+        }
         private void SetRedBlockControl(Window window, string blockName)
         {
             var block = window.FindName(blockName) as Control;
@@ -868,6 +904,33 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(wnd);
         }
 
+        private void OpenAddQueryViewMethod()
+        {
+            var wnd = new AddQueryView();
+            SetCenterPositionAndOpen(wnd);
+        }
+
+        private RelayCommand _openAddQueryWnd = null;
+
+        public RelayCommand OpenAddQueryWnd
+        {
+            get
+            {
+                return _openAddQueryWnd ?? new RelayCommand(obj =>
+                    {
+                        switch (SelectedTabItem.Name)
+                        {
+                            case "QueriesTab":
+                                OpenAddQueryViewMethod();
+                                return;
+                            default:
+                                ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
+                                return;
+                        }
+                    }
+                );
+            }
+        }
         private RelayCommand _openEditItemWnd = null;
 
         public RelayCommand OpenEditItemWnd

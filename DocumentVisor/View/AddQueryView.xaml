@@ -1,0 +1,65 @@
+﻿<Window x:Class="DocumentVisor.View.AddQueryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
+        x:Name="AddQueryWnd"
+        mc:Ignorable="d"
+        Height="720" Width="1280"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="/Resources/StringResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Title>
+        <StaticResource ResourceKey="ActionEditWindow" />
+    </Window.Title>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.7*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.7*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Margin="5,10,5,0">
+                    <StaticResource ResourceKey="QueryName" />
+                </Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="QueryNameTextBox" Text="{Binding QueryName}" Grid.ColumnSpan="2" Margin="5" />
+                <Label Grid.Column="0" Grid.Row="1" Margin="5,10,5,0">
+                    <StaticResource ResourceKey="QueryGuid"/>
+                </Label>
+                <TextBox Grid.Row="1" IsReadOnly="True" Grid.Column="1" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Margin="5,5,39,5" Grid.ColumnSpan="2" FontSize="11" FontWeight="Bold" FontFamily="Consolas" />
+                <Button Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Content="{StaticResource QueryRefresh}" Command="{Binding CreateGuid}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"></Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

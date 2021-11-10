@@ -53,7 +53,6 @@ namespace DocumentVisor.Model.Data
                 .HasOne(bc => bc.Theme)
                 .WithMany(c => c.QueryThemes)
                 .HasForeignKey(bc => bc.ThemeId);
-
             modelBuilder.Entity<QueryAction>()
                 .HasKey(bc => new { bc.QueryId, bc.ActionId });
             modelBuilder.Entity<QueryAction>()
@@ -64,7 +63,6 @@ namespace DocumentVisor.Model.Data
                 .HasOne(bc => bc.Action)
                 .WithMany(c => c.QueryActions)
                 .HasForeignKey(bc => bc.ActionId);
-
             modelBuilder.Entity<QueryPerson>()
                 .HasKey(bc => new { bc.QueryId, bc.PersonId });
             modelBuilder.Entity<QueryPerson>()
@@ -75,7 +73,6 @@ namespace DocumentVisor.Model.Data
                 .HasOne(bc => bc.Person)
                 .WithMany(c => c.QueryPersons)
                 .HasForeignKey(bc => bc.PersonId);
-
             modelBuilder.Entity<QueryArticle>()
                 .HasKey(bc => new { bc.QueryId, bc.ArticleId });
             modelBuilder.Entity<QueryArticle>()
@@ -86,7 +83,6 @@ namespace DocumentVisor.Model.Data
                 .HasOne(bc => bc.Article)
                 .WithMany(c => c.QueryArticles)
                 .HasForeignKey(bc => bc.ArticleId);
-
             modelBuilder.Entity<QueryIdentifier>()
                 .HasKey(bc => new { bc.QueryId, bc.IdentifierId });
             modelBuilder.Entity<QueryIdentifier>()

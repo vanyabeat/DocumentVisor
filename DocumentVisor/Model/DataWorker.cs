@@ -529,12 +529,12 @@ namespace DocumentVisor.Model
 
         #region Queries
 
-        //public static List<Query> GetAllQueries()
-        //{
-        //    using var db = new ApplicationContext();
-        //    var result = db.Queries.ToList();
-        //    return result;
-        //}
+        public static List<Query> GetAllQueries()
+        {
+            using var db = new ApplicationContext();
+            var result = db.Queries.ToList();
+            return result;
+        }
 
         #endregion
     }

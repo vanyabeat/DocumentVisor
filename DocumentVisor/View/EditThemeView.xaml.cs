@@ -14,8 +14,8 @@ namespace DocumentVisor.View
             InitializeComponent();
             DataContext = new DataManageVm();
             DataManageVm.SelectedTheme = themeToEdit;
-            DataManageVm.ThemeInfo = themeToEdit.Name;
-            DataManageVm.ThemeName = themeToEdit.Info;
+            DataManageVm.ThemeName = themeToEdit.Name;
+            DataManageVm.ThemeInfo = themeToEdit.Info;
         }
     }
 }

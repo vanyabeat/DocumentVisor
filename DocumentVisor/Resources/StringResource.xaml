@@ -26,6 +26,7 @@
     <system:String x:Key="QueryGuid">GUID</system:String>
     <system:String x:Key="QueryName">Name</system:String>
     <system:String x:Key="QueryInfo">Info</system:String>
+    <system:String x:Key="QueryRefresh">🔄</system:String>
     <system:String x:Key="QueryQueryType">DocType</system:String>
     <system:String x:Key="QueryPrivacy">Privacy</system:String>
     <system:String x:Key="QuerySignPerson">SignPerson</system:String>

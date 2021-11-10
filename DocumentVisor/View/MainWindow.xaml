@@ -20,7 +20,26 @@
     </Window.Resources>
     <Grid>
         <TabControl Name="MainWindowTabControl" SelectedItem="{Binding SelectedTabItem}">
-
+            <TabItem x:Name="QueriesTab" Header="{StaticResource Queries}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="0.1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" HorizontalAlignment="Center" Content="{StaticResource Insert}"
+                                CommandParameter="{Binding ElementName=DocumentVisorWindow}"
+                                Command="{Binding OpenAddQueryWnd}"></Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" Content="{StaticResource Edit}"></Button>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" Content="{StaticResource Delete}"></Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="PersonsTab" Header="{StaticResource Persons}">
                 <Grid>
                     <Grid.ColumnDefinitions>
