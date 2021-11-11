@@ -39,8 +39,10 @@
     <system:String x:Key="QueryInnerNum">InnerNum</system:String>
     <system:String x:Key="QueryCentralSecretaryDate">CSecDate</system:String>
     <system:String x:Key="QueryDivision">Division</system:String>
+    <system:String x:Key="QueryOuterSecretaryDate">Out Sec Date</system:String>
+    <system:String x:Key="QueryOuterSecretaryNumber">Out Sec Num</system:String>
     <!--END QUERY-->
-    <!--PERSON-->
+                   <!--PERSON-->
     <system:String x:Key="PersonName">Name</system:String>
     <system:String x:Key="PersonInfo">Info</system:String>
     <system:String x:Key="PersonType">PersonType</system:String>

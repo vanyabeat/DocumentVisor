@@ -536,6 +536,22 @@ namespace DocumentVisor.Model
             return result;
         }
 
+
+        public static string CreateQuery(string name, string number, string info, string guid)
+        {
+            var result = Dictionary["Insert"].ToString();
+            using var db = new ApplicationContext();
+            var checkIsExist = db.Actions.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.Actions.Add(new Action { Name = name, Number = number, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentVisor.Model
 {
@@ -13,6 +14,13 @@ namespace DocumentVisor.Model
         public Division Division { get; set; }
         public Person SignPerson { get; set; }
         public QueryType Type { get; set; }
+
+        [NotMapped] public virtual DateTime OuterSecretaryDateTime
+        {
+            get => new DateTime(OuterSecretaryDate);
+            set => OuterSecretaryDate = value.Ticks;
+        }
+
         public string OuterSecretaryNumber { get; set; }
         public long OuterSecretaryDate { get; set; }
         public string InnerSecretaryNumber { get; set; }

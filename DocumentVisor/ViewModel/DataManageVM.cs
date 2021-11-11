@@ -297,10 +297,10 @@ namespace DocumentVisor.ViewModel
                         }
                         else
                         {
-                            var result = DataWorker.CreateDivision(DivisionName, DivisionAddress, DivisionAddress);
+                            var result = DataWorker.CreateDivision(DivisionName, DivisionAddress, DivisionInfo);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
-                            ClearStackPanelThemesView(wnd);
+                            ClearStackPanelDivisionsView(wnd);
                             ShowMessageToUser(result);
                         }
                     }
@@ -673,10 +673,19 @@ namespace DocumentVisor.ViewModel
         #region Queries
         public static string QueryName { get; set; }
         public static string QueryGuid { get; set; }
+        public static Privacy QueryPrivacy { get; set; }
+
+        public static Division QueryDivision { get; set; }
+        public static Person QuerySignPerson { get; set; }
+        public static QueryType QueryType { get; set; }
+
+        public static DateTime QueryOuterSecretaryDateTime { get; set; }
+        public static string QueryOuterSecretaryNumber { get; set; }
         
+
         private RelayCommand _createGuid = null;
 
-        public RelayCommand CreateGuid
+        public RelayCommand CreateGuid   
         {
             get
             {
@@ -684,17 +693,7 @@ namespace DocumentVisor.ViewModel
                     {
                         var window = obj as Window;
                         QueryGuid = GenerateRandomGuid();
-                        var textBox = window.FindName("QueryGuidTextBox") as TextBox;
-                        textBox.Text = QueryGuid;
-                        // if (SelectedArticle != null)
-                        // {
-                        //     var result = DataWorker.EditArticle(SelectedArticle, ArticleName, ArticleExtendedName, ArticleInfo);
-                        //
-                        //     UpdateAllDataView();
-                        //     SetNullValuesToProperties();
-                        //     ShowMessageToUser(result);
-                        //     window.Close();
-                        // }
+                        if (window?.FindName("QueryGuidTextBox") is TextBox textBox) textBox.Text = QueryGuid;
                     }
                 );
             }
@@ -816,7 +815,7 @@ namespace DocumentVisor.ViewModel
 
         #endregion
 
-        #region Utils
+        #region Utils   
 
         private string GenerateRandomGuid()
         {
