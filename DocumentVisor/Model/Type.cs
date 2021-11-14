@@ -1,6 +1,6 @@
 ﻿namespace DocumentVisor.Model
 {
-    public class QueryType : IDataField
+    public class Type : IDataField
     {
         public int Id { get; set; }
         public string Name { get; set; }

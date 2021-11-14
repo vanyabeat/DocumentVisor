@@ -67,6 +67,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Person GetPersonById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Persons.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
         #endregion
 
         #region System
@@ -277,6 +285,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Theme GetThemeById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Themes.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
         #endregion
 
         #region Divisions
@@ -339,6 +355,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Division GetDivisionById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Divisions.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
         #endregion
 
         #region Articles
@@ -402,14 +426,22 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Article GetArticleById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Articles.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
         #endregion
 
-        #region QueryTypes
+        #region Types
 
-        public static List<QueryType> GetAllQueryTypes()
+        public static List<Type> GetAllQueryTypes()
         {
             using var db = new ApplicationContext();
-            var result = db.QueryTypes.ToList();
+            var result = db.Types.ToList();
             return result;
         }
 
@@ -417,10 +449,10 @@ namespace DocumentVisor.Model
         {
             var result = Dictionary["Insert"].ToString();
             using var db = new ApplicationContext();
-            var checkIsExist = db.QueryTypes.Any(el => el.Name == name);
+            var checkIsExist = db.Types.Any(el => el.Name == name);
             if (!checkIsExist)
             {
-                db.QueryTypes.Add(new QueryType { Name = name, Info = info });
+                db.Types.Add(new Type { Name = name, Info = info });
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }
@@ -428,14 +460,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string DeleteQueryType(QueryType docType)
+        public static string DeleteQueryType(Type docType)
         {
             var result = Dictionary["QueryTypeNotExist"].ToString();
             using (var db = new ApplicationContext())
             {
                 try
                 {
-                    db.QueryTypes.Remove(docType);
+                    db.Types.Remove(docType);
                     db.SaveChanges();
                     result = $"{Dictionary["QueryTypeDeleted"]} {docType}";
                 }
@@ -448,12 +480,12 @@ namespace DocumentVisor.Model
             return result;
         }
 
-        public static string EditQueryType(QueryType oldDocType, string docTypeName, string docTypeInfo)
+        public static string EditQueryType(Type oldDocType, string docTypeName, string docTypeInfo)
         {
             var result = Dictionary["PrivacyNotExist"].ToString();
             using (var db = new ApplicationContext())
             {
-                var type = db.QueryTypes.FirstOrDefault(d => d.Id == oldDocType.Id);
+                var type = db.Types.FirstOrDefault(d => d.Id == oldDocType.Id);
                 type.Name = docTypeName;
                 type.Info = docTypeInfo;
                 db.SaveChanges();
@@ -463,6 +495,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Type GetTypeById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Types.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
         #endregion
 
         #region Actions
@@ -537,14 +577,24 @@ namespace DocumentVisor.Model
         }
 
 
-        public static string CreateQuery(string name, string number, string info, string guid)
+        public static string CreateQuery(string name, string info, string guid, Privacy privacy, Division division, Person signPerson, Type type, DateTime queryOuterSecretartyDateTime)
         {
             var result = Dictionary["Insert"].ToString();
             using var db = new ApplicationContext();
             var checkIsExist = db.Actions.Any(el => el.Name == name);
             if (!checkIsExist)
             {
-                db.Actions.Add(new Action { Name = name, Number = number, Info = info });
+                db.Queries.Add(new Query
+                {
+                    Name = name,
+                    Info = info,
+                    Guid = guid,
+                    PrivacyId = privacy.Id,
+                    DivisionId = division.Id,
+                    SignPersonId = signPerson.Id,
+                    TypeId = type.Id,
+                    OuterSecretaryDateTime = queryOuterSecretartyDateTime
+                });
                 db.SaveChanges();
                 result = Dictionary["Complete"].ToString();
             }

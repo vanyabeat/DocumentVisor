@@ -10,12 +10,13 @@ using DocumentVisor.View;
 using static System.Guid;
 using static DocumentVisor.View.MainWindow;
 using Action = DocumentVisor.Model.Action;
+using Type = DocumentVisor.Model.Type;
 
 namespace DocumentVisor.ViewModel
 {
     public class DataManageVm : INotifyPropertyChanged
     {
-        private static readonly ResourceDictionary Dictionary = new ResourceDictionary()
+        private static readonly ResourceDictionary Dictionary = new ResourceDictionary
         {
             Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
         };
@@ -40,7 +41,7 @@ namespace DocumentVisor.ViewModel
         public static string PersonTypeName { get; set; }
         public static string PersonTypeInfo { get; set; }
 
-        private RelayCommand _addNewPersonType = null;
+        private readonly RelayCommand _addNewPersonType = null;
 
         public RelayCommand AddNewPersonType
         {
@@ -76,8 +77,7 @@ namespace DocumentVisor.ViewModel
         }
 
 
-
-        private RelayCommand _editPersonType = null;
+        private readonly RelayCommand _editPersonType = null;
 
         public RelayCommand EditPersonType
         {
@@ -131,7 +131,7 @@ namespace DocumentVisor.ViewModel
             AllPersonsView.Items.Refresh();
         }
 
-        private RelayCommand _addNewPerson = null;
+        private readonly RelayCommand _addNewPerson = null;
 
         public RelayCommand AddNewPerson
         {
@@ -145,7 +145,6 @@ namespace DocumentVisor.ViewModel
                         {
                             SetRedBlockControl(wnd, "PersonNameTextBox");
                             ShowMessageToUser(Dictionary["PersonTypeNeedSelect"].ToString());
-
                         }
                         else
                         {
@@ -161,7 +160,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _editPerson = null;
+        private readonly RelayCommand _editPerson = null;
 
         public RelayCommand EditPerson
         {
@@ -205,7 +204,7 @@ namespace DocumentVisor.ViewModel
         public static string PrivacyName { get; set; }
         public static string PrivacyInfo { get; set; }
 
-        private RelayCommand _addNewPrivacy = null;
+        private readonly RelayCommand _addNewPrivacy = null;
 
         public RelayCommand AddNewPrivacy
         {
@@ -231,7 +230,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _editPrivacy = null;
+        private readonly RelayCommand _editPrivacy = null;
 
         public RelayCommand EditPrivacy
         {
@@ -280,7 +279,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewDivision = null;
+        private readonly RelayCommand _addNewDivision = null;
 
         public RelayCommand AddNewDivision
         {
@@ -322,7 +321,7 @@ namespace DocumentVisor.ViewModel
             AllDivisionsView.Items.Refresh();
         }
 
-        private RelayCommand _editDivision = null;
+        private readonly RelayCommand _editDivision = null;
 
         public RelayCommand EditDivision
         {
@@ -362,7 +361,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewTheme = null;
+        private readonly RelayCommand _addNewTheme = null;
 
         public RelayCommand AddNewTheme
         {
@@ -403,7 +402,7 @@ namespace DocumentVisor.ViewModel
             AllThemesView.Items.Refresh();
         }
 
-        private RelayCommand _editTheme = null;
+        private readonly RelayCommand _editTheme = null;
 
         public RelayCommand EditTheme
         {
@@ -442,30 +441,30 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewArticle = null;
+        private readonly RelayCommand _addNewArticle = null;
 
         public RelayCommand AddNewArticle
         {
             get
             {
                 return _addNewArticle ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
+                    {
+                        var wnd = obj as Window;
 
-                    if (ArticleName == null || ArticleName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "ArticleNameTextBox");
-                        ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                        if (ArticleName == null || ArticleName.Replace(" ", "").Length == 0)
+                        {
+                            SetRedBlockControl(wnd, "ArticleNameTextBox");
+                            ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateArticle(ArticleName, ArticleExtendedName, ArticleInfo);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ClearStackPanelArticlesView(wnd);
+                            ShowMessageToUser(result);
+                        }
                     }
-                    else
-                    {
-                        var result = DataWorker.CreateArticle(ArticleName, ArticleExtendedName, ArticleInfo);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ClearStackPanelArticlesView(wnd);
-                        ShowMessageToUser(result);
-                    }
-                }
                 );
             }
         }
@@ -484,36 +483,37 @@ namespace DocumentVisor.ViewModel
             AllArticlesView.Items.Refresh();
         }
 
-        private RelayCommand _editArticle = null;
+        private readonly RelayCommand _editArticle = null;
 
         public RelayCommand EditArticle
         {
             get
             {
                 return _editArticle ?? new RelayCommand(obj =>
-                {
-                    var window = obj as Window;
-                    if (SelectedArticle != null)
                     {
-                        var result = DataWorker.EditArticle(SelectedArticle, ArticleName, ArticleExtendedName, ArticleInfo);
+                        var window = obj as Window;
+                        if (SelectedArticle != null)
+                        {
+                            var result = DataWorker.EditArticle(SelectedArticle, ArticleName, ArticleExtendedName,
+                                ArticleInfo);
 
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                        window.Close();
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
-                }
                 );
             }
         }
 
         #endregion
 
-        #region QueryType
+        #region Type
 
-        private List<QueryType> _allQueryTypes = DataWorker.GetAllQueryTypes();
+        private List<Type> _allQueryTypes = DataWorker.GetAllQueryTypes();
 
-        public List<QueryType> AllQueryTypes
+        public List<Type> AllQueryTypes
         {
             get => _allQueryTypes;
             private set
@@ -523,37 +523,37 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewQueryType = null;
+        private readonly RelayCommand _addNewQueryType = null;
 
         public RelayCommand AddNewQueryType
         {
             get
             {
                 return _addNewQueryType ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
+                    {
+                        var wnd = obj as Window;
 
-                    if (QueryTypeName == null || QueryTypeName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "QueryTypeNameTextBox");
-                        ShowMessageToUser(Dictionary["QueryTypeNameNeedToSelect"].ToString());
+                        if (QueryTypeName == null || QueryTypeName.Replace(" ", "").Length == 0)
+                        {
+                            SetRedBlockControl(wnd, "QueryTypeNameTextBox");
+                            ShowMessageToUser(Dictionary["QueryTypeNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateQueryType(QueryTypeName, QueryTypeInfo);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ClearStackPanelQueryTypeView(wnd);
+                            ShowMessageToUser(result);
+                        }
                     }
-                    else
-                    {
-                        var result = DataWorker.CreateQueryType(QueryTypeName, QueryTypeInfo);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ClearStackPanelQueryTypeView(wnd);
-                        ShowMessageToUser(result);
-                    }
-                }
                 );
             }
         }
 
         public static string QueryTypeInfo { get; set; }
         public static string QueryTypeName { get; set; }
-        public static QueryType SelectedQueryType { get; set; }
+        public static Type SelectedType { get; set; }
 
         private void UpdateAllQueryTypesView()
         {
@@ -564,25 +564,25 @@ namespace DocumentVisor.ViewModel
             AllQueryTypesView.Items.Refresh();
         }
 
-        private RelayCommand _editQueryType = null;
+        private readonly RelayCommand _editQueryType = null;
 
         public RelayCommand EditQueryType
         {
             get
             {
                 return _editQueryType ?? new RelayCommand(obj =>
-                {
-                    var window = obj as Window;
-                    if (SelectedQueryType != null)
                     {
-                        var result = DataWorker.EditQueryType(SelectedQueryType, QueryTypeName, QueryTypeInfo);
+                        var window = obj as Window;
+                        if (SelectedType != null)
+                        {
+                            var result = DataWorker.EditQueryType(SelectedType, QueryTypeName, QueryTypeInfo);
 
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                        window.Close();
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
-                }
                 );
             }
         }
@@ -603,30 +603,30 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private RelayCommand _addNewAction = null;
+        private readonly RelayCommand _addNewAction = null;
 
         public RelayCommand AddNewAction
         {
             get
             {
                 return _addNewAction ?? new RelayCommand(obj =>
-                {
-                    var wnd = obj as Window;
+                    {
+                        var wnd = obj as Window;
 
-                    if ( ActionName == null || ActionName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "ActionNameTextBox");
-                        ShowMessageToUser(Dictionary["ActionNameNeedToSelect"].ToString());
+                        if (ActionName == null || ActionName.Replace(" ", "").Length == 0)
+                        {
+                            SetRedBlockControl(wnd, "ActionNameTextBox");
+                            ShowMessageToUser(Dictionary["ActionNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateAction(ActionName, ActionNumber, ActionInfo);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ClearStackPanelActionsView(wnd);
+                            ShowMessageToUser(result);
+                        }
                     }
-                    else
-                    {
-                        var result = DataWorker.CreateAction(ActionName, ActionNumber, ActionInfo);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ClearStackPanelActionsView(wnd);
-                        ShowMessageToUser(result);
-                    }
-                }
                 );
             }
         }
@@ -645,25 +645,25 @@ namespace DocumentVisor.ViewModel
             AllActionsView.Items.Refresh();
         }
 
-        private RelayCommand _editAction = null;
+        private readonly RelayCommand _editAction = null;
 
         public RelayCommand EditAction
         {
             get
             {
                 return _editAction ?? new RelayCommand(obj =>
-                {
-                    var window = obj as Window;
-                    if (SelectedAction != null)
                     {
-                        var result = DataWorker.EditAction(SelectedAction, ActionName, ActionNumber, ActionInfo);
+                        var window = obj as Window;
+                        if (SelectedAction != null)
+                        {
+                            var result = DataWorker.EditAction(SelectedAction, ActionName, ActionNumber, ActionInfo);
 
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                        window.Close();
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
-                }
                 );
             }
         }
@@ -671,21 +671,33 @@ namespace DocumentVisor.ViewModel
         #endregion
 
         #region Queries
+
         public static string QueryName { get; set; }
         public static string QueryGuid { get; set; }
+        public static string QueryInfo { get; set; }
         public static Privacy QueryPrivacy { get; set; }
 
         public static Division QueryDivision { get; set; }
         public static Person QuerySignPerson { get; set; }
-        public static QueryType QueryType { get; set; }
+        public static Type QueryType { get; set; }
 
         public static DateTime QueryOuterSecretaryDateTime { get; set; }
         public static string QueryOuterSecretaryNumber { get; set; }
-        
 
-        private RelayCommand _createGuid = null;
+        public static DateTime QueryInnerSecretaryDateTime { get; set; }
+        public static string QueryInnerSecretaryNumber { get; set; }
 
-        public RelayCommand CreateGuid   
+        public static DateTime QueryCentralSecretaryDateTime { get; set; }
+        public static string QueryCentralSecretaryNumber { get; set; }
+
+        public static bool QueryHasCd { get; set; }
+        public static bool QueryVarious { get; set; }
+        public static bool QueryEmpty { get; set; }
+
+
+        private readonly RelayCommand _createGuid = null;
+
+        public RelayCommand CreateGuid
         {
             get
             {
@@ -698,7 +710,36 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         private List<Query> _allQueries = DataWorker.GetAllQueries();
+
+        private readonly RelayCommand _addNewQuery = null;
+
+        public RelayCommand AddNewQuery
+        {
+            get
+            {
+                return _addNewQuery ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as Window;
+
+                        if (QueryName == null || QueryName.Replace(" ", "").Length == 0)
+                        {
+                            ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var result = DataWorker.CreateQuery(QueryName, QueryInfo, QueryGuid, QueryPrivacy,
+                                QueryDivision, QuerySignPerson, QueryType, QueryOuterSecretaryDateTime);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            wnd.Close();
+                        }
+                    }
+                );
+            }
+        }
+
         #endregion
 
         #region Updates
@@ -719,7 +760,7 @@ namespace DocumentVisor.ViewModel
 
         #region Deletes
 
-        private RelayCommand _deleteItem = null;
+        private readonly RelayCommand _deleteItem = null;
 
         public RelayCommand DeleteItem
         {
@@ -761,8 +802,8 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             ClearStackPanelArticlesView(wnd);
                             break;
-                        case "QueryTypesTab" when SelectedQueryType != null:
-                            result = DataWorker.DeleteQueryType(SelectedQueryType);
+                        case "QueryTypesTab" when SelectedType != null:
+                            result = DataWorker.DeleteQueryType(SelectedType);
                             UpdateAllDataView();
                             ClearStackPanelQueryTypeView(wnd);
                             break;
@@ -804,26 +845,37 @@ namespace DocumentVisor.ViewModel
             ArticleName = null;
             ArticleExtendedName = null;
             ArticleInfo = null;
-            // QueryType
+            // Type
             QueryTypeInfo = null;
             QueryTypeName = null;
             // Actions
             ActionInfo = null;
             ActionName = null;
             ActionNumber = null;
+            // Query
+            QueryName = null;
+            QueryGuid = null;
+            QueryInfo = null;
+            QueryPrivacy = null;
+            QueryDivision = null;
+            QuerySignPerson = null;
+            QueryType = null;
+            QueryOuterSecretaryDateTime = DateTime.Now;
+            QueryOuterSecretaryNumber = null;
+            QueryHasCd = false;
         }
 
         #endregion
 
-        #region Utils   
+        #region Utils
 
         private string GenerateRandomGuid()
         {
             var time = DateTime.Now;
             var guid = NewGuid().ToString().Substring(0, 7);
-            return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1,3)}_{guid}";
-
+            return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1, 3)}_{guid}";
         }
+
         private void SetRedBlockControl(Window window, string blockName)
         {
             var block = window.FindName(blockName) as Control;
@@ -892,11 +944,12 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(wnd);
         }
 
-        private void OpenEditQueryTypeViewMethod(QueryType queryType)
+        private void OpenEditQueryTypeViewMethod(Type type)
         {
-            var wnd = new EditQueryTypeView(queryType);
+            var wnd = new EditQueryTypeView(type);
             SetCenterPositionAndOpen(wnd);
         }
+
         private void OpenEditActionViewMethod(Action action)
         {
             var wnd = new EditActionView(action);
@@ -909,7 +962,7 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(wnd);
         }
 
-        private RelayCommand _openAddQueryWnd = null;
+        private readonly RelayCommand _openAddQueryWnd = null;
 
         public RelayCommand OpenAddQueryWnd
         {
@@ -930,7 +983,8 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
-        private RelayCommand _openEditItemWnd = null;
+
+        private readonly RelayCommand _openEditItemWnd = null;
 
         public RelayCommand OpenEditItemWnd
         {
@@ -958,8 +1012,8 @@ namespace DocumentVisor.ViewModel
                             case "ArticlesTab" when SelectedArticle != null:
                                 OpenEditArticleViewMethod(SelectedArticle);
                                 return;
-                            case "QueryTypesTab" when SelectedQueryType != null:
-                                OpenEditQueryTypeViewMethod(SelectedQueryType);
+                            case "QueryTypesTab" when SelectedType != null:
+                                OpenEditQueryTypeViewMethod(SelectedType);
                                 return;
                             case "ActionsTab" when SelectedAction != null:
                                 OpenEditActionViewMethod(SelectedAction);
@@ -976,6 +1030,7 @@ namespace DocumentVisor.ViewModel
         #endregion
 
         #region Flushes
+
         private void ClearStackPanelPersonTypesView(Window window)
         {
             ClearTextFromStackPanelTextBox(window, "PersonTypeNameTextBox");
@@ -1030,7 +1085,6 @@ namespace DocumentVisor.ViewModel
             ClearTextFromStackPanelTextBox(window, "ActionNumberTextBox");
         }
 
-        
         #endregion
 
         #region MVVM

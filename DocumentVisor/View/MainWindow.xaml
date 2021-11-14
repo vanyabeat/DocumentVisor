@@ -476,7 +476,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <DataGrid x:Name="QueryTypesDataGrid" Grid.Column="1"
-                              SelectedItem="{Binding SelectedQueryType}"
+                              SelectedItem="{Binding SelectedType}"
                               ItemsSource="{Binding AllQueryTypes}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"

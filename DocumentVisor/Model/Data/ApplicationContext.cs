@@ -7,7 +7,7 @@ namespace DocumentVisor.Model.Data
     {
         #region DBSets
         public DbSet<Query> Queries { get; set; }
-        public DbSet<QueryType> QueryTypes { get; set; }
+        public DbSet<Type> Types { get; set; }
 
         public DbSet<Theme> Themes { get; set; }
         public DbSet<QueryTheme> QueryThemes { get; set; }
@@ -17,7 +17,7 @@ namespace DocumentVisor.Model.Data
         
         public DbSet<Person> Persons { get; set; }
         public DbSet<PersonType> PersonTypes { get; set; }
-        public DbSet<QueryAction> QueryPersons { get; set; }
+        public DbSet<QueryPerson> QueryPersons { get; set; }
 
         public DbSet<Article> Articles { get; set; }
         public DbSet<QueryArticle> QueryArticles { get; set; }

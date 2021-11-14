@@ -10,7 +10,7 @@
     <system:String x:Key="Themes">Themes</system:String>
     <system:String x:Key="Divisions">Divisions</system:String>
     <system:String x:Key="Privacies">Privacies</system:String>
-    <system:String x:Key="QueryTypes">QueryTypes</system:String>
+    <system:String x:Key="QueryTypes">Types</system:String>
     <system:String x:Key="Articles">Articles</system:String>
     <system:String x:Key="Action">Action</system:String>
     <system:String x:Key="Insert">Insert</system:String>
@@ -20,6 +20,7 @@
     <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
     <system:String x:Key="Response">Response</system:String>
+    <system:String x:Key="Add">Add</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
@@ -27,6 +28,9 @@
     <system:String x:Key="QueryName">Name</system:String>
     <system:String x:Key="QueryInfo">Info</system:String>
     <system:String x:Key="QueryRefresh">🔄</system:String>
+    <system:String x:Key="QueryType">Type</system:String>
+    <system:String x:Key="QueryEmpty">Empty</system:String>
+    <system:String x:Key="QueryVarious">Various</system:String>
     <system:String x:Key="QueryQueryType">DocType</system:String>
     <system:String x:Key="QueryPrivacy">Privacy</system:String>
     <system:String x:Key="QuerySignPerson">SignPerson</system:String>
@@ -37,10 +41,14 @@
     <system:String x:Key="QueryDocumentNum">DocNum</system:String>
     <system:String x:Key="QuerySecretaryDate">SecDate</system:String>
     <system:String x:Key="QueryInnerNum">InnerNum</system:String>
-    <system:String x:Key="QueryCentralSecretaryDate">CSecDate</system:String>
+
     <system:String x:Key="QueryDivision">Division</system:String>
     <system:String x:Key="QueryOuterSecretaryDate">Out Sec Date</system:String>
     <system:String x:Key="QueryOuterSecretaryNumber">Out Sec Num</system:String>
+    <system:String x:Key="QueryInnerSecretaryDate">In Sec Date</system:String>
+    <system:String x:Key="QueryInnerSecretaryNumber">In Sec Num</system:String>
+    <system:String x:Key="QueryCentralSecretaryNumber">Cent Sec Num</system:String>
+    <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String>
     <!--END QUERY-->
                    <!--PERSON-->
     <system:String x:Key="PersonName">Name</system:String>
@@ -124,14 +132,14 @@
     <!--BEGIN ARTICLE-->
     <system:String x:Key="QueryTypeName">Name</system:String>
     <system:String x:Key="QueryTypeInfo">Info</system:String>
-    <system:String x:Key="NewQueryTypeName">New QueryType Name</system:String>
+    <system:String x:Key="NewQueryTypeName">New Type Name</system:String>
     <system:String x:Key="NewQueryTypeInfo">NewQueryType Info</system:String>
-    <system:String x:Key="QueryTypeNotExist">QueryType not exist</system:String>
-    <system:String x:Key="QueryTypeDeleted">Good! Successful delete QueryType</system:String>
-    <system:String x:Key="QueryTypeEdited">Good! Successful edit QueryType</system:String>
+    <system:String x:Key="QueryTypeNotExist">Type not exist</system:String>
+    <system:String x:Key="QueryTypeDeleted">Good! Successful delete Type</system:String>
+    <system:String x:Key="QueryTypeEdited">Good! Successful edit Type</system:String>
     <system:String x:Key="QueryTypeDeleteError">Fail! Maybe Theme use in Queries</system:String>
-    <system:String x:Key="QueryTypeEditWindow">QueryType Edit Window</system:String>
-    <system:String x:Key="QueryTypeNameNeedToSelect">Need select QueryType name</system:String>
+    <system:String x:Key="QueryTypeEditWindow">Type Edit Window</system:String>
+    <system:String x:Key="QueryTypeNameNeedToSelect">Need select Type name</system:String>
     <!--END ARTICLE-->
     <!--BEGIN ACTION-->
     <system:String x:Key="ActionName">Name</system:String>

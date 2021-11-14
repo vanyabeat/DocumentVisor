@@ -6,8 +6,8 @@
         <ApplicationIcon>Resources\app.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Resources\del.png"/>
-        <None Remove="Resources\edit.png"/>
+        <None Remove="Resources\del.png" />
+        <None Remove="Resources\edit.png" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Resources\del.png">
@@ -18,10 +18,11 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10"/>
-        <PackageReference Include="ModernWpfUI" Version="0.9.4"/>
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.3.0.43"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10" />
+        <PackageReference Include="ModernWpfUI" Version="0.9.4" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.3.0.43" />
+        <PackageReference Include="ToggleSwitch" Version="1.2.0" />
     </ItemGroup>
 
 </Project>

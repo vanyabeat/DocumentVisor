@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DocumentVisor.Model;
 using DocumentVisor.ViewModel;
+using Type = DocumentVisor.Model.Type;
 
 namespace DocumentVisor.View
 {
@@ -19,13 +20,13 @@ namespace DocumentVisor.View
     /// </summary>
     public partial class EditQueryTypeView : Window
     {
-        public EditQueryTypeView(QueryType queryToEdit)
+        public EditQueryTypeView(Type toEdit)
         {
             InitializeComponent();
             DataContext = new DataManageVm();
-            DataManageVm.SelectedQueryType = queryToEdit;
-            DataManageVm.QueryTypeName = queryToEdit.Name;
-            DataManageVm.QueryTypeInfo = queryToEdit.Info;
+            DataManageVm.SelectedType = toEdit;
+            DataManageVm.QueryTypeName = toEdit.Name;
+            DataManageVm.QueryTypeInfo = toEdit.Info;
         }
     }
 }
