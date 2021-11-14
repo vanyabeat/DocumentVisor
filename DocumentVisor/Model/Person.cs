@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentVisor.Model
 {
-    public class Person : IDataField
+    public class Person : IDataField, IComparable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,6 +21,16 @@ namespace DocumentVisor.Model
         public override string ToString()
         {
             return $"{Name}\n({Rank})";
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            if (obj is Person otherPerson)
+                return this.Id.CompareTo(otherPerson.Id);
+            else
+                throw new ArgumentException("Object is not a Person");
         }
     }
 }

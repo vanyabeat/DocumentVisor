@@ -47,17 +47,17 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryName}" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.ColumnSpan="3" Name="QueryNameTextBox"
-                     Text="{Binding QueryName}" Margin="59,0,10,34" Grid.RowSpan="2" />
-            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryGuid}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBox Grid.Row="1" IsReadOnly="True" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Grid.ColumnSpan="3" Margin="59,0,54,0" />
+                     Text="{Binding QueryName}" Margin="59,0,10,0" />
+            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryGuid}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" IsReadOnly="True" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Grid.ColumnSpan="3" Margin="59,5,54,4" />
             <Button Grid.Row="1" Grid.Column="2" Content="{StaticResource QueryRefresh}" Command="{Binding CreateGuid}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="49,0,0,0" Width="39" />
-            <ComboBox Grid.Row="1" Grid.ColumnSpan="3" Name="QueryPrivacyComboBox"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="74,0,0,0" Width="39" />
+            <ComboBox Grid.Row="2" Grid.ColumnSpan="3" Name="QueryPrivacyComboBox"
                       ItemsSource="{Binding AllPrivacies}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryPrivacy}" Margin="59,34,0,0" Grid.RowSpan="2" Width="187" />
-            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryPrivacy}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryPrivacy}" Margin="59,5,0,0" Width="251" />
+            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryPrivacy}" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
@@ -70,15 +70,15 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryDivision}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryQueryType}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QuerySignPerson}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <ComboBox Grid.Row="0" Grid.Column="1" Name="QueryDivisionComboBox" ItemsSource="{Binding AllDivisions}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Width="150" />
-            <ComboBox Grid.Row="1" Grid.Column="1" Name="QueryQueryTypeComboBox" ItemsSource="{Binding AllQueryTypes}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Width="150" />
-            <ComboBox Grid.Row="1" Grid.Column="1" Name="QuerySignPersonComboBox" ItemsSource="{Binding AllPersons}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" Margin="0,34,0,0" Grid.RowSpan="2" Width="150" />
+            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryDivision}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryQueryType}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QuerySignPerson}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <ComboBox Grid.Row="0" Name="QueryDivisionComboBox" ItemsSource="{Binding AllDivisions}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Width="250" Grid.ColumnSpan="2" Margin="60,8,0,0" />
+            <ComboBox Grid.Row="1" Name="QueryQueryTypeComboBox" ItemsSource="{Binding AllQueryTypes}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Width="250" Grid.ColumnSpan="2" Margin="60,9,0,0" Grid.RowSpan="2" />
+            <ComboBox Grid.Row="2" Grid.Column="1" Name="QuerySignPersonComboBox" ItemsSource="{Binding AllPersons}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" Width="190" VerticalAlignment="Center" />
 
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">
@@ -92,12 +92,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryDate}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryInfo}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <DatePicker Grid.Column="1" Name="QueryOuterSecretaryDateTimePicker" SelectedDate="{Binding QueryOuterSecretaryDateTime }" Width="150"/>
-            <TextBox Grid.Row="1" Grid.Column="1"    Name="QueryOuterSecretaryNumber" Text="{Binding QueryOuterSecretaryNumber}" />
-            <TextBox Grid.Row="2" Grid.Column="1"    Name="QueryInfoTextBox" Text="{Binding QueryInfo}" />
+            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryDate}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryInfo}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <DatePicker Grid.Column="1" Name="QueryOuterSecretaryDateTimePicker" SelectedDate="{Binding QueryOuterSecretaryDateTime }" Width="190"/>
+            <TextBox Grid.Column="1"    Name="QueryOuterSecretaryNumber" Text="{Binding QueryOuterSecretaryNumber}" Margin="0,40,10,40" Grid.RowSpan="3" />
+            <TextBox Grid.Row="2" Grid.Column="1"    Name="QueryInfoTextBox" Text="{Binding QueryInfo}" Margin="0,0,10,0" />
         </Grid>
         <Grid Grid.Row="3" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -116,7 +116,6 @@
             <ui:ToggleSwitch Grid.Row="0" Grid.Column="1" IsOn="{Binding QueryVarious, Mode=TwoWay}" x:Name="ToggleIsVarious" Header="{StaticResource QueryVarious}" Margin="10,0,0,0" VerticalAlignment="Top"/>
 
         </Grid>
-
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.6*" />
@@ -130,11 +129,10 @@
 
             <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryInnerSecretaryDate}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryInnerSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <DatePicker Grid.Column="1" Name="QueryInnerSecretaryDateTimePicker" SelectedDate="{Binding QueryInnerSecretaryDateTime }" Width="150"/>
+            <DatePicker Grid.Row="0" Grid.Column="1" Name="QueryInnerSecretaryDateTimePicker" SelectedDate="{Binding QueryInnerSecretaryDateTime }" Width="150"/>
             <TextBox Grid.Row="1" Grid.Column="1" Name="QueryInnerSecretaryNumber" Text="{Binding QueryInnerSecretaryNumber}" />
             <ui:ToggleSwitch Grid.Row="1" Grid.Column="0" IsOn="{Binding QueryEmpty, Mode=TwoWay}" x:Name="ToggleIsEmpty" Header="{StaticResource QueryEmpty}" Grid.ColumnSpan="2" Margin="25,28,0,0" Grid.RowSpan="2" VerticalAlignment="Top" />
         </Grid>
-
         <Grid Grid.Row="2" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.6*" />
@@ -148,9 +146,55 @@
 
             <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryCentralSecretaryDate}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryCentralSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <DatePicker Grid.Row="0" Grid.Column="1" Name="QueryInnerSecretaryDateTimePicker1" SelectedDate="{Binding QueryCentralSecretaryDateTime }" Width="150"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Name="QueryInnerSecretaryNumber1" Text="{Binding QueryCentralSecretaryDateTime}" />
-            
+            <DatePicker Grid.Row="0" Grid.Column="1" Name="QueryCentralSecretaryDateTimePicker" SelectedDate="{Binding QueryCentralSecretaryDateTime }" Width="150"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="QueryCentralSecretaryNumber" Text="{Binding QueryCentralSecretaryNumber}" />
+
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="ExecutorPersonsDataGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                      SelectedItem="{Binding SelectedQueryExecutorPerson}"
+                      ItemsSource="{Binding QueryExecutorPersons}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{StaticResource Edit}" Command="{Binding OpenEditItemWnd}">
+                            <MenuItem.Icon>
+                                <Image>
+                                    <Image.Source>
+                                        <BitmapImage UriSource="../Resources/edit.png" />
+                                    </Image.Source>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{StaticResource QueryExecutorPersonName}"
+                                        Binding="{Binding Path=Name}" Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource PersonPhone}"
+                                        Binding="{Binding Path=Info}" Width="*"/>
+                </DataGrid.Columns>
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteItem}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                </DataGrid.InputBindings>
+
+            </DataGrid>
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddExecutorPerson}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="155,0,0,0" Grid.ColumnSpan="2"
+                    Grid.Column="0" Height="33" />
+            <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryExecutorComboBox" ItemsSource="{Binding AllPersons}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentExecutorPerson}" Width="150" VerticalAlignment="Center" />
         </Grid>
     </Grid>
 </Window>

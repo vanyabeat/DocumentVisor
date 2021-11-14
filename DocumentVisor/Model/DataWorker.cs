@@ -577,14 +577,30 @@ namespace DocumentVisor.Model
         }
 
 
-        public static string CreateQuery(string name, string info, string guid, Privacy privacy, Division division, Person signPerson, Type type, DateTime queryOuterSecretartyDateTime)
+        public static int CreateQuery(string name,
+            string info,
+            string guid,
+            Privacy privacy,
+            Division division,
+            Person signPerson,
+            Type type,
+            DateTime queryOuterSecretaryDateTime,
+            string queryOuterSecretaryNumber,
+            DateTime queryInnerSecretaryDateTime,
+            string queryInnerSecretaryNumber,
+            DateTime queryCentralSecretaryDateTime,
+            string queryCentralSecretaryNumber,
+            bool hasCd,
+            bool various,
+            bool empty
+        )
         {
-            var result = Dictionary["Insert"].ToString();
+            var result = 0;
             using var db = new ApplicationContext();
             var checkIsExist = db.Actions.Any(el => el.Name == name);
             if (!checkIsExist)
             {
-                db.Queries.Add(new Query
+                var entity = db.Queries.Add(new Query
                 {
                     Name = name,
                     Info = info,
@@ -593,10 +609,18 @@ namespace DocumentVisor.Model
                     DivisionId = division.Id,
                     SignPersonId = signPerson.Id,
                     TypeId = type.Id,
-                    OuterSecretaryDateTime = queryOuterSecretartyDateTime
+                    OuterSecretaryDateTime = queryOuterSecretaryDateTime,
+                    OuterSecretaryNumber = queryOuterSecretaryNumber,
+                    InnerSecretaryDateTime = queryInnerSecretaryDateTime,
+                    InnerSecretaryNumber = queryInnerSecretaryNumber,
+                    CentralSecretaryDateTime = queryCentralSecretaryDateTime,
+                    CentralSecretaryNumber = queryCentralSecretaryNumber,
+                    IsCd = hasCd,
+                    IsEmpty = empty,
+                    Various = various
                 });
                 db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
+                result = entity.Entity.Id;
             }
 
             return result;

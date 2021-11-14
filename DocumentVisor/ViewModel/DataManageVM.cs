@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DocumentVisor.Model;
+using DocumentVisor.View;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using DocumentVisor.Model;
-using DocumentVisor.View;
-using static System.Guid;
 using static DocumentVisor.View.MainWindow;
+using static System.Guid;
 using Action = DocumentVisor.Model.Action;
 using Type = DocumentVisor.Model.Type;
 
@@ -694,6 +694,29 @@ namespace DocumentVisor.ViewModel
         public static bool QueryVarious { get; set; }
         public static bool QueryEmpty { get; set; }
 
+        public static Person SelectedQueryExecutorPerson { get; set; }
+        public static Person QueryCurrentExecutorPerson { get; set; }
+
+
+        private SortedSet<Person> _queryExecutorPersons;
+
+        public SortedSet<Person> QueryExecutorPersons
+        {
+            get => _queryExecutorPersons;
+            private set
+            {
+                _queryExecutorPersons = value;
+                OnPropertyChanged(nameof(QueryExecutorPersons));
+            }
+        }
+
+        private void UpdateQueryExecutorPersons()
+        {
+            AllArticlesView.ItemsSource = null;
+            AllArticlesView.Items.Clear();
+            AllArticlesView.ItemsSource = AllArticles;
+            AllArticlesView.Items.Refresh();
+        }
 
         private readonly RelayCommand _createGuid = null;
 
@@ -730,7 +753,10 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var result = DataWorker.CreateQuery(QueryName, QueryInfo, QueryGuid, QueryPrivacy,
-                                QueryDivision, QuerySignPerson, QueryType, QueryOuterSecretaryDateTime);
+                                QueryDivision, QuerySignPerson, QueryType, QueryOuterSecretaryDateTime,
+                                QueryOuterSecretaryNumber,
+                                QueryInnerSecretaryDateTime, QueryInnerSecretaryNumber, QueryCentralSecretaryDateTime,
+                                QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             wnd.Close();
@@ -740,6 +766,32 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+        private readonly RelayCommand _addExecutorPerson = null;
+
+        public RelayCommand AddExecutorPerson
+        {
+            get
+            {
+                return _addExecutorPerson ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (QueryCurrentExecutorPerson == null)
+                        {
+                            ShowMessageToUser(Dictionary["ExecutorPersonNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetPersonById(QueryCurrentExecutorPerson.Id);
+                            QueryExecutorPersons ??= new SortedSet<Person>();
+                            QueryExecutorPersons.Add(person);
+                            QueryCurrentExecutorPerson = null;
+                            wnd.ExecutorPersonsDataGrid.Items.Refresh();
+                        }
+                    }
+                );
+            }
+        }
         #endregion
 
         #region Updates
@@ -862,7 +914,14 @@ namespace DocumentVisor.ViewModel
             QueryType = null;
             QueryOuterSecretaryDateTime = DateTime.Now;
             QueryOuterSecretaryNumber = null;
+            QueryInnerSecretaryDateTime = DateTime.Now;
+            QueryInnerSecretaryNumber = null;
+            QueryCentralSecretaryDateTime = DateTime.Now;
+            QueryCentralSecretaryNumber = null;
+            QueryEmpty = false;
+            QueryVarious = false;
             QueryHasCd = false;
+            QueryExecutorPersons = null;
         }
 
         #endregion

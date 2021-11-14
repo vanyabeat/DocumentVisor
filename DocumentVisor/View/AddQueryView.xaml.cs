@@ -10,17 +10,21 @@ namespace DocumentVisor.View
     /// </summary>
     public partial class AddQueryView : Window
     {
-        public static DatePicker OuterSecretaryDatePicker;
-        public static DatePicker InnerSecretaryDatePicker;
-        public static DatePicker CentralSecretaryDatePicker;
+        public static DatePicker AllOuterSecretaryDatePicker;
+        public static DatePicker AllInnerSecretaryDatePicker;
+        public static DatePicker AllCentralSecretaryDatePicker;
+        public static DataGrid AllExecutorPersons;
         public AddQueryView()
         {
             InitializeComponent();
             DataContext = new DataManageVm();
-            OuterSecretaryDatePicker = QueryOuterSecretaryDateTimePicker;
+            AllExecutorPersons = ExecutorPersonsDataGrid;
+            AllOuterSecretaryDatePicker = QueryOuterSecretaryDateTimePicker;
             DataManageVm.QueryOuterSecretaryDateTime = DateTime.Now;
-            InnerSecretaryDatePicker = QueryInnerSecretaryDateTimePicker;
+            AllInnerSecretaryDatePicker = QueryInnerSecretaryDateTimePicker;
             DataManageVm.QueryInnerSecretaryDateTime = DateTime.Now;
+            AllCentralSecretaryDatePicker = QueryCentralSecretaryDateTimePicker;
+            DataManageVm.QueryCentralSecretaryDateTime = DateTime.Now;
         }
     }
 }
