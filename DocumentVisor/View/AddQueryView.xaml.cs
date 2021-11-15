@@ -14,11 +14,13 @@ namespace DocumentVisor.View
         public static DatePicker AllInnerSecretaryDatePicker;
         public static DatePicker AllCentralSecretaryDatePicker;
         public static DataGrid AllExecutorPersons;
+        public static DataGrid AllQueryThemes;
         public AddQueryView()
         {
             InitializeComponent();
             DataContext = new DataManageVm();
             AllExecutorPersons = ExecutorPersonsDataGrid;
+            AllQueryThemes = QueryThemesDataGrid;
             AllOuterSecretaryDatePicker = QueryOuterSecretaryDateTimePicker;
             DataManageVm.QueryOuterSecretaryDateTime = DateTime.Now;
             AllInnerSecretaryDatePicker = QueryInnerSecretaryDateTimePicker;

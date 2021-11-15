@@ -22,6 +22,7 @@
     <system:String x:Key="Response">Response</system:String>
     <system:String x:Key="Add">Add</system:String>
     <system:String x:Key="InsertToBox">✅</system:String>
+    <system:String x:Key="DeleteToBox">❌</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
@@ -42,16 +43,21 @@
     <system:String x:Key="QueryDocumentNum">DocNum</system:String>
     <system:String x:Key="QuerySecretaryDate">SecDate</system:String>
     <system:String x:Key="QueryInnerNum">InnerNum</system:String>
+    <system:String x:Key="QueryTheme">Query Theme</system:String>
     <system:String x:Key="QueryExecutorPersonName">Executor Name</system:String>
     <system:String x:Key="ExecutorPersonNeedToSelect">Executor Need To select</system:String>
-    
+    <system:String x:Key="QueryThemeNeedToSelect">Query Theme Need To select</system:String>
     <system:String x:Key="QueryDivision">Division</system:String>
     <system:String x:Key="QueryOuterSecretaryDate">Out Sec Date</system:String>
     <system:String x:Key="QueryOuterSecretaryNumber">Out Sec Num</system:String>
     <system:String x:Key="QueryInnerSecretaryDate">In Sec Date</system:String>
     <system:String x:Key="QueryInnerSecretaryNumber">In Sec Num</system:String>
     <system:String x:Key="QueryCentralSecretaryNumber">Cent Sec Num</system:String>
-    <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String>
+    <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String> 
+    <system:String x:Key="QueryArticle">Query Article</system:String>
+    <system:String x:Key="QueryAction">Query Action</system:String>
+    <system:String x:Key="QueryArticleNeedToSelect">Query Article need to select</system:String>
+    <system:String x:Key="QueryActionNeedToSelect">Query Article need to select</system:String>
     <!--END QUERY-->
                    <!--PERSON-->
     <system:String x:Key="PersonName">Name</system:String>

@@ -565,9 +565,21 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static Action GetActionById(int id)
+        {
+            using var db = new ApplicationContext();
+            var pos = db.Actions.FirstOrDefault(p => p.Id == id);
+            return pos;
+        }
         #endregion
 
         #region Queries
+        public static Query GetQueryById(int id)
+        {
+            using var db = new ApplicationContext();
+            var pos = db.Queries.FirstOrDefault(p => p.Id == id);
+            return pos;
+        }
 
         public static List<Query> GetAllQueries()
         {
@@ -576,7 +588,12 @@ namespace DocumentVisor.Model
             return result;
         }
 
-
+        public static void QueryPersonLink(int queryId, int personId)
+        {
+            using var db = new ApplicationContext();
+            var entity = db.QueryPersons.Add(new QueryPerson {QueryId = queryId, PersonId = personId});
+            db.SaveChanges();
+        }
         public static int CreateQuery(string name,
             string info,
             string guid,
@@ -595,7 +612,7 @@ namespace DocumentVisor.Model
             bool empty
         )
         {
-            var result = 0;
+            var result = -1;
             using var db = new ApplicationContext();
             var checkIsExist = db.Actions.Any(el => el.Name == name);
             if (!checkIsExist)

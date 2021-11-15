@@ -165,36 +165,114 @@
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       IsReadOnly="True">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{StaticResource Edit}" Command="{Binding OpenEditItemWnd}">
-                            <MenuItem.Icon>
-                                <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="../Resources/edit.png" />
-                                    </Image.Source>
-                                </Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{StaticResource QueryExecutorPersonName}"
                                         Binding="{Binding Path=Name}" Width="*"/>
                     <DataGridTextColumn Header="{StaticResource PersonPhone}"
-                                        Binding="{Binding Path=Info}" Width="*"/>
+                                        Binding="{Binding Path=Phone}" Width="*"/>
                 </DataGrid.Columns>
-                <DataGrid.InputBindings>
-                    <KeyBinding Key="Delete" Command="{Binding DeleteItem}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-                </DataGrid.InputBindings>
-
             </DataGrid>
             <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddExecutorPerson}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="155,0,0,0" Grid.ColumnSpan="2"
                     Grid.Column="0" Height="33" />
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteExecutorPerson}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="37,0,0,0"
+                    Grid.Column="1" Height="33" />
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryExecutorComboBox" ItemsSource="{Binding AllPersons}"
                       DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentExecutorPerson}" Width="150" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="QueryThemesDataGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                      SelectedItem="{Binding SelectedQueryTheme}"
+                      ItemsSource="{Binding QueryThemes}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{StaticResource QueryTheme}"
+                                        Binding="{Binding Path=Name}" Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource ThemeInfo}"
+                                        Binding="{Binding Info}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryTheme}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="155,0,0,0" Grid.ColumnSpan="2"
+                    Grid.Column="0" Height="33" />
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryTheme}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="37,0,0,0"
+                    Grid.Column="1" Height="33" />
+            <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryThemeComboBox" ItemsSource="{Binding AllThemes}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentTheme}" Width="150" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="3" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="QueryArticlesDataGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                      SelectedItem="{Binding SelectedQueryArticle}"
+                      ItemsSource="{Binding QueryArticles}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{StaticResource QueryArticle}"
+                                        Binding="{Binding Path=Name}" Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource ArticleInfo}"
+                                        Binding="{Binding Info}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryArticle}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="155,0,0,0" Grid.ColumnSpan="2"
+                    Grid.Column="0" Height="33" />
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryArticle}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="37,0,0,0"
+                    Grid.Column="1" Height="33" />
+            <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryArticleComboBox" ItemsSource="{Binding AllArticles}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentArticle}" Width="150" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="3" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="QueryActionDataGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                      SelectedItem="{Binding SelectedQueryAction}"
+                      ItemsSource="{Binding QueryActions}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{StaticResource QueryAction}"
+                                        Binding="{Binding Path=Name}" Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource ActionNumber}"
+                                        Binding="{Binding Info}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryAction}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="155,0,0,0" Grid.ColumnSpan="2"
+                    Grid.Column="0" Height="33" />
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryAction}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="37,0,0,0"
+                    Grid.Column="1" Height="33" />
+            <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryActionComboBox" ItemsSource="{Binding AllActions}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentAction}" Width="150" VerticalAlignment="Center" />
         </Grid>
     </Grid>
 </Window>

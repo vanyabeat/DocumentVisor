@@ -1,12 +1,12 @@
-﻿using DocumentVisor.Model;
-using DocumentVisor.View;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DocumentVisor.Model;
+using DocumentVisor.View;
 using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
@@ -676,30 +676,27 @@ namespace DocumentVisor.ViewModel
         public static string QueryGuid { get; set; }
         public static string QueryInfo { get; set; }
         public static Privacy QueryPrivacy { get; set; }
-
         public static Division QueryDivision { get; set; }
         public static Person QuerySignPerson { get; set; }
         public static Type QueryType { get; set; }
-
         public static DateTime QueryOuterSecretaryDateTime { get; set; }
         public static string QueryOuterSecretaryNumber { get; set; }
-
         public static DateTime QueryInnerSecretaryDateTime { get; set; }
         public static string QueryInnerSecretaryNumber { get; set; }
-
         public static DateTime QueryCentralSecretaryDateTime { get; set; }
         public static string QueryCentralSecretaryNumber { get; set; }
-
         public static bool QueryHasCd { get; set; }
         public static bool QueryVarious { get; set; }
         public static bool QueryEmpty { get; set; }
-
         public static Person SelectedQueryExecutorPerson { get; set; }
         public static Person QueryCurrentExecutorPerson { get; set; }
-
-
+        public static Theme SelectedQueryTheme { get; set; }
+        public static Theme QueryCurrentTheme { get; set; }
+        public static Article SelectedQueryArticle { get; set; }
+        public static Article QueryCurrentArticle { get; set; }
+        public static Action SelectedQueryAction { get; set; }
+        public static Action QueryCurrentAction { get; set; }
         private SortedSet<Person> _queryExecutorPersons;
-
         public SortedSet<Person> QueryExecutorPersons
         {
             get => _queryExecutorPersons;
@@ -710,12 +707,40 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private void UpdateQueryExecutorPersons()
+        private SortedSet<Theme> _queryThemes;
+
+        public SortedSet<Theme> QueryThemes
         {
-            AllArticlesView.ItemsSource = null;
-            AllArticlesView.Items.Clear();
-            AllArticlesView.ItemsSource = AllArticles;
-            AllArticlesView.Items.Refresh();
+            get => _queryThemes;
+            private set
+            {
+                _queryThemes = value;
+                OnPropertyChanged(nameof(QueryThemes));
+            }
+        }
+
+        private SortedSet<Article> _queryArticles;
+
+        public SortedSet<Article> QueryArticles
+        {
+            get => _queryArticles;
+            private set
+            {
+                _queryArticles = value;
+                OnPropertyChanged(nameof(QueryArticles));
+            }
+        }
+
+        private SortedSet<Action> _queryActions;
+
+        public SortedSet<Action> QueryActions
+        {
+            get => _queryActions;
+            private set
+            {
+                _queryActions = value;
+                OnPropertyChanged(nameof(QueryActions));
+            }
         }
 
         private readonly RelayCommand _createGuid = null;
@@ -735,7 +760,6 @@ namespace DocumentVisor.ViewModel
         }
 
         private List<Query> _allQueries = DataWorker.GetAllQueries();
-
         private readonly RelayCommand _addNewQuery = null;
 
         public RelayCommand AddNewQuery
@@ -757,6 +781,9 @@ namespace DocumentVisor.ViewModel
                                 QueryOuterSecretaryNumber,
                                 QueryInnerSecretaryDateTime, QueryInnerSecretaryNumber, QueryCentralSecretaryDateTime,
                                 QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty);
+                            if (result > 0)
+                                foreach (var per in QueryExecutorPersons)
+                                    DataWorker.QueryPersonLink(result, per.Id);
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             wnd.Close();
@@ -787,6 +814,200 @@ namespace DocumentVisor.ViewModel
                             QueryExecutorPersons.Add(person);
                             QueryCurrentExecutorPerson = null;
                             wnd.ExecutorPersonsDataGrid.Items.Refresh();
+                            wnd.QueryExecutorComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _addQueryTheme = null;
+
+        public RelayCommand AddQueryTheme
+        {
+            get
+            {
+                return _addQueryTheme ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (QueryCurrentTheme == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryThemeNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var theme = DataWorker.GetThemeById(QueryCurrentTheme.Id);
+                            QueryThemes ??= new SortedSet<Theme>();
+                            QueryThemes.Add(theme);
+                            QueryCurrentTheme = null;
+                            wnd.QueryThemesDataGrid.Items.Refresh();
+                            wnd.QueryThemeComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _deleteExecutorPerson = null;
+
+        public RelayCommand DeleteExecutorPerson
+        {
+            get
+            {
+                return _deleteExecutorPerson ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (SelectedQueryExecutorPerson == null)
+                        {
+                            ShowMessageToUser(Dictionary["ExecutorPersonNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetPersonById(SelectedQueryExecutorPerson.Id);
+                            QueryExecutorPersons.Remove(person);
+                            SelectedQueryExecutorPerson = null;
+                            wnd.ExecutorPersonsDataGrid.Items.Refresh();
+                            wnd.QueryExecutorComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _deleteQueryTheme = null;
+
+        public RelayCommand DeleteQueryTheme
+        {
+            get
+            {
+                return _deleteQueryTheme ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (SelectedQueryTheme == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryThemeNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetThemeById(SelectedQueryTheme.Id);
+                            QueryThemes.Remove(person);
+                            SelectedQueryTheme = null;
+                            wnd.QueryThemesDataGrid.Items.Refresh();
+                            wnd.QueryThemeComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _addQueryArticle = null;
+
+        public RelayCommand AddQueryArticle
+        {
+            get
+            {
+                return _addQueryArticle ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (QueryCurrentArticle == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryArticleNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetArticleById(QueryCurrentArticle.Id);
+                            QueryArticles ??= new SortedSet<Article>();
+                            QueryArticles.Add(article);
+                            QueryCurrentArticle = null;
+                            wnd.QueryArticlesDataGrid.Items.Refresh();
+                            wnd.QueryArticleComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _deleteQueryArticle = null;
+
+        public RelayCommand DeleteQueryArticle
+        {
+            get
+            {
+                return _deleteQueryArticle ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (SelectedQueryArticle == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryArticleNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetArticleById(SelectedQueryArticle.Id);
+                            QueryArticles.Remove(article);
+                            SelectedQueryArticle = null;
+                            wnd.QueryArticlesDataGrid.Items.Refresh();
+                            wnd.QueryArticleComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+
+        private readonly RelayCommand _addQueryAction = null;
+
+        public RelayCommand AddQueryAction
+        {
+            get
+            {
+                return _addQueryAction ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (QueryCurrentAction == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var action = DataWorker.GetActionById(QueryCurrentAction.Id);
+                            QueryActions ??= new SortedSet<Action>();
+                            QueryActions.Add(action);
+                            QueryCurrentAction = null;
+                            wnd.QueryActionDataGrid.Items.Refresh();
+                            wnd.QueryActionComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand _deleteQueryAction = null;
+
+        public RelayCommand DeleteQueryAction
+        {
+            get
+            {
+                return _deleteQueryAction ?? new RelayCommand(obj =>
+                    {
+                        var wnd = obj as AddQueryView;
+
+                        if (SelectedQueryAction == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetActionById(SelectedQueryAction.Id);
+                            QueryActions.Remove(article);
+                            SelectedQueryAction = null;
+                            wnd.QueryActionDataGrid.Items.Refresh();
+                            wnd.QueryActionComboBox.SelectedItem = null;
                         }
                     }
                 );
@@ -922,6 +1143,10 @@ namespace DocumentVisor.ViewModel
             QueryVarious = false;
             QueryHasCd = false;
             QueryExecutorPersons = null;
+            QueryActions = null;
+            QueryArticles = null;
+            QueryExecutorPersons = null;
+            QueryThemes = null;
         }
 
         #endregion
