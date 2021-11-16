@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -697,6 +698,7 @@ namespace DocumentVisor.ViewModel
         public static Action SelectedQueryAction { get; set; }
         public static Action QueryCurrentAction { get; set; }
         private SortedSet<Person> _queryExecutorPersons;
+
         public SortedSet<Person> QueryExecutorPersons
         {
             get => _queryExecutorPersons;
@@ -783,12 +785,39 @@ namespace DocumentVisor.ViewModel
                                 QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty);
                             if (result > 0)
                             {
-                                foreach (var per in QueryExecutorPersons)
-                                    DataWorker.QueryPersonLink(result, per.Id);
-                                foreach (var art in QueryArticles)
+                                if (QueryExecutorPersons != null)
                                 {
-                                    
+                                    foreach (var per in QueryExecutorPersons)
+                                    {
+                                        DataWorker.QueryPersonLink(result, per.Id);
+                                    }
                                 }
+
+                                if (QueryArticles != null)
+                                {
+                                    foreach (var art in QueryArticles)
+                                    {
+                                        DataWorker.QueryArticleLink(result, art.Id);
+                                    }
+                                }
+
+                                if (QueryActions != null)
+                                {
+                                    foreach (var action in QueryActions)
+                                    {
+                                        DataWorker.QueryActionLink(result, action.Id);
+                                    }
+                                }
+
+                                if (QueryThemes != null)
+                                {
+                                    foreach (var theme in QueryThemes)
+                                    {
+                                        DataWorker.QueryThemeLink(result, theme.Id);
+                                    }
+                                }
+
+                                    
                             }
 
                             UpdateAllDataView();
@@ -1032,6 +1061,13 @@ namespace DocumentVisor.ViewModel
                 OnPropertyChanged(nameof(AllQueries));
             }
         }
+
+        public void UpdateAllQueriesView()
+        {
+            AllQueries = DataWorker.GetAllQueries();
+            AllQueriesView.ItemsSource = AllQueries;
+        }
+    
         #endregion
 
         #region Updates
@@ -1046,6 +1082,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllQueryTypesView();
             UpdateAllActionView();
             UpdateAllArticleView();
+            UpdateAllQueriesView();
         }
 
         #endregion

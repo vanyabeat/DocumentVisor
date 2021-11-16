@@ -20,7 +20,7 @@ namespace DocumentVisor.Model
 
         public override string ToString()
         {
-            return $"{Name}\n({Rank})";
+            return $"{Name} ({Rank})";
         }
 
         public int CompareTo(object obj)

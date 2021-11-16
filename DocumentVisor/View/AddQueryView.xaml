@@ -223,7 +223,7 @@
                       ItemsSource="{Binding QueryArticles}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True" Margin="0,0,10,60" Grid.RowSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{StaticResource QueryArticle}"
                                         Binding="{Binding Path=Name}" Width="*"/>
@@ -253,7 +253,7 @@
                       ItemsSource="{Binding QueryActions}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True" Margin="0,0,10,60" Grid.RowSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{StaticResource QueryAction}"
                                         Binding="{Binding Path=Name}" Width="*"/>

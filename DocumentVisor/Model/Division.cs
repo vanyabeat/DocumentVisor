@@ -9,7 +9,7 @@
 
         public override string ToString()
         {
-            return $"{Name}\n{Info}";
+            return $"{Name} ({Info})";
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using DocumentVisor.Model.Data;
 
@@ -601,6 +602,63 @@ namespace DocumentVisor.Model
             var entity = db.QueryActions.Add(new QueryAction { QueryId = queryId, ActionId = actionId });
             db.SaveChanges();
         }
+
+        public static void QueryThemeLink(int queryId, int themeId)
+        {
+            using var db = new ApplicationContext();
+            var entity = db.QueryThemes.Add(new QueryTheme { QueryId = queryId, ThemeId = themeId });
+            db.SaveChanges();
+        }
+
+
+        public static void QueryArticleLink(int queryId, int articleId)
+        {
+            using var db = new ApplicationContext();
+            var entity = db.QueryArticles.Add(new QueryArticle { QueryId = queryId, ArticleId = articleId });
+            db.SaveChanges();
+        }
+
+        public static List<Theme> GetAllQueryThemes(int queryId)
+        {
+            using var db = new ApplicationContext();
+            var themes = new List<Theme>();
+            foreach (var qt in db.QueryThemes.ToList().FindAll(item => item.QueryId == queryId))
+            {
+                themes.Add(GetThemeById(qt.ThemeId));
+            }
+            return themes;
+        }
+
+        public static List<Article> GetAllQueryArticles(int queryId)
+        {
+            using var db = new ApplicationContext();
+            var items = new List<Article>();
+            foreach (var qt in db.QueryArticles.ToList().FindAll(item => item.QueryId == queryId))
+            {
+                items.Add(GetArticleById(qt.ArticleId));
+            }
+            return items;
+        }
+        public static List<Action> GetAllQueryAction(int queryId)
+        {
+            using var db = new ApplicationContext();
+            var items = new List<Action>();
+            foreach (var qt in db.QueryActions.ToList().FindAll(item => item.QueryId == queryId))
+            {
+                items.Add(GetActionById(qt.ActionId));
+            }
+            return items;
+        }
+        public static List<Person> GetAllQueryExecutors(int queryId)
+        {
+            using var db = new ApplicationContext();
+            var items = new List<Person>();
+            foreach (var qt in db.QueryPersons.ToList().FindAll(item => item.QueryId == queryId))
+            {
+                items.Add(GetPersonById(qt.PersonId));
+            }
+            return items;
+        }
         public static int CreateQuery(string name,
             string info,
             string guid,
@@ -621,9 +679,10 @@ namespace DocumentVisor.Model
         {
             var result = -1;
             using var db = new ApplicationContext();
-            var checkIsExist = db.Actions.Any(el => el.Name == name);
+            var checkIsExist = db.Queries.Any(el => el.Name == name && el.Guid == guid);
             if (!checkIsExist)
             {
+                
                 var entity = db.Queries.Add(new Query
                 {
                     Name = name,

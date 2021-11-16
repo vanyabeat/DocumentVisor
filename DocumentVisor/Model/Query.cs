@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DocumentVisor.Model
 {
@@ -118,11 +121,19 @@ namespace DocumentVisor.Model
             set => IsEmpty = value ? 1 : 0;
         }
 
-
+        [NotMapped]
+        public virtual string LinkedThemes => string.Join(",",DataWorker.GetAllQueryThemes(Id));
+        [NotMapped]
+        public virtual string LinkedActions => string.Join(",", DataWorker.GetAllQueryAction(Id));
+        [NotMapped]
+        public virtual string LinkedArticles => string.Join(",", DataWorker.GetAllQueryArticles(Id));
+        [NotMapped]
+        public virtual string LinkedPersons => string.Join(",", DataWorker.GetAllQueryExecutors(Id));
         public ICollection<QueryTheme> QueryThemes { get; set; }
         public ICollection<QueryAction> QueryActions { get; set; }
         public ICollection<QueryPerson> QueryPersons { get; set; }
         public ICollection<QueryArticle> QueryArticles { get; set; }
         public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }
+
     }
 }

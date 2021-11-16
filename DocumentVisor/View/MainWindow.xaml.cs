@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using DocumentVisor.ViewModel;
+using Syncfusion.UI.Xaml.Grid;
 
 namespace DocumentVisor.View
 {
@@ -14,6 +15,7 @@ namespace DocumentVisor.View
         public static DataGrid AllArticlesView;
         public static DataGrid AllQueryTypesView;
         public static DataGrid AllActionsView;
+        public static SfDataGrid AllQueriesView;
         public static TabControl AllMainTabControl;
 
         public MainWindow()
@@ -29,6 +31,7 @@ namespace DocumentVisor.View
             AllQueryTypesView = QueryTypesDataGrid;
             AllActionsView = ActionsDataGrid;
             AllMainTabControl = MainWindowTabControl;
+            AllQueriesView = QueriesDataGrid;
         }
     }
 }

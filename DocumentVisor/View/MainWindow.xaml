@@ -37,6 +37,7 @@
                             <Syncfusion:GridTextColumn MappingName="Privacy.Name"/>
                             <Syncfusion:GridTextColumn MappingName="Division.Name"/>
                             <Syncfusion:GridTextColumn MappingName="SignPerson.Name"/>
+                            <Syncfusion:GridTextColumn MappingName="LinkedPersons"/>
                             <Syncfusion:GridTextColumn MappingName="Type.Name"/>
                             <Syncfusion:GridDateTimeColumn MappingName="OuterSecretaryDateTime"/>
                             <Syncfusion:GridTextColumn MappingName="OuterSecretaryNumber"/>
@@ -47,6 +48,10 @@
                             <Syncfusion:GridCheckBoxColumn MappingName="IsCd"/>
                             <Syncfusion:GridCheckBoxColumn MappingName="Various"/>
                             <Syncfusion:GridCheckBoxColumn MappingName="Empty"/>
+                            <Syncfusion:GridTextColumn MappingName="LinkedArticles"/>
+                            <Syncfusion:GridTextColumn MappingName="LinkedActions"/>
+                            <Syncfusion:GridTextColumn MappingName="LinkedThemes"/>
+                            
                         </Syncfusion:SfDataGrid.Columns>
                     </Syncfusion:SfDataGrid>
                     <Grid Grid.Row="1">
