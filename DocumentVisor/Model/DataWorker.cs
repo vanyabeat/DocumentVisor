@@ -594,6 +594,13 @@ namespace DocumentVisor.Model
             var entity = db.QueryPersons.Add(new QueryPerson {QueryId = queryId, PersonId = personId});
             db.SaveChanges();
         }
+
+        public static void QueryActionLink(int queryId, int actionId)
+        {
+            using var db = new ApplicationContext();
+            var entity = db.QueryActions.Add(new QueryAction { QueryId = queryId, ActionId = actionId });
+            db.SaveChanges();
+        }
         public static int CreateQuery(string name,
             string info,
             string guid,
@@ -633,7 +640,7 @@ namespace DocumentVisor.Model
                     CentralSecretaryDateTime = queryCentralSecretaryDateTime,
                     CentralSecretaryNumber = queryCentralSecretaryNumber,
                     IsCd = hasCd,
-                    IsEmpty = empty,
+                    Empty = empty,
                     Various = various
                 });
                 db.SaveChanges();

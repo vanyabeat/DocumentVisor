@@ -6,9 +6,7 @@
         mc:Ignorable="d"
         x:Name="EditPersonWnd"
         Height="500" Width="320"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
-        ui:WindowHelper.UseModernWindowStyle="True"
         d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}"
         ResizeMode="NoResize">
     <Window.Resources>

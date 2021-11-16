@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DocumentVisor.Model
+﻿namespace DocumentVisor.Model
 {
     public class QueryTheme
     {
         public int QueryId { get; set; }
-        public Query Query { get; set; }
+        public  Query Query { get; set; }
         public int ThemeId { get; set; }
-        public Theme Theme { get; set; }
+        public  Theme Theme { get; set; }
     }
 }

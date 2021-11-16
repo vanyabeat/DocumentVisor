@@ -759,7 +759,7 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private List<Query> _allQueries = DataWorker.GetAllQueries();
+
         private readonly RelayCommand _addNewQuery = null;
 
         public RelayCommand AddNewQuery
@@ -782,8 +782,15 @@ namespace DocumentVisor.ViewModel
                                 QueryInnerSecretaryDateTime, QueryInnerSecretaryNumber, QueryCentralSecretaryDateTime,
                                 QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty);
                             if (result > 0)
+                            {
                                 foreach (var per in QueryExecutorPersons)
                                     DataWorker.QueryPersonLink(result, per.Id);
+                                foreach (var art in QueryArticles)
+                                {
+                                    
+                                }
+                            }
+
                             UpdateAllDataView();
                             SetNullValuesToProperties();
                             wnd.Close();
@@ -1011,6 +1018,18 @@ namespace DocumentVisor.ViewModel
                         }
                     }
                 );
+            }
+        }
+
+        private List<Query> _allQueries = DataWorker.GetAllQueries();
+
+        public List<Query> AllQueries
+        {
+            get => _allQueries;
+            private set
+            {
+                _allQueries = value;
+                OnPropertyChanged(nameof(AllQueries));
             }
         }
         #endregion

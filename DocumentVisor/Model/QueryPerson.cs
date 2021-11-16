@@ -8,17 +8,8 @@ namespace DocumentVisor.Model
     {
         public int QueryId { get; set; }
 
-        public virtual Query Query
-        {
-            get => DataWorker.GetQueryById(QueryId);
-            set => QueryId = value.Id;
-        }
-
+        public Query Query { get; set; }
         public int PersonId { get; set; }
-        public virtual Person Person
-        {
-            get => DataWorker.GetPersonById(PersonId);
-            set => PersonId = value.Id;
-        }
+        public Person Person { get; set; }
     }
 }

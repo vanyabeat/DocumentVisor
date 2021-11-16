@@ -23,6 +23,7 @@
     <system:String x:Key="Add">Add</system:String>
     <system:String x:Key="InsertToBox">✅</system:String>
     <system:String x:Key="DeleteToBox">❌</system:String>
+    <system:String x:Key="EmptyLogo">❌</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->

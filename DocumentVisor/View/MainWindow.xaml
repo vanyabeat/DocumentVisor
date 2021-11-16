@@ -3,10 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
-        ui:WindowHelper.UseModernWindowStyle="True"
         ResizeMode="NoResize"
         xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
+        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
         d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}"
         Title="DocumentVisor" Height="720" Width="1280"
         x:Name="DocumentVisorWindow">
@@ -26,6 +25,30 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="0.1*"></RowDefinition>
                     </Grid.RowDefinitions>
+                    <Syncfusion:SfDataGrid Grid.Row="0" x:Name="QueriesDataGrid"
+                                           AutoGenerateColumns="False"
+                                           AllowFiltering="True"
+                                           ItemsSource="{Binding AllQueries}" >
+                        
+                        <Syncfusion:SfDataGrid.Columns>
+                            <Syncfusion:GridTextColumn MappingName="Name"/>
+                            <Syncfusion:GridTextColumn MappingName="Info"/>
+                            <Syncfusion:GridTextColumn MappingName="Guid"/>
+                            <Syncfusion:GridTextColumn MappingName="Privacy.Name"/>
+                            <Syncfusion:GridTextColumn MappingName="Division.Name"/>
+                            <Syncfusion:GridTextColumn MappingName="SignPerson.Name"/>
+                            <Syncfusion:GridTextColumn MappingName="Type.Name"/>
+                            <Syncfusion:GridDateTimeColumn MappingName="OuterSecretaryDateTime"/>
+                            <Syncfusion:GridTextColumn MappingName="OuterSecretaryNumber"/>
+                            <Syncfusion:GridDateTimeColumn MappingName="InnerSecretaryDateTime"/>
+                            <Syncfusion:GridTextColumn MappingName="InnerSecretaryNumber"/>
+                            <Syncfusion:GridDateTimeColumn MappingName="CentralSecretaryDateTime"/>
+                            <Syncfusion:GridTextColumn MappingName="CentralSecretaryNumber"/>
+                            <Syncfusion:GridCheckBoxColumn MappingName="IsCd"/>
+                            <Syncfusion:GridCheckBoxColumn MappingName="Various"/>
+                            <Syncfusion:GridCheckBoxColumn MappingName="Empty"/>
+                        </Syncfusion:SfDataGrid.Columns>
+                    </Syncfusion:SfDataGrid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
