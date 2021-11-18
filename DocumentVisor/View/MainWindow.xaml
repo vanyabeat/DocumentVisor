@@ -51,7 +51,6 @@
                             <Syncfusion:GridTextColumn MappingName="LinkedArticles"/>
                             <Syncfusion:GridTextColumn MappingName="LinkedActions"/>
                             <Syncfusion:GridTextColumn MappingName="LinkedThemes"/>
-                            
                         </Syncfusion:SfDataGrid.Columns>
                     </Syncfusion:SfDataGrid>
                     <Grid Grid.Row="1">

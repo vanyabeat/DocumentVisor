@@ -815,6 +815,7 @@ namespace DocumentVisor.ViewModel
                                     {
                                         DataWorker.QueryThemeLink(result, theme.Id);
                                     }
+                                    
                                 }
 
                                     
@@ -1211,6 +1212,7 @@ namespace DocumentVisor.ViewModel
 
         private string GenerateRandomGuid()
         {
+            /// исправить
             var time = DateTime.Now;
             var guid = NewGuid().ToString().Substring(0, 7);
             return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1, 3)}_{guid}";
