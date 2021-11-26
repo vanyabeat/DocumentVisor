@@ -1,15 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 
-namespace DocumentVisor.Model
+namespace DocumentVisor.Model.Data
 {
     public class RelayCommand : ICommand
     {
-        private Action<object> _execute;
+        #region Properties
 
-        private Func<object, bool> _canExecute;
+        public readonly Action<object> _execute;
+        public readonly Predicate<object> _canExecute;
+        #endregion
+
+        #region Constructors
+
+        public RelayCommand(Action<object> execute) : this(execute, null)
+        {
+
+        }
+
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+        #endregion
+
+        #region ICommand Members
+
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute?.Invoke(parameter) ?? true;
+        }
 
         public event EventHandler CanExecuteChanged
         {
@@ -17,20 +42,11 @@ namespace DocumentVisor.Model
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute(parameter);
-        }
-
         public void Execute(object parameter)
         {
             _execute(parameter);
         }
+
+        #endregion
     }
 }
