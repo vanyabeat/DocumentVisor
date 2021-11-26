@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -8,10 +7,15 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using DocumentVisor.Model;
 using DocumentVisor.View;
+using Microsoft.Win32;
+using Spire.Xls;
+using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.Grid.Converter;
 using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
 using Type = DocumentVisor.Model.Type;
+using Syncfusion.UI.Xaml.Grid.Converters;
 
 namespace DocumentVisor.ViewModel
 {
@@ -1068,7 +1072,47 @@ namespace DocumentVisor.ViewModel
             AllQueries = DataWorker.GetAllQueries();
             AllQueriesView.ItemsSource = AllQueries;
         }
-    
+
+        public void ExportToExcelQueries(SfDataGrid dataGrid)
+        {
+            var options = new ExcelExportingOptions
+            {
+                AllowOutlining = true
+            };
+            var excelEngine = dataGrid.ExportToExcel(dataGrid.View, options);
+            var workBook = excelEngine.Excel.Workbooks[0];
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text File (*.xlsx)|*.xlsx|Show All Files (*.*)|*.*",
+                FileName = "DocumentVisorOut",
+                Title = "Save As"
+            };
+            if (saveFileDialog.ShowDialog() != null)
+            {
+                workBook.SaveAs(saveFileDialog.FileName);
+                var workbook = new Workbook();
+                workbook.LoadFromFile(saveFileDialog.FileName);
+                workbook.Worksheets[^1].Remove();
+                workbook.SaveToFile(saveFileDialog.FileName, ExcelVersion.Version2010);
+            };
+            
+        }
+
+        private readonly RelayCommand _exportToExcel = null;
+
+        public RelayCommand ExportToExcel
+        {
+            get
+            {
+                return _exportToExcel ?? new RelayCommand(obj =>
+                    {
+                        if (!(obj is Window wnd)) return;
+                        var dataGrid = wnd.FindName("QueriesDataGrid") as SfDataGrid;
+                        ExportToExcelQueries(dataGrid);
+                    }
+                );
+            }
+        }
         #endregion
 
         #region Updates

@@ -25,7 +25,8 @@
     <system:String x:Key="DeleteToBox">❌</system:String>
     <system:String x:Key="EmptyLogo">❌</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
-    <!--END GUI STRING-->
+    <system:String x:Key="ExportToExcel">Export to excel</system:String>
+        <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
     <system:String x:Key="QueryName">Name</system:String>
