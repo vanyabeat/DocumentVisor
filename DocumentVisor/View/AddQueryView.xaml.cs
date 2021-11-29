@@ -6,7 +6,7 @@ using DocumentVisor.ViewModel;
 namespace DocumentVisor.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddQueryView.xaml
+    /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ AddQueryView.xaml
     /// </summary>
     public partial class AddQueryView : Window
     {

@@ -48,13 +48,14 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryName}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBox Grid.Row="0" Grid.ColumnSpan="3" Name="QueryNameTextBox"
+            <TextBox Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" Name="QueryNameTextBox"
                      Text="{Binding QueryName}" Margin="64,7,10,5" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryGuid}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBox Grid.Row="1" IsReadOnly="True" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Grid.ColumnSpan="3" Margin="64,5,54,4" />
+            <TextBox Grid.Row="1" IsReadOnly="True" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Grid.ColumnSpan="3"
+                     Grid.Column="0" Margin="64,5,54,4" />
             <Button Grid.Row="1" Grid.Column="2" Content="{StaticResource QueryRefresh}" Command="{Binding CreateGuid}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="79,5,10,4" />
-            <ComboBox Grid.Row="2" Grid.ColumnSpan="3" Name="QueryPrivacyComboBox"
+            <ComboBox Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" Name="QueryPrivacyComboBox"
                       ItemsSource="{Binding AllPrivacies}"
                       DisplayMemberPath="Name" SelectedItem="{Binding QueryPrivacy}" Margin="64,5,10,0" />
             <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryPrivacy}" HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -74,9 +75,11 @@
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryQueryType}" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QuerySignPerson}" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <ComboBox Grid.Row="0" Name="QueryDivisionComboBox" ItemsSource="{Binding AllDivisions}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Grid.ColumnSpan="2" Margin="65,8,10,0" />
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Grid.ColumnSpan="2" Grid.Column="0"
+                      Margin="65,8,10,0" />
             <ComboBox Grid.Row="1" Name="QueryQueryTypeComboBox" ItemsSource="{Binding AllQueryTypes}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Grid.ColumnSpan="2" Margin="65,9,10,40" Grid.RowSpan="2" />
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Grid.ColumnSpan="2" Grid.Column="0"
+                      Margin="65,9,10,40" Grid.RowSpan="2" />
             <ComboBox Grid.Row="2" Grid.Column="1" Name="QuerySignPersonComboBox" ItemsSource="{Binding AllPersons}"
                       DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" VerticalAlignment="Center" Height="30" Margin="0,0,10,0" />
 

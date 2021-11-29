@@ -709,6 +709,14 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static List<Query> GetAllQueriesByDateAndType(DateTime begin, DateTime end)
+        {
+            using var db = new ApplicationContext();
+            var result = from q in db.Queries 
+                where q.InnerSecretaryDateTime >= begin && q.InnerSecretaryDateTime <= end select q;
+            return result.ToList();
+
+        }
         #endregion
     }
 }

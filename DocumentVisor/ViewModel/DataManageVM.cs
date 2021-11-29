@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using DocumentVisor.Infrastructure;
 using DocumentVisor.Model;
-using DocumentVisor.Model.Data;
 using DocumentVisor.View;
 using Microsoft.Win32;
 using Spire.Xls;
@@ -16,7 +18,6 @@ using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
 using Type = DocumentVisor.Model.Type;
-using Syncfusion.UI.Xaml.Grid.Converters;
 
 namespace DocumentVisor.ViewModel
 {
@@ -47,16 +48,15 @@ namespace DocumentVisor.ViewModel
         public static string PersonTypeName { get; set; }
         public static string PersonTypeInfo { get; set; }
 
-        private readonly RelayCommand _addNewPersonType = null;
+        private readonly RelayCommand<object> _addNewPersonType = null;
 
-        public RelayCommand AddNewPersonType
+        public RelayCommand<object> AddNewPersonType
         {
             get
             {
-                return _addNewPersonType ?? new RelayCommand(obj =>
+                return _addNewPersonType ?? new RelayCommand<object>(obj =>
                 {
                     var wnd = obj as Window;
-                    var result = "";
                     if (PersonTypeName == null || PersonTypeName.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControl(wnd, "PersonTypeNameTextBox");
@@ -64,7 +64,7 @@ namespace DocumentVisor.ViewModel
                     }
                     else
                     {
-                        result = DataWorker.CreatePersonType(PersonTypeName, PersonTypeInfo);
+                        DataWorker.CreatePersonType(PersonTypeName, PersonTypeInfo);
                         UpdateAllDataView();
                         SetNullValuesToProperties();
                         ClearStackPanelPersonTypesView(wnd);
@@ -83,13 +83,13 @@ namespace DocumentVisor.ViewModel
         }
 
 
-        private readonly RelayCommand _editPersonType = null;
+        private readonly RelayCommand<object> _editPersonType = null;
 
-        public RelayCommand EditPersonType
+        public RelayCommand<object> EditPersonType
         {
             get
             {
-                return _editPersonType ?? new RelayCommand(obj =>
+                return _editPersonType ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedPersonType != null)
@@ -137,13 +137,13 @@ namespace DocumentVisor.ViewModel
             AllPersonsView.Items.Refresh();
         }
 
-        private readonly RelayCommand _addNewPerson = null;
+        private readonly RelayCommand<object> _addNewPerson = null;
 
-        public RelayCommand AddNewPerson
+        public RelayCommand<object> AddNewPerson
         {
             get
             {
-                return _addNewPerson ?? new RelayCommand(obj =>
+                return _addNewPerson ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
                         var result = "";
@@ -166,13 +166,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _editPerson = null;
+        private readonly RelayCommand<object> _editPerson = null;
 
-        public RelayCommand EditPerson
+        public RelayCommand<object> EditPerson
         {
             get
             {
-                return _editPerson ?? new RelayCommand(obj =>
+                return _editPerson ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedPerson != null)
@@ -210,13 +210,13 @@ namespace DocumentVisor.ViewModel
         public static string PrivacyName { get; set; }
         public static string PrivacyInfo { get; set; }
 
-        private readonly RelayCommand _addNewPrivacy = null;
+        private readonly RelayCommand<object> _addNewPrivacy = null;
 
-        public RelayCommand AddNewPrivacy
+        public RelayCommand<object> AddNewPrivacy
         {
             get
             {
-                return _addNewPrivacy ?? new RelayCommand(obj =>
+                return _addNewPrivacy ?? new RelayCommand<object>(obj =>
                 {
                     var wnd = obj as Window;
                     var result = "";
@@ -236,13 +236,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _editPrivacy = null;
+        private readonly RelayCommand<object> _editPrivacy = null;
 
-        public RelayCommand EditPrivacy
+        public RelayCommand<object> EditPrivacy
         {
             get
             {
-                return _editPrivacy ?? new RelayCommand(obj =>
+                return _editPrivacy ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedPrivacy != null)
@@ -285,13 +285,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addNewDivision = null;
+        private readonly RelayCommand<object> _addNewDivision = null;
 
-        public RelayCommand AddNewDivision
+        public RelayCommand<object> AddNewDivision
         {
             get
             {
-                return _addNewDivision ?? new RelayCommand(obj =>
+                return _addNewDivision ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -327,13 +327,13 @@ namespace DocumentVisor.ViewModel
             AllDivisionsView.Items.Refresh();
         }
 
-        private readonly RelayCommand _editDivision = null;
+        private readonly RelayCommand<object> _editDivision = null;
 
-        public RelayCommand EditDivision
+        public RelayCommand<object> EditDivision
         {
             get
             {
-                return _editDivision ?? new RelayCommand(obj =>
+                return _editDivision ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedDivision != null)
@@ -367,13 +367,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addNewTheme = null;
+        private readonly RelayCommand<object> _addNewTheme = null;
 
-        public RelayCommand AddNewTheme
+        public RelayCommand<object> AddNewTheme
         {
             get
             {
-                return _addNewTheme ?? new RelayCommand(obj =>
+                return _addNewTheme ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -408,13 +408,13 @@ namespace DocumentVisor.ViewModel
             AllThemesView.Items.Refresh();
         }
 
-        private readonly RelayCommand _editTheme = null;
+        private readonly RelayCommand<object> _editTheme = null;
 
-        public RelayCommand EditTheme
+        public RelayCommand<object> EditTheme
         {
             get
             {
-                return _editTheme ?? new RelayCommand(obj =>
+                return _editTheme ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedTheme != null)
@@ -447,13 +447,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addNewArticle = null;
+        private readonly RelayCommand<object> _addNewArticle = null;
 
-        public RelayCommand AddNewArticle
+        public RelayCommand<object> AddNewArticle
         {
             get
             {
-                return _addNewArticle ?? new RelayCommand(obj =>
+                return _addNewArticle ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -489,13 +489,13 @@ namespace DocumentVisor.ViewModel
             AllArticlesView.Items.Refresh();
         }
 
-        private readonly RelayCommand _editArticle = null;
+        private readonly RelayCommand<object> _editArticle = null;
 
-        public RelayCommand EditArticle
+        public RelayCommand<object> EditArticle
         {
             get
             {
-                return _editArticle ?? new RelayCommand(obj =>
+                return _editArticle ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedArticle != null)
@@ -529,13 +529,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addNewQueryType = null;
+        private readonly RelayCommand<object> _addNewQueryType = null;
 
-        public RelayCommand AddNewQueryType
+        public RelayCommand<object> AddNewQueryType
         {
             get
             {
-                return _addNewQueryType ?? new RelayCommand(obj =>
+                return _addNewQueryType ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -570,13 +570,13 @@ namespace DocumentVisor.ViewModel
             AllQueryTypesView.Items.Refresh();
         }
 
-        private readonly RelayCommand _editQueryType = null;
+        private readonly RelayCommand<object> _editQueryType = null;
 
-        public RelayCommand EditQueryType
+        public RelayCommand<object> EditQueryType
         {
             get
             {
-                return _editQueryType ?? new RelayCommand(obj =>
+                return _editQueryType ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedType != null)
@@ -609,13 +609,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addNewAction = null;
+        private readonly RelayCommand<object> _addNewAction = null;
 
-        public RelayCommand AddNewAction
+        public RelayCommand<object> AddNewAction
         {
             get
             {
-                return _addNewAction ?? new RelayCommand(obj =>
+                return _addNewAction ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -651,13 +651,13 @@ namespace DocumentVisor.ViewModel
             AllActionsView.Items.Refresh();
         }
 
-        private readonly RelayCommand _editAction = null;
+        private readonly RelayCommand<object> _editAction = null;
 
-        public RelayCommand EditAction
+        public RelayCommand<object> EditAction
         {
             get
             {
-                return _editAction ?? new RelayCommand(obj =>
+                return _editAction ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         if (SelectedAction != null)
@@ -750,13 +750,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _createGuid = null;
+        private readonly RelayCommand<object> _createGuid = null;
 
-        public RelayCommand CreateGuid
+        public RelayCommand<object> CreateGuid
         {
             get
             {
-                return _createGuid ?? new RelayCommand(obj =>
+                return _createGuid ?? new RelayCommand<object>(obj =>
                     {
                         var window = obj as Window;
                         QueryGuid = GenerateRandomGuid();
@@ -767,13 +767,13 @@ namespace DocumentVisor.ViewModel
         }
 
 
-        private readonly RelayCommand _addNewQuery = null;
+        private readonly RelayCommand<object> _addNewQuery = null;
 
-        public RelayCommand AddNewQuery
+        public RelayCommand<object> AddNewQuery
         {
             get
             {
-                return _addNewQuery ?? new RelayCommand(obj =>
+                return _addNewQuery ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as Window;
 
@@ -835,13 +835,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addExecutorPerson = null;
+        private readonly RelayCommand<object> _addExecutorPerson = null;
 
-        public RelayCommand AddExecutorPerson
+        public RelayCommand<object> AddExecutorPerson
         {
             get
             {
-                return _addExecutorPerson ?? new RelayCommand(obj =>
+                return _addExecutorPerson ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -863,13 +863,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addQueryTheme = null;
+        private readonly RelayCommand<object> _addQueryTheme = null;
 
-        public RelayCommand AddQueryTheme
+        public RelayCommand<object> AddQueryTheme
         {
             get
             {
-                return _addQueryTheme ?? new RelayCommand(obj =>
+                return _addQueryTheme ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -891,13 +891,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _deleteExecutorPerson = null;
+        private readonly RelayCommand<object> _deleteExecutorPerson = null;
 
-        public RelayCommand DeleteExecutorPerson
+        public RelayCommand<object> DeleteExecutorPerson
         {
             get
             {
-                return _deleteExecutorPerson ?? new RelayCommand(obj =>
+                return _deleteExecutorPerson ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -918,13 +918,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _deleteQueryTheme = null;
+        private readonly RelayCommand<object> _deleteQueryTheme = null;
 
-        public RelayCommand DeleteQueryTheme
+        public RelayCommand<object> DeleteQueryTheme
         {
             get
             {
-                return _deleteQueryTheme ?? new RelayCommand(obj =>
+                return _deleteQueryTheme ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -945,13 +945,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _addQueryArticle = null;
+        private readonly RelayCommand<object> _addQueryArticle = null;
 
-        public RelayCommand AddQueryArticle
+        public RelayCommand<object> AddQueryArticle
         {
             get
             {
-                return _addQueryArticle ?? new RelayCommand(obj =>
+                return _addQueryArticle ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -973,13 +973,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _deleteQueryArticle = null;
+        private readonly RelayCommand<object> _deleteQueryArticle = null;
 
-        public RelayCommand DeleteQueryArticle
+        public RelayCommand<object> DeleteQueryArticle
         {
             get
             {
-                return _deleteQueryArticle ?? new RelayCommand(obj =>
+                return _deleteQueryArticle ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -1001,13 +1001,13 @@ namespace DocumentVisor.ViewModel
         }
 
 
-        private readonly RelayCommand _addQueryAction = null;
+        private readonly RelayCommand<object> _addQueryAction = null;
 
-        public RelayCommand AddQueryAction
+        public RelayCommand<object> AddQueryAction
         {
             get
             {
-                return _addQueryAction ?? new RelayCommand(obj =>
+                return _addQueryAction ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -1029,13 +1029,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _deleteQueryAction = null;
+        private readonly RelayCommand<object> _deleteQueryAction = null;
 
-        public RelayCommand DeleteQueryAction
+        public RelayCommand<object> DeleteQueryAction
         {
             get
             {
-                return _deleteQueryAction ?? new RelayCommand(obj =>
+                return _deleteQueryAction ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
 
@@ -1074,7 +1074,7 @@ namespace DocumentVisor.ViewModel
             AllQueriesView.ItemsSource = AllQueries;
         }
 
-        public void ExportToExcelQueries(SfDataGrid dataGrid)
+        static Task ExportToExcelQueries(SfDataGrid dataGrid)
         {
             var options = new ExcelExportingOptions
             {
@@ -1096,20 +1096,22 @@ namespace DocumentVisor.ViewModel
                 workbook.Worksheets[^1].Remove();
                 workbook.SaveToFile(saveFileDialog.FileName, ExcelVersion.Version2010);
             };
-            
+            return Task.CompletedTask;
         }
 
-        private readonly RelayCommand _exportToExcel = null;
+        private readonly AsyncRelayCommand<object> _exportToExcel = null;
 
-        public RelayCommand ExportToExcel
+        public AsyncRelayCommand<object> ExportToExcel
         {
             get
             {
-                return _exportToExcel ?? new RelayCommand(obj =>
+                return _exportToExcel ?? new AsyncRelayCommand<object>(async (obj) =>  
                     {
                         if (!(obj is Window wnd)) return;
                         var dataGrid = wnd.FindName("QueriesDataGrid") as SfDataGrid;
-                        ExportToExcelQueries(dataGrid);
+                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                        await ExportToExcelQueries(dataGrid);
+                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                     }
                 );
             }
@@ -1135,13 +1137,13 @@ namespace DocumentVisor.ViewModel
 
         #region Deletes
 
-        private readonly RelayCommand _deleteItem = null;
+        private readonly RelayCommand<object> _deleteItem = null;
 
-        public RelayCommand DeleteItem
+        public RelayCommand<object> DeleteItem
         {
             get
             {
-                return _deleteItem ?? new RelayCommand(obj =>
+                return _deleteItem ?? new RelayCommand<object>(obj =>
                 {
                     var result = Dictionary["ObjectNotFound"].ToString();
                     var wnd = obj as Window;
@@ -1278,7 +1280,7 @@ namespace DocumentVisor.ViewModel
         private void ClearTextFromStackPanelComboBox(Window window, string blockName)
         {
             var block = window.FindName(blockName) as ComboBox;
-            block.SelectedItem = null;
+            if (block != null) block.SelectedItem = null;
         }
 
         private void SetCenterPositionAndOpen(Window window)
@@ -1349,13 +1351,13 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(wnd);
         }
 
-        private readonly RelayCommand _openAddQueryWnd = null;
+        private readonly RelayCommand<object> _openAddQueryWnd = null;
 
-        public RelayCommand OpenAddQueryWnd
+        public RelayCommand<object> OpenAddQueryWnd
         {
             get
             {
-                return _openAddQueryWnd ?? new RelayCommand(obj =>
+                return _openAddQueryWnd ?? new RelayCommand<object>(obj =>
                     {
                         switch (SelectedTabItem.Name)
                         {
@@ -1371,13 +1373,13 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly RelayCommand _openEditItemWnd = null;
+        private readonly RelayCommand<object> _openEditItemWnd = null;
 
-        public RelayCommand OpenEditItemWnd
+        public RelayCommand<object> OpenEditItemWnd
         {
             get
             {
-                return _openEditItemWnd ?? new RelayCommand(obj =>
+                return _openEditItemWnd ?? new RelayCommand<object>(obj =>
                     {
                         switch (SelectedTabItem.Name)
                         {
