@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace DocumentVisor.Model
 {
     public class Query : IDataField
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Info { get; set; }
         public string Guid { get; set; }
         public int PrivacyId { get; set; }
 
@@ -48,6 +42,62 @@ namespace DocumentVisor.Model
             get => DataWorker.GetTypeById(TypeId);
             set => TypeId = value.Id;
         }
+
+
+        [NotMapped]
+        public virtual bool IsCd
+        {
+            get => HasCd == 1;
+            set => HasCd = value ? 1 : 0;
+        }
+
+        public int HasCd { get; set; }
+
+        [NotMapped]
+        public virtual bool Various
+        {
+            get => IsVarious == 1;
+            set => IsVarious = value ? 1 : 0;
+        }
+
+        public int IsVarious { get; set; }
+
+
+        public int IsEmpty { get; set; }
+
+        [NotMapped]
+        public virtual bool Empty
+        {
+            get => IsEmpty == 1;
+            set => IsEmpty = value ? 1 : 0;
+        }
+
+        public int IsComplete { get; set; }
+
+        [NotMapped]
+        public virtual bool Complete
+        {
+            get => IsComplete == 1;
+            set => IsComplete = value ? 1 : 0;
+        }
+
+        [NotMapped] public virtual string LinkedThemesString => string.Join(", ", LinkedThemes);
+        [NotMapped] public virtual string LinkedActionsString => string.Join(", ", LinkedActions);
+        [NotMapped] public virtual string LinkedArticlesString => string.Join(", ", LinkedArticles);
+        [NotMapped] public virtual string LinkedPersonsString => string.Join(", ", LinkedPersons);
+        [NotMapped] public virtual List<Theme> LinkedThemes => DataWorker.GetAllQueryThemes(Id);
+        [NotMapped] public virtual List<Action> LinkedActions => DataWorker.GetAllQueryAction(Id);
+        [NotMapped] public virtual List<Article> LinkedArticles => DataWorker.GetAllQueryArticles(Id);
+        [NotMapped] public virtual List<Person> LinkedPersons => DataWorker.GetAllQueryExecutors(Id);
+
+        public ICollection<QueryTheme> QueryThemes { get; set; }
+        public ICollection<QueryAction> QueryActions { get; set; }
+        public ICollection<QueryPerson> QueryPersons { get; set; }
+        public ICollection<QueryArticle> QueryArticles { get; set; }
+        public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Info { get; set; }
 
         #region OuterSecretary
 
@@ -90,50 +140,10 @@ namespace DocumentVisor.Model
             set => CentralSecretaryDate = value.Ticks;
         }
 
+        public override string ToString()
+        {
+            return $"<li>{Division.Name}; {InnerSecretaryNumber}; от {InnerSecretaryDateTime:MM.dd.yyyy}; {LinkedActionsString} исполн.{LinkedPersonsString}</li>";
+        }
         #endregion
-
-
-        [NotMapped]
-        public virtual bool IsCd
-        {
-            get => HasCd == 1;
-            set => HasCd = value ? 1 : 0;
-        }
-
-        public int HasCd { get; set; }
-
-        [NotMapped]
-        public virtual bool Various
-        {
-            get => IsVarious == 1;
-            set => IsVarious = value ? 1 : 0;
-        }
-
-        public int IsVarious { get; set; }
-
-
-        public int IsEmpty { get; set; }
-
-        [NotMapped]
-        public virtual bool Empty
-        {
-            get => IsEmpty == 1;
-            set => IsEmpty = value ? 1 : 0;
-        }
-
-        [NotMapped]
-        public virtual string LinkedThemes => string.Join(",",DataWorker.GetAllQueryThemes(Id));
-        [NotMapped]
-        public virtual string LinkedActions => string.Join(",", DataWorker.GetAllQueryAction(Id));
-        [NotMapped]
-        public virtual string LinkedArticles => string.Join(",", DataWorker.GetAllQueryArticles(Id));
-        [NotMapped]
-        public virtual string LinkedPersons => string.Join(",", DataWorker.GetAllQueryExecutors(Id));
-        public ICollection<QueryTheme> QueryThemes { get; set; }
-        public ICollection<QueryAction> QueryActions { get; set; }
-        public ICollection<QueryPerson> QueryPersons { get; set; }
-        public ICollection<QueryArticle> QueryArticles { get; set; }
-        public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }
-
     }
 }

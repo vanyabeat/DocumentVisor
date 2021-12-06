@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using DocumentVisor.ViewModel;
+﻿using DocumentVisor.ViewModel;
+using System.Windows;
 using Action = DocumentVisor.Model.Action;
 
 namespace DocumentVisor.View

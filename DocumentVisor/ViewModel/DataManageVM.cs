@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using DocumentVisor.Infrastructure;
+﻿using DocumentVisor.Infrastructure;
 using DocumentVisor.Model;
 using DocumentVisor.View;
 using Microsoft.Win32;
 using Spire.Xls;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Converter;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
@@ -32,9 +35,9 @@ namespace DocumentVisor.ViewModel
 
         #region PersonTypes
 
-        private List<PersonType> _allPersonTypes = DataWorker.GetAllPersonTypes();
+        private ObservableCollection<PersonType> _allPersonTypes = DataWorker.GetAllPersonTypes();
 
-        public List<PersonType> AllPersonTypes
+        public ObservableCollection<PersonType> AllPersonTypes
         {
             get => _allPersonTypes;
             private set
@@ -116,6 +119,7 @@ namespace DocumentVisor.ViewModel
         public static string PersonRank { get; set; }
         public static PersonType PersonType { get; set; }
         public static Person SelectedPerson { get; set; }
+
         private List<Person> _allPersons = DataWorker.GetAllPersons();
 
         public List<Person> AllPersons
@@ -677,7 +681,7 @@ namespace DocumentVisor.ViewModel
         #endregion
 
         #region Queries
-
+        public static Query SelectedQuery { get; set; }
         public static string QueryName { get; set; }
         public static string QueryGuid { get; set; }
         public static string QueryInfo { get; set; }
@@ -702,12 +706,13 @@ namespace DocumentVisor.ViewModel
         public static Article QueryCurrentArticle { get; set; }
         public static Action SelectedQueryAction { get; set; }
         public static Action QueryCurrentAction { get; set; }
+
         private SortedSet<Person> _queryExecutorPersons;
 
         public SortedSet<Person> QueryExecutorPersons
         {
             get => _queryExecutorPersons;
-            private set
+            set
             {
                 _queryExecutorPersons = value;
                 OnPropertyChanged(nameof(QueryExecutorPersons));
@@ -719,7 +724,7 @@ namespace DocumentVisor.ViewModel
         public SortedSet<Theme> QueryThemes
         {
             get => _queryThemes;
-            private set
+            set
             {
                 _queryThemes = value;
                 OnPropertyChanged(nameof(QueryThemes));
@@ -731,7 +736,7 @@ namespace DocumentVisor.ViewModel
         public SortedSet<Article> QueryArticles
         {
             get => _queryArticles;
-            private set
+            set
             {
                 _queryArticles = value;
                 OnPropertyChanged(nameof(QueryArticles));
@@ -743,7 +748,7 @@ namespace DocumentVisor.ViewModel
         public SortedSet<Action> QueryActions
         {
             get => _queryActions;
-            private set
+            set
             {
                 _queryActions = value;
                 OnPropertyChanged(nameof(QueryActions));
@@ -751,6 +756,10 @@ namespace DocumentVisor.ViewModel
         }
 
         private readonly RelayCommand<object> _createGuid = null;
+
+        public static DateTime QueryReportBeginDateTime { get; set; }
+
+        public static DateTime QueryReportEndDateTime { get; set; }
 
         public RelayCommand<object> CreateGuid
         {
@@ -787,7 +796,7 @@ namespace DocumentVisor.ViewModel
                                 QueryDivision, QuerySignPerson, QueryType, QueryOuterSecretaryDateTime,
                                 QueryOuterSecretaryNumber,
                                 QueryInnerSecretaryDateTime, QueryInnerSecretaryNumber, QueryCentralSecretaryDateTime,
-                                QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty);
+                                QueryCentralSecretaryNumber, QueryHasCd, QueryVarious, QueryEmpty, false);
                             if (result > 0)
                             {
                                 if (QueryExecutorPersons != null)
@@ -820,10 +829,10 @@ namespace DocumentVisor.ViewModel
                                     {
                                         DataWorker.QueryThemeLink(result, theme.Id);
                                     }
-                                    
+
                                 }
 
-                                    
+
                             }
 
                             UpdateAllDataView();
@@ -835,6 +844,39 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+
+        private readonly RelayCommand<object> _editQuery = null;
+
+        public RelayCommand<object> EditQuery
+        {
+            get
+            {
+
+                return _editQuery ?? new RelayCommand<object>(obj =>
+                {
+                    var wnd = obj as Window;
+
+                    if (SelectedQuery == null)
+                    {
+                        ShowMessageToUser(Dictionary["ExecutorPersonNeedToSelect"].ToString());
+                    }
+                    else
+                    {
+                        var result = DataWorker.EditQuery(SelectedQuery, QueryName, QueryInfo, QueryGuid,
+                            QueryPrivacy, QueryDivision, QuerySignPerson, QueryType, QueryOuterSecretaryDateTime,
+                            QueryOuterSecretaryNumber, QueryInnerSecretaryDateTime, QueryInnerSecretaryNumber,
+                            QueryCentralSecretaryDateTime, QueryCentralSecretaryNumber, QueryHasCd, QueryVarious,
+                            QueryEmpty);
+                        result = DataWorker.EditQueryLinkedData(SelectedQuery, QueryExecutorPersons, QueryArticles,
+                            QueryThemes, QueryActions);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
+                });
+            }
+        }
+
         private readonly RelayCommand<object> _addExecutorPerson = null;
 
         public RelayCommand<object> AddExecutorPerson
@@ -843,6 +885,7 @@ namespace DocumentVisor.ViewModel
             {
                 return _addExecutorPerson ?? new RelayCommand<object>(obj =>
                     {
+
                         var wnd = obj as AddQueryView;
 
                         if (QueryCurrentExecutorPerson == null)
@@ -862,6 +905,36 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+        private readonly RelayCommand<object> _addEditExecutorPerson = null;
+
+        public RelayCommand<object> AddEditExecutorPerson
+        {
+            get
+            {
+                return _addEditExecutorPerson ?? new RelayCommand<object>(obj =>
+                    {
+
+                        var wnd = obj as EditQueryView;
+
+                        if (QueryCurrentExecutorPerson == null)
+                        {
+                            ShowMessageToUser(Dictionary["ExecutorPersonNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetPersonById(QueryCurrentExecutorPerson.Id);
+                            QueryExecutorPersons ??= new SortedSet<Person>();
+                            QueryExecutorPersons.Add(person);
+                            QueryCurrentExecutorPerson = null;
+                            wnd.ExecutorPersonsDataGrid.Items.Refresh();
+                            wnd.QueryExecutorComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
 
         private readonly RelayCommand<object> _addQueryTheme = null;
 
@@ -883,6 +956,61 @@ namespace DocumentVisor.ViewModel
                             QueryThemes ??= new SortedSet<Theme>();
                             QueryThemes.Add(theme);
                             QueryCurrentTheme = null;
+                            wnd.QueryThemesDataGrid.Items.Refresh();
+                            wnd.QueryThemeComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand<object> _addEditQueryTheme = null;
+
+        public RelayCommand<object> AddEditQueryTheme
+        {
+            get
+            {
+                return _addEditQueryTheme ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (QueryCurrentTheme == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryThemeNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var theme = DataWorker.GetThemeById(QueryCurrentTheme.Id);
+                            QueryThemes ??= new SortedSet<Theme>();
+                            QueryThemes.Add(theme);
+                            QueryCurrentTheme = null;
+                            wnd.QueryThemesDataGrid.Items.Refresh();
+                            wnd.QueryThemeComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand<object> _deleteEditQueryTheme = null;
+
+        public RelayCommand<object> DeleteEditQueryTheme
+        {
+            get
+            {
+                return _deleteEditQueryTheme ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (SelectedQueryTheme == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryThemeNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetThemeById(SelectedQueryTheme.Id);
+                            QueryThemes.Remove(person);
+                            SelectedQueryTheme = null;
                             wnd.QueryThemesDataGrid.Items.Refresh();
                             wnd.QueryThemeComboBox.SelectedItem = null;
                         }
@@ -917,6 +1045,35 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+        private readonly RelayCommand<object> _deleteEditExecutorPerson = null;
+
+        public RelayCommand<object> DeleteEditExecutorPerson
+        {
+            get
+            {
+                return _deleteEditExecutorPerson ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (SelectedQueryExecutorPerson == null)
+                        {
+                            ShowMessageToUser(Dictionary["ExecutorPersonNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var person = DataWorker.GetPersonById(SelectedQueryExecutorPerson.Id);
+                            QueryExecutorPersons.Remove(person);
+                            SelectedQueryExecutorPerson = null;
+                            wnd.ExecutorPersonsDataGrid.Items.Refresh();
+                            wnd.QueryExecutorComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+
 
         private readonly RelayCommand<object> _deleteQueryTheme = null;
 
@@ -973,6 +1130,34 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+        private readonly RelayCommand<object> _addEditQueryArticle = null;
+
+        public RelayCommand<object> AddEditQueryArticle
+        {
+            get
+            {
+                return _addEditQueryArticle ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (QueryCurrentArticle == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryArticleNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetArticleById(QueryCurrentArticle.Id);
+                            QueryArticles ??= new SortedSet<Article>();
+                            QueryArticles.Add(article);
+                            QueryCurrentArticle = null;
+                            wnd.QueryArticlesDataGrid.Items.Refresh();
+                            wnd.QueryArticleComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
         private readonly RelayCommand<object> _deleteQueryArticle = null;
 
         public RelayCommand<object> DeleteQueryArticle
@@ -982,6 +1167,33 @@ namespace DocumentVisor.ViewModel
                 return _deleteQueryArticle ?? new RelayCommand<object>(obj =>
                     {
                         var wnd = obj as AddQueryView;
+
+                        if (SelectedQueryArticle == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryArticleNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetArticleById(SelectedQueryArticle.Id);
+                            QueryArticles.Remove(article);
+                            SelectedQueryArticle = null;
+                            wnd.QueryArticlesDataGrid.Items.Refresh();
+                            wnd.QueryArticleComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
+        private readonly RelayCommand<object> _deleteEditQueryArticle = null;
+
+        public RelayCommand<object> DeleteEditQueryArticle
+        {
+            get
+            {
+                return _deleteEditQueryArticle ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
 
                         if (SelectedQueryArticle == null)
                         {
@@ -1029,6 +1241,34 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+        private readonly RelayCommand<object> _addEditQueryAction = null;
+
+        public RelayCommand<object> AddEditQueryAction
+        {
+            get
+            {
+                return _addEditQueryAction ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (QueryCurrentAction == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var action = DataWorker.GetActionById(QueryCurrentAction.Id);
+                            QueryActions ??= new SortedSet<Action>();
+                            QueryActions.Add(action);
+                            QueryCurrentAction = null;
+                            wnd.QueryActionDataGrid.Items.Refresh();
+                            wnd.QueryActionComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
+
         private readonly RelayCommand<object> _deleteQueryAction = null;
 
         public RelayCommand<object> DeleteQueryAction
@@ -1056,6 +1296,32 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+        private readonly RelayCommand<object> _deleteEditQueryAction = null;
+
+        public RelayCommand<object> DeleteEditQueryAction
+        {
+            get
+            {
+                return _deleteEditQueryAction ?? new RelayCommand<object>(obj =>
+                    {
+                        var wnd = obj as EditQueryView;
+
+                        if (SelectedQueryAction == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var article = DataWorker.GetActionById(SelectedQueryAction.Id);
+                            QueryActions.Remove(article);
+                            SelectedQueryAction = null;
+                            wnd.QueryActionDataGrid.Items.Refresh();
+                            wnd.QueryActionComboBox.SelectedItem = null;
+                        }
+                    }
+                );
+            }
+        }
         private List<Query> _allQueries = DataWorker.GetAllQueries();
 
         public List<Query> AllQueries
@@ -1105,7 +1371,7 @@ namespace DocumentVisor.ViewModel
         {
             get
             {
-                return _exportToExcel ?? new AsyncRelayCommand<object>(async (obj) =>  
+                return _exportToExcel ?? new AsyncRelayCommand<object>(async (obj) =>
                     {
                         if (!(obj is Window wnd)) return;
                         var dataGrid = wnd.FindName("QueriesDataGrid") as SfDataGrid;
@@ -1116,12 +1382,87 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+        private readonly AsyncRelayCommand<object> _generateHtmlReport = null;
+
+        public static async Task WriteToFileAsync(string filename, string text)
+        {
+            await File.WriteAllTextAsync(filename, text);
+        }
+
+        public AsyncRelayCommand<object> GenerateHtmlReport
+        {
+            get
+            {
+                return _generateHtmlReport ?? new AsyncRelayCommand<object>(async obj =>
+                    {
+                        var wnd = obj as Window;
+
+                        if (QueryReportBeginDateTime == null || QueryReportEndDateTime == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var queries =
+                                DataWorker.GetAllQueriesByDate(QueryReportBeginDateTime, QueryReportEndDateTime);
+                            var ul = string.Join("", queries.Select(x => x.ToString()).ToArray());
+                            var result = $@"<h2 style=""text-align: center;"">Отчетный период с {QueryReportBeginDateTime:MM.dd.yyyy} по {QueryReportEndDateTime:MM.dd.yyyy}</h2>
+<table style=""margin-left: auto; margin-right: auto;"" border=""1"">
+   <tbody>
+      <tr>
+         <td style=""text-align: center;"">п/н</td>
+         <td style=""text-align: center;"">Проведено КРМ</td>
+         <td style=""text-align: center;"">Количество</td>
+         <td style=""text-align: center;"">Примечание</td>
+      </tr>
+      <tr>
+         <td style=""text-align: center;"">1</td>
+         <td style=""text-align: center;"">&nbsp;Посступило ш/т и запросов</td>
+         <td style=""text-align: center;"">&nbsp;{queries.Count}</td>
+         <td style=""text-align: center;"">&nbsp;</td>
+      </tr>
+      <tr>
+         <td style=""text-align: center;"">2</td>
+         <td style=""text-align: center;"">&nbsp;Выполнено ш/т и запросов</td>
+         <td style=""text-align: center;"">&nbsp;$2</td>
+         <td style=""text-align: center;"">&nbsp;</td>
+      </tr>
+      <tr>
+         <td style=""text-align: center;"">3</td>
+         <td style=""text-align: center;"">&nbsp;Очередь запросов</td>
+         <td style=""text-align: center;"">&nbsp;$3</td>
+         <td style=""text-align: center;"">&nbsp;</td>
+      </tr>
+   </tbody>
+</table>
+<ul style=""list-style-type: circle;"">
+  {ul}
+</ul>";
+                            var saveFileDialog = new SaveFileDialog
+                            {
+                                Filter = "Text File (*.html)|*.htm|Show All Files (*.*)|*.*",
+                                FileName = "ReportDate",
+                                Title = "Save As"
+                            };
+                            if (saveFileDialog.ShowDialog() != null)
+                            {
+                                await WriteToFileAsync(saveFileDialog.FileName, result);
+                                // workBook.SaveAs(saveFileDialog.FileName);
+                            };
+
+                        }
+                    }
+                );
+            }
+        }
         #endregion
 
         #region Updates
 
         private void UpdateAllDataView()
         {
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             UpdateAllPersonsView();
             UpdateAllPersonTypesView();
             UpdateAllPrivacyView();
@@ -1131,6 +1472,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllActionView();
             UpdateAllArticleView();
             UpdateAllQueriesView();
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         #endregion
@@ -1249,8 +1591,9 @@ namespace DocumentVisor.ViewModel
             QueryExecutorPersons = null;
             QueryActions = null;
             QueryArticles = null;
-            QueryExecutorPersons = null;
             QueryThemes = null;
+            QueryReportBeginDateTime = DateTime.Now;
+            QueryReportEndDateTime = DateTime.Now;
         }
 
         #endregion
@@ -1298,6 +1641,7 @@ namespace DocumentVisor.ViewModel
 
         private void OpenEditPersonTypeViewMethod(PersonType personType)
         {
+
             var wnd = new EditPersonTypeView(personType);
             SetCenterPositionAndOpen(wnd);
         }
@@ -1310,6 +1654,8 @@ namespace DocumentVisor.ViewModel
 
         private void OpenEditPersonViewMethod(Person person)
         {
+            // var index = DataWorker.GetAllPersonTypes().FindIndex(a => a.Id == person.TypeId);
+
             var wnd = new EditPersonView(person);
             SetCenterPositionAndOpen(wnd);
         }
@@ -1348,6 +1694,12 @@ namespace DocumentVisor.ViewModel
         private void OpenAddQueryViewMethod()
         {
             var wnd = new AddQueryView();
+            SetCenterPositionAndOpen(wnd);
+        }
+
+        private void OpenEditQueryMethod(Query query)
+        {
+            var wnd = new EditQueryView(query);
             SetCenterPositionAndOpen(wnd);
         }
 
@@ -1406,6 +1758,9 @@ namespace DocumentVisor.ViewModel
                                 return;
                             case "ActionsTab" when SelectedAction != null:
                                 OpenEditActionViewMethod(SelectedAction);
+                                return;
+                            case "QueriesTab" when SelectedQuery != null:
+                                OpenEditQueryMethod(SelectedQuery);
                                 return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());

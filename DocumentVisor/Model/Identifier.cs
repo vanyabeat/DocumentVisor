@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DocumentVisor.Model
 {
@@ -9,7 +6,7 @@ namespace DocumentVisor.Model
     {
         public int Id { get; set; }
         public string Content { get; set; }
-        
+
         public IdentifierType Type { get; set; }
 
         public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }

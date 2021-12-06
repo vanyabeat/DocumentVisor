@@ -1,15 +1,15 @@
-﻿<Window x:Class="DocumentVisor.View.AddQueryView"
+﻿<Window x:Class="DocumentVisor.View.EditQueryView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:DocumentVisor.ViewModel"
-        xmlns:documentVisor="clr-namespace:DocumentVisor"
         xmlns:toggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
-        x:Name="AddQueryWnd" 
+        x:Name="EditQueryWnd"
         mc:Ignorable="d"
-        Height="500" Width="1280"
-        d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}" ResizeMode="NoResize">
+  Height="600" Width="1280"
+        d:DataContext="{d:DesignInstance Type=viewModel:DataManageVm}" 
+        ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.Title>
-        <StaticResource ResourceKey="ActionEditWindow" />
+        <StaticResource ResourceKey="QueryEditWindow" />
     </Window.Title>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -48,22 +48,22 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryName}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBox Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" Name="QueryNameTextBox"
+            <TextBox Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"
                      Text="{Binding QueryName}" Margin="64,7,10,5" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryGuid}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBox Grid.Row="1" IsReadOnly="True" Name="QueryGuidTextBox" Text="{Binding QueryGuid}" Grid.ColumnSpan="3"
-                     Grid.Column="0" Margin="64,5,54,4" />
-            <Button Grid.Row="1" Grid.Column="2" Content="{StaticResource QueryRefresh}" Command="{Binding CreateGuid}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="79,5,10,4" />
-            <ComboBox Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" Name="QueryPrivacyComboBox"
-                      ItemsSource="{Binding AllPrivacies}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryPrivacy}" Margin="64,5,10,0" />
+            <TextBox Grid.Row="1" IsReadOnly="True" Text="{Binding QueryGuid}" Grid.ColumnSpan="3"
+                     Grid.Column="0" Margin="64,5,10,4" />
+            <ComboBox DisplayMemberPath="Name" Name="PrivacyCombobox" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" 
+                      SelectedItem="{Binding QueryPrivacy}"
+                      ItemsSource="{Binding AllPrivacies}"  Margin="64,5,10,0" />
             <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryPrivacy}" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.6*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="68*" />
+                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="23*"/>
+                <ColumnDefinition Width="200*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -71,17 +71,17 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryDivision}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Label Grid.Column="0" Content="{StaticResource QueryDivision}" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryQueryType}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QuerySignPerson}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <ComboBox Grid.Row="0" Name="QueryDivisionComboBox" ItemsSource="{Binding AllDivisions}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Grid.ColumnSpan="2" Grid.Column="0"
-                      Margin="65,8,10,0" />
-            <ComboBox Grid.Row="1" Name="QueryQueryTypeComboBox" ItemsSource="{Binding AllQueryTypes}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Grid.ColumnSpan="2" Grid.Column="0"
+            <Label Grid.Row="2" Content="{StaticResource QuerySignPerson}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ComboBox Name="DivisionCombobox" Grid.Row="0" ItemsSource="{Binding AllDivisions}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryDivision}" Grid.ColumnSpan="4" Grid.Column="0"
+                      Margin="65,8,10,44" Grid.RowSpan="2" />
+            <ComboBox Name="DocTypeCombobox"  Grid.Row="1" ItemsSource="{Binding AllQueryTypes}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Grid.ColumnSpan="4" Grid.Column="0"
                       Margin="65,9,10,40" Grid.RowSpan="2" />
-            <ComboBox Grid.Row="2" Grid.Column="1" Name="QuerySignPersonComboBox" ItemsSource="{Binding AllPersons}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" VerticalAlignment="Center" Height="30" Margin="0,0,10,0" />
+            <ComboBox Name="SignPersonCombobox"  Grid.Row="2" Grid.Column="3" ItemsSource="{Binding AllPersons}"
+                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" VerticalAlignment="Center" Height="28" Margin="0,0,10,0" />
 
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">
@@ -98,10 +98,10 @@
             <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryDate}" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryOuterSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Left" />
             <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource QueryInfo}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <DatePicker Grid.Row="0" Grid.Column="1" Name="QueryOuterSecretaryDateTimePicker" SelectedDate="{Binding QueryOuterSecretaryDateTime }" Margin="0,0,10,7"/>
-            <TextBox Grid.Column="1" Name="QueryOuterSecretaryNumber" Text="{Binding QueryOuterSecretaryNumber}"
-                     Margin="0,40,10,5" Grid.Row="0" Grid.RowSpan="2" />
-            <TextBox Grid.Row="2" Grid.Column="1"    Name="QueryInfoTextBox" Text="{Binding QueryInfo}" Margin="0,7,10,0" />
+            <DatePicker Grid.Row="0" Grid.Column="1"  SelectedDate="{Binding QueryOuterSecretaryDateTime }" Margin="0,0,10,7"/>
+            <TextBox Grid.Column="1"  Text="{Binding QueryOuterSecretaryNumber}"
+                     Margin="0,11,10,5" Grid.Row="1" />
+            <TextBox Grid.Row="2" Grid.Column="1"     Text="{Binding QueryInfo}" Margin="0,7,10,0" />
         </Grid>
         <Grid Grid.Row="3" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -113,7 +113,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{StaticResource Add}" Command="{Binding AddNewQuery}"
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{StaticResource Edit}" Command="{Binding EditQuery}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                     HorizontalAlignment="Left" Margin="10,0,0,10" Width="300" />
 
@@ -131,8 +131,8 @@
 
             <Label Grid.Column="0" Content="{StaticResource QueryInnerSecretaryDate}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryInnerSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" />
-            <DatePicker Grid.Row="0" Name="QueryInnerSecretaryDateTimePicker" SelectedDate="{Binding QueryInnerSecretaryDateTime }" Margin="85,5,35,5" Grid.ColumnSpan="2"/>
-            <TextBox Grid.Row="1" Name="QueryInnerSecretaryNumber" Text="{Binding QueryInnerSecretaryNumber}" Margin="86,5,34,10" Grid.ColumnSpan="2" />
+            <DatePicker Grid.Row="0"  SelectedDate="{Binding QueryInnerSecretaryDateTime }" Margin="85,5,35,5" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Row="1" Text="{Binding QueryInnerSecretaryNumber}" Margin="86,5,34,10" Grid.ColumnSpan="2" />
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -147,8 +147,8 @@
 
             <Label Grid.Column="0" Content="{StaticResource QueryCentralSecretaryDate}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
             <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource QueryCentralSecretaryNumber}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" />
-            <DatePicker Grid.Row="0" Name="QueryCentralSecretaryDateTimePicker" SelectedDate="{Binding QueryCentralSecretaryDateTime }" Margin="99,8,31,8" Grid.ColumnSpan="2"/>
-            <TextBox Grid.Row="1" Name="QueryCentralSecretaryNumber" Text="{Binding QueryCentralSecretaryNumber}" Margin="99,9,31,9" Grid.ColumnSpan="2" />
+            <DatePicker Grid.Row="0"  SelectedDate="{Binding QueryCentralSecretaryDateTime }" Margin="99,8,31,8" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Row="1"  Text="{Binding QueryCentralSecretaryNumber}" Margin="99,9,31,9" Grid.ColumnSpan="2" />
 
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
@@ -173,10 +173,10 @@
                                         Binding="{Binding Path=Phone}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddExecutorPerson}"
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddEditExecutorPerson}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,14,130,15"
                     Grid.Column="1" />
-            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteExecutorPerson}"
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteEditExecutorPerson}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="35,14,95,15"
                     Grid.Column="1" />
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryExecutorComboBox" ItemsSource="{Binding AllPersons}"
@@ -204,10 +204,10 @@
                                         Binding="{Binding Info}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryTheme}"
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddEditQueryTheme}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,15,130,15"
                     Grid.Column="1" />
-            <Button Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryTheme}"
+            <Button Content="{StaticResource DeleteToBox}" Command="{Binding DeleteEditQueryTheme}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="35,15,95,15"
                     Grid.Column="1" Grid.Row="1" />
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryThemeComboBox" ItemsSource="{Binding AllThemes}"
@@ -235,9 +235,9 @@
                                         Binding="{Binding Info}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryArticle}"
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddEditQueryArticle}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,15,130,15" Grid.Column="1" />
-            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryArticle}"
+            <Button Grid.Row="1" Content="{StaticResource DeleteToBox}" Command="{Binding DeleteEditQueryArticle}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="35,15,95,15"
                     Grid.Column="1" />
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryArticleComboBox" ItemsSource="{Binding AllArticles}"
@@ -265,10 +265,10 @@
                                         Binding="{Binding Info}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddQueryAction}"
+            <Button Grid.Row="1" Content="{StaticResource InsertToBox}" Command="{Binding AddEditQueryAction}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,14,130,15"
                     Grid.Column="1" />
-            <Button Content="{StaticResource DeleteToBox}" Command="{Binding DeleteQueryAction}"
+            <Button Content="{StaticResource DeleteToBox}" Command="{Binding DeleteEditQueryAction}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="35,14,95,15"
                     Grid.Column="1" Grid.Row="1" />
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryActionComboBox" ItemsSource="{Binding AllActions}"

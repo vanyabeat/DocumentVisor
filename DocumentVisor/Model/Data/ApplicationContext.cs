@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DocumentVisor.Model.Data
 {
@@ -11,10 +11,10 @@ namespace DocumentVisor.Model.Data
 
         public DbSet<Theme> Themes { get; set; }
         public DbSet<QueryTheme> QueryThemes { get; set; }
-        
+
         public DbSet<Action> Actions { get; set; }
         public DbSet<QueryAction> QueryActions { get; set; }
-        
+
         public DbSet<Person> Persons { get; set; }
         public DbSet<PersonType> PersonTypes { get; set; }
         public DbSet<QueryPerson> QueryPersons { get; set; }

@@ -1,7 +1,7 @@
+using DocumentVisor.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using DocumentVisor.ViewModel;
 
 namespace DocumentVisor.View
 {

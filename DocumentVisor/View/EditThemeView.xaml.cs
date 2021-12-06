@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using DocumentVisor.Model;
+﻿using DocumentVisor.Model;
 using DocumentVisor.ViewModel;
+using System.Windows;
 
 namespace DocumentVisor.View
 {

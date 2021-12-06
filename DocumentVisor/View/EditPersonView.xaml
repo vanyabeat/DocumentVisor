@@ -39,7 +39,7 @@
                 <TextBlock Text="{StaticResource NewPersonRank}" />
                 <TextBox Text="{Binding PersonRank}" />
                 <TextBlock Text="{StaticResource NewPersonType}" />
-                <ComboBox SelectedItem="{Binding PersonType}" ItemsSource="{Binding AllPersonTypes}" />
+                <ComboBox Name="PersonTypeCombobox" SelectedItem="{Binding PersonType, Mode=TwoWay}" ItemsSource="{Binding AllPersonTypes}" />
             </StackPanel>
             <Button Content="{StaticResource Edit}"
                     Command="{Binding EditPerson}"

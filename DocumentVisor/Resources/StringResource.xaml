@@ -26,7 +26,8 @@
     <system:String x:Key="EmptyLogo">❌</system:String>
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     <system:String x:Key="ExportToExcel">Export to excel</system:String>
-        <!--END GUI STRING-->
+    <system:String x:Key="Reports">Reports</system:String>
+    <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
     <system:String x:Key="QueryName">Name</system:String>
@@ -55,13 +56,17 @@
     <system:String x:Key="QueryInnerSecretaryDate">In Sec Date</system:String>
     <system:String x:Key="QueryInnerSecretaryNumber">In Sec Num</system:String>
     <system:String x:Key="QueryCentralSecretaryNumber">Cent Sec Num</system:String>
-    <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String> 
+    <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String>
     <system:String x:Key="QueryArticle">Query Article</system:String>
     <system:String x:Key="QueryAction">Query Action</system:String>
     <system:String x:Key="QueryArticleNeedToSelect">Query Article need to select</system:String>
     <system:String x:Key="QueryActionNeedToSelect">Query Article need to select</system:String>
+    <system:String x:Key="QueryStartDate">Query StartDate</system:String>
+    <system:String x:Key="QueryEndDate">Query EndDate</system:String>
+    <system:String x:Key="GenerateReport">Generate Report</system:String>
+    <system:String x:Key="QueryEditWindow">Query Edit Window</system:String>
     <!--END QUERY-->
-                   <!--PERSON-->
+    <!--PERSON-->
     <system:String x:Key="PersonName">Name</system:String>
     <system:String x:Key="PersonInfo">Info</system:String>
     <system:String x:Key="PersonType">PersonType</system:String>

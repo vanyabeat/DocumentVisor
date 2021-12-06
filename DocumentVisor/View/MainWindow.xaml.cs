@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using DocumentVisor.ViewModel;
+﻿using DocumentVisor.ViewModel;
 using Syncfusion.UI.Xaml.Grid;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace DocumentVisor.View
 {
