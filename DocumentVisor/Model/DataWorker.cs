@@ -4,11 +4,73 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace DocumentVisor.Model
 {
     public class DataWorker
     {
+        #region IdentifierTypes
+        public static ObservableCollection<IdentifierType> GetAllIdentifierTypes()
+        {
+            using var db = new ApplicationContext();
+            return new ObservableCollection<IdentifierType>(db.IdentifierTypes);
+        }
+
+        public static string GetJsonString(object obj)
+        {
+           return JsonConvert.SerializeObject(obj);
+        }
+        public static string CreateIdentifierType(string name, string info)
+        {
+            var result = Dictionary["Insert"].ToString();
+            using var db = new ApplicationContext();
+            var checkIsExist = db.IdentifierTypes.Any(el => el.Name == name);
+            if (!checkIsExist)
+            {
+                db.IdentifierTypes.Add(new IdentifierType { Name = name, Info = info });
+                db.SaveChanges();
+                result = Dictionary["Complete"].ToString();
+            }
+
+            return result;
+        }
+
+        public static string DeleteIdentifierType(IdentifierType idT)
+        {
+            var result = Dictionary["PersonTypeNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                try
+                {
+                    db.IdentifierTypes.Remove(idT);
+                    db.SaveChanges();
+                    result = $"{Dictionary["IdentifierTypeDeleted"]} {idT}";
+                }
+                catch (Exception e)
+                {
+                    result = $"{Dictionary["IdentifierTypeDeleteError"]}\n{e.Message}";
+                }
+            }
+
+            return result;
+        }
+
+        public static string EditIdentifierType(IdentifierType old, string newName, string newInfo)
+        {
+            var result = Dictionary["IdentifierTypeNotExist"].ToString();
+            using (var db = new ApplicationContext())
+            {
+                var n = db.IdentifierTypes.FirstOrDefault(d => d.Id == old.Id);
+                n.Name = newName;
+                n.Info = newInfo;
+                db.SaveChanges();
+                result = $"{Dictionary["IdentifierTypeEdited"]} {n}";
+            }
+
+            return result;
+        }
+        #endregion
         #region Person
 
         public static List<Person> GetAllPersons()
@@ -828,6 +890,52 @@ namespace DocumentVisor.Model
                 where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks
                 select q;
             return result.ToList();
+        }
+
+        public static int GetAllQueriesByDateCompleted(DateTime begin, DateTime end)
+        {
+            if (begin > end) return 0;
+            using var db = new ApplicationContext();
+            var result = from q in db.Queries
+                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
+                select q;
+            return result.Count();
+        }
+
+        public static int GetAllQueriesNonComplete()
+        {
+            using var db = new ApplicationContext();
+            var result = from q in db.Queries
+                where q.IsComplete == 0
+                select q;
+            return result.Count();
+        }
+
+        public static SortedDictionary<Person, Tuple<int, int>> GetAllQueriesStatisticsByPerson(DateTime begin, DateTime end)
+        {
+            using var db = new ApplicationContext();
+            var result = from q in db.Queries
+                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
+                select q;
+            var statistics = new SortedDictionary<Person, Tuple<int, int>>();
+            foreach (var q in result)
+            {
+                var person = q.LinkedPersons[0];
+                var complete = (q.IsEmpty == 1);
+                if (statistics.ContainsKey(person))
+                {
+                    var it1 = statistics[person].Item1;
+                    var it2 = statistics[person].Item2;
+                    statistics[person] = new Tuple<int, int>(++it1, (complete) ? ++it2 : it2);
+                }
+                else
+                {
+                    
+                    statistics.Add(person, new Tuple<int, int>(1, (complete) ? 1 : 0));
+                }
+                
+            }
+            return statistics;
         }
 
         #endregion

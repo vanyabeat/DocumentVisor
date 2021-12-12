@@ -13,6 +13,7 @@
     <system:String x:Key="QueryTypes">Types</system:String>
     <system:String x:Key="Articles">Articles</system:String>
     <system:String x:Key="Action">Action</system:String>
+    <system:String x:Key="IdentifierType">Identifier Type</system:String>
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Edit">Edit</system:String>
@@ -27,6 +28,7 @@
     <system:String x:Key="PleaseSelectNeedleItem">Please Select Needle Item</system:String>
     <system:String x:Key="ExportToExcel">Export to excel</system:String>
     <system:String x:Key="Reports">Reports</system:String>
+    <system:String x:Key="Export">Export</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -171,4 +173,15 @@
     <system:String x:Key="ActionEditWindow">Action Edit Window</system:String>
     <system:String x:Key="ActionNameNeedToSelect">Need select Action name</system:String>
     <!--END ACTION-->
+    <!--BEGIN IDENTIFIERTYPE-->
+    <system:String x:Key="IdentifierTypeName">Name</system:String>
+    <system:String x:Key="IdentifierTypeInfo">Info</system:String>
+    <system:String x:Key="NewIdentifierTypeName">New Type Name</system:String>
+    <system:String x:Key="NewIdentifierTypeInfo">New Type Info</system:String>
+    <system:String x:Key="IdentifierTypeNotExist">IdentifierType not exist</system:String>
+    <system:String x:Key="IdentifierTypeDeleted">Good! Successful delete IdentifierType</system:String>
+    <system:String x:Key="IdentifierTypeEdited">Good! Successful edit IdentifierType</system:String>
+    <system:String x:Key="IdentifierTypeDeleteError">Fail! Maybe PersonType use in Persons</system:String>
+    <system:String x:Key="IdentifierTypeEditWindow">PersonType Edit Window</system:String>
+    <!--END IDENTIFIERTYPE-->
 </ResourceDictionary>

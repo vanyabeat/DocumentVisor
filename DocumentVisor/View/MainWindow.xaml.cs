@@ -15,6 +15,7 @@ namespace DocumentVisor.View
         public static DataGrid AllArticlesView;
         public static DataGrid AllQueryTypesView;
         public static DataGrid AllActionsView;
+        public static DataGrid AllIdentifierTypesView;
         public static SfDataGrid AllQueriesView;
         public static TabControl AllMainTabControl;
 
@@ -30,6 +31,7 @@ namespace DocumentVisor.View
             AllArticlesView = ArticlesDataGrid;
             AllQueryTypesView = QueryTypesDataGrid;
             AllActionsView = ActionsDataGrid;
+            AllIdentifierTypesView = IdentifierTypesDataGrid;
             AllMainTabControl = MainWindowTabControl;
             AllQueriesView = QueriesDataGrid;
         }

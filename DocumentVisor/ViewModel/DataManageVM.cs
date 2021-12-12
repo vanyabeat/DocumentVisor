@@ -1383,13 +1383,26 @@ namespace DocumentVisor.ViewModel
             }
         }
 
-        private readonly AsyncRelayCommand<object> _generateHtmlReport = null;
-
+        
+        
         public static async Task WriteToFileAsync(string filename, string text)
         {
             await File.WriteAllTextAsync(filename, text);
         }
 
+        private string GenerateTable(SortedDictionary<Person, Tuple<int, int>> sortedDictionary)
+        {
+            var result = "";
+           
+            foreach (var pair in sortedDictionary)
+            {
+                var pattern =
+                    $"<tr style=\"height: 18px;\"><td style=\"width: 25%; height: 18px;\">&nbsp;{pair.Key.Name}</td><td style=\"width: 25%; height: 18px; text-align: center;\">{pair.Value.Item1}({pair.Value.Item2})</td><td style=\"width: 25%; height: 18px; text-align: center;\">&nbsp;</td></tr>";
+                result += pattern;
+            }
+            return result;
+        }
+        private readonly AsyncRelayCommand<object> _generateHtmlReport = null;
         public AsyncRelayCommand<object> GenerateHtmlReport
         {
             get
@@ -1407,8 +1420,15 @@ namespace DocumentVisor.ViewModel
                             var queries =
                                 DataWorker.GetAllQueriesByDate(QueryReportBeginDateTime, QueryReportEndDateTime);
                             var ul = string.Join("", queries.Select(x => x.ToString()).ToArray());
-                            var result = $@"<h2 style=""text-align: center;"">Отчетный период с {QueryReportBeginDateTime:MM.dd.yyyy} по {QueryReportEndDateTime:MM.dd.yyyy}</h2>
-<table style=""margin-left: auto; margin-right: auto;"" border=""1"">
+                            var personData =
+                                DataWorker.GetAllQueriesStatisticsByPerson(QueryReportBeginDateTime,
+                                    QueryReportEndDateTime);
+                            var result = $@"
+<!DOCTYPE html>
+<html>
+<body>
+<h2 style=""text-align: center;"">Отчетный период с {QueryReportBeginDateTime:dd.MM.yyyy} по {QueryReportEndDateTime:dd.MM.yyyy}</h2>
+<table style=""border-collapse: collapse; width: 100%;"" border=""1"">
    <tbody>
       <tr>
          <td style=""text-align: center;"">п/н</td>
@@ -1418,27 +1438,49 @@ namespace DocumentVisor.ViewModel
       </tr>
       <tr>
          <td style=""text-align: center;"">1</td>
-         <td style=""text-align: center;"">&nbsp;Посступило ш/т и запросов</td>
+         <td style=""text-align: center;"">&nbsp;Поступило ш/т и запросов</td>
          <td style=""text-align: center;"">&nbsp;{queries.Count}</td>
          <td style=""text-align: center;"">&nbsp;</td>
       </tr>
       <tr>
          <td style=""text-align: center;"">2</td>
          <td style=""text-align: center;"">&nbsp;Выполнено ш/т и запросов</td>
-         <td style=""text-align: center;"">&nbsp;$2</td>
+         <td style=""text-align: center;"">&nbsp;{DataWorker.GetAllQueriesByDateCompleted(QueryReportBeginDateTime, QueryReportEndDateTime)}</td>
          <td style=""text-align: center;"">&nbsp;</td>
       </tr>
       <tr>
          <td style=""text-align: center;"">3</td>
          <td style=""text-align: center;"">&nbsp;Очередь запросов</td>
-         <td style=""text-align: center;"">&nbsp;$3</td>
+         <td style=""text-align: center;"">&nbsp;{DataWorker.GetAllQueriesNonComplete()}</td>
          <td style=""text-align: center;"">&nbsp;</td>
       </tr>
    </tbody>
 </table>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+<table style=""border-collapse: collapse; width: 100%; height: 48px;"" border=""1"">
+<tbody>
+<tr style=""height: 12px;"">
+<td style=""width: 25%; height: 12px; text-align: center;"">Сотрудники</td>
+<td style=""width: 25%; height: 12px; text-align: center;"">&nbsp;Кол-во запросов</td>
+<td style=""width: 25%; height: 12px; text-align: center;"">Примечание</td>
+</tr>
+{GenerateTable(personData)}
+<tr style=""height: 18px;"">
+<td style=""width: 25%; height: 18px; text-align: center;"" colspan=""2"">Итого:</td>
+<td style=""width: 25%; height: 18px;"">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+
 <ul style=""list-style-type: circle;"">
   {ul}
-</ul>";
+</ul>
+</body>
+</html>
+";
                             var saveFileDialog = new SaveFileDialog
                             {
                                 Filter = "Text File (*.html)|*.htm|Show All Files (*.*)|*.*",
@@ -1458,6 +1500,111 @@ namespace DocumentVisor.ViewModel
         }
         #endregion
 
+        #region IdentifierTypes
+
+        private ObservableCollection<IdentifierType> _allIdentifierTypes = DataWorker.GetAllIdentifierTypes();
+
+        public ObservableCollection<IdentifierType> AllIdentifierTypes
+        {
+            get => _allIdentifierTypes;
+            private set
+            {
+                _allIdentifierTypes = value;
+                OnPropertyChanged(nameof(AllPersonTypes));
+            }
+        }
+
+        public static IdentifierType SelectedIdentifierType { get; set; }
+        public static string IdentifierTypeName { get; set; }
+        public static string IdentifierTypeInfo { get; set; }
+
+        private readonly RelayCommand<object> _addNewIdentifierType = null;
+
+        public RelayCommand<object> AddNewIdentifierType
+        {
+            get
+            {
+                return _addNewIdentifierType ?? new RelayCommand<object>(obj =>
+                {
+                    var wnd = obj as Window;
+                    if (IdentifierTypeName == null || IdentifierTypeName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "IdentifierTypeNameTextBox");
+                        UpdateAllDataView();
+                    }
+                    else
+                    {
+                        DataWorker.CreateIdentifierType(IdentifierTypeName, IdentifierTypeInfo);
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ClearStackPanelIdentifierTypesView(wnd);
+                    }
+                });
+            }
+        }
+
+        private void UpdateAllIdentifierTypeView()
+        {
+            AllIdentifierTypes = DataWorker.GetAllIdentifierTypes();
+            AllIdentifierTypesView.ItemsSource = null;
+            AllIdentifierTypesView.Items.Clear();
+            AllIdentifierTypesView.ItemsSource = AllIdentifierTypes;
+            AllIdentifierTypesView.Items.Refresh();
+        }
+
+
+        private readonly RelayCommand<object> _editIdentifierType = null;
+
+        public RelayCommand<object> EditIdentifierType
+        {
+            get
+            {
+                return _editIdentifierType ?? new RelayCommand<object>(obj =>
+                {
+                    var window = obj as Window;
+                    if (SelectedIdentifierType != null)
+                    {
+                        var result = DataWorker.EditIdentifierType(SelectedIdentifierType, IdentifierTypeName, IdentifierTypeInfo);
+
+                        UpdateAllDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(result);
+                        window.Close();
+                    }
+                }
+                );
+            }
+        }
+
+
+        private readonly AsyncRelayCommand<object> _generateIdentifierTypesJson = null;
+        public AsyncRelayCommand<object> GenerateIdentifierTypesJson
+        {
+            get
+            {
+                return _generateIdentifierTypesJson ?? new AsyncRelayCommand<object>(async obj =>
+                {
+                    var wnd = obj as Window;
+                    var result = DataWorker.GetJsonString(DataWorker.GetAllIdentifierTypes());
+                        var saveFileDialog = new SaveFileDialog
+                        {
+                            Filter = "Text File (*.json)|*.json|Show All Files (*.*)|*.*",
+                            FileName = "IdentifierTypesJson",
+                            Title = "Save As"
+                        };
+                        if (saveFileDialog.ShowDialog() != null)
+                        {
+                            await WriteToFileAsync(saveFileDialog.FileName, result);
+                            // workBook.SaveAs(saveFileDialog.FileName);
+                        };
+
+                    }
+                
+                );
+            }
+        }
+        #endregion
+
         #region Updates
 
         private void UpdateAllDataView()
@@ -1472,6 +1619,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllActionView();
             UpdateAllArticleView();
             UpdateAllQueriesView();
+            UpdateAllIdentifierTypeView();
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
@@ -1531,6 +1679,11 @@ namespace DocumentVisor.ViewModel
                             UpdateAllDataView();
                             ClearStackPanelActionsView(wnd);
                             break;
+                        case "IdentifierTypesTab" when SelectedIdentifierType != null:
+                            result = DataWorker.DeleteIdentifierType(SelectedIdentifierType);
+                            UpdateAllDataView();
+                            ClearStackPanelIdentifierTypesView(wnd);
+                            break;
                     }
 
                     // upd
@@ -1542,7 +1695,10 @@ namespace DocumentVisor.ViewModel
 
         private void SetNullValuesToProperties()
         {
-            //Person
+            // IdentifierType
+            IdentifierTypeName = null;
+            IdentifierTypeInfo = null;
+            // Person
             PersonName = null;
             PersonInfo = null;
             PersonPhone = null;
@@ -1604,7 +1760,7 @@ namespace DocumentVisor.ViewModel
         {
             /// исправить
             var time = DateTime.Now;
-            var guid = NewGuid().ToString().Substring(0, 7);
+            var guid = NewGuid().ToString().Substring(0, 4);
             return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1, 3)}_{guid}";
         }
 
@@ -1703,6 +1859,12 @@ namespace DocumentVisor.ViewModel
             SetCenterPositionAndOpen(wnd);
         }
 
+        private void OpenEditIdentifierTypeMethod(IdentifierType selectedIdentifierType)
+        {
+            var wnd = new EditIdentifierTypeView(selectedIdentifierType);
+            SetCenterPositionAndOpen(wnd);
+        }
+
         private readonly RelayCommand<object> _openAddQueryWnd = null;
 
         public RelayCommand<object> OpenAddQueryWnd
@@ -1762,6 +1924,9 @@ namespace DocumentVisor.ViewModel
                             case "QueriesTab" when SelectedQuery != null:
                                 OpenEditQueryMethod(SelectedQuery);
                                 return;
+                            case "IdentifierTypesTab" when SelectedIdentifierType != null:
+                                OpenEditIdentifierTypeMethod(SelectedIdentifierType);
+                                return;
                             default:
                                 ShowMessageToUser(Dictionary["PleaseSelectNeedleItem"].ToString());
                                 return;
@@ -1770,6 +1935,8 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
+
 
         #endregion
 
@@ -1827,6 +1994,12 @@ namespace DocumentVisor.ViewModel
             ClearTextFromStackPanelTextBox(window, "ActionNameTextBox");
             ClearTextFromStackPanelTextBox(window, "ActionInfoTextBox");
             ClearTextFromStackPanelTextBox(window, "ActionNumberTextBox");
+        }
+
+        private void ClearStackPanelIdentifierTypesView(Window window)
+        {
+            ClearTextFromStackPanelTextBox(window, "IdentifierTypeInfoTextBox");
+            ClearTextFromStackPanelTextBox(window, "IdentifierTypeNameTextBox");
         }
 
         #endregion

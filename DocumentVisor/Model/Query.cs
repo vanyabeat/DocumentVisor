@@ -139,11 +139,26 @@ namespace DocumentVisor.Model
             get => new DateTime(CentralSecretaryDate);
             set => CentralSecretaryDate = value.Ticks;
         }
+        #endregion
 
-        public override string ToString()
+        #region OutputNumberSecretary
+
+        public string OutputSecretaryNumber { get; set; }
+        public long OutputSecretaryDate { get; set; }
+
+        [NotMapped]
+        public virtual DateTime OutputSecretaryDateTime
         {
-            return $"<li>{Division.Name}; {InnerSecretaryNumber}; от {InnerSecretaryDateTime:MM.dd.yyyy}; {LinkedActionsString} исполн.{LinkedPersonsString}</li>";
+            get => new DateTime(OutputSecretaryDate);
+            set => OutputSecretaryDate = value.Ticks;
         }
         #endregion
+        public override string ToString()
+        {
+            return $"<li>{Division.Name}; {InnerSecretaryNumber}; от {InnerSecretaryDateTime:dd.MM.yyyy}; {LinkedActionsString} исполн. {LinkedPersonsString}</li>";
+        }
+
+        public byte[] BlobData { get; set; }
+
     }
 }
