@@ -823,9 +823,7 @@
                                     Command="{Binding AddNewIdentifierType}"
                                     CommandParameter="{Binding ElementName=DocumentVisorWindow}"
                                     HorizontalAlignment="Center" />
-                            <Button Grid.Column="1" Content="{StaticResource Export}" Command="{Binding GenerateIdentifierTypesJson}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                                    HorizontalAlignment="Center" Width="63" />
+
                             <Button Grid.Column="2" Content="{StaticResource Delete}" Command="{Binding DeleteItem}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                                     HorizontalAlignment="Center" />
@@ -854,6 +852,9 @@
                     <Button Grid.Row="2" Grid.Column="1" Content="{StaticResource GenerateReport}" Command="{Binding GenerateHtmlReport}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             HorizontalAlignment="Center" />
+                    <Button Grid.Column="0" Grid.Row="2" Content="{StaticResource Export}" Command="{Binding GenerateIdentifierTypesJson}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            HorizontalAlignment="Center" Width="476" />
                 </Grid>
 
             </TabItem>

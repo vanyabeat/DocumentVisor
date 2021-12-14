@@ -1585,11 +1585,14 @@ namespace DocumentVisor.ViewModel
                 return _generateIdentifierTypesJson ?? new AsyncRelayCommand<object>(async obj =>
                 {
                     var wnd = obj as Window;
-                    var result = DataWorker.GetJsonString(DataWorker.GetAllIdentifierTypes());
+                    Dictionary<string, object> export = new Dictionary<string, object>();
+                    export.Add("Divisions", DataWorker.GetAllDivisions());
+                    export.Add("IdentifierTypes", DataWorker.GetAllIdentifierTypes());
+                    var result = DataWorker.GetJsonString(export);
                         var saveFileDialog = new SaveFileDialog
                         {
                             Filter = "Text File (*.json)|*.json|Show All Files (*.*)|*.*",
-                            FileName = "IdentifierTypesJson",
+                            FileName = "data_types",
                             Title = "Save As"
                         };
                         if (saveFileDialog.ShowDialog() != null)
