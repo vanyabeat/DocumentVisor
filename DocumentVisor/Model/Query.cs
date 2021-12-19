@@ -6,8 +6,12 @@ namespace DocumentVisor.Model
 {
     public class Query : IDataField
     {
+        public int Id { get; set; }
         public string Guid { get; set; }
         public int PrivacyId { get; set; }
+
+        public int BlobDataId => Id;
+
 
         [NotMapped]
         public virtual Privacy Privacy
@@ -22,6 +26,15 @@ namespace DocumentVisor.Model
         public virtual Division Division
         {
             get => DataWorker.GetDivisionById(DivisionId);
+            set => DivisionId = value.Id;
+        }
+
+        public int? OutputDivisionId { get; set; }
+
+        [NotMapped]
+        public virtual Division OutputDivision
+        {
+            get { return OutputDivisionId == null ? null : DataWorker.GetDivisionById((int)OutputDivisionId); }
             set => DivisionId = value.Id;
         }
 
@@ -95,7 +108,7 @@ namespace DocumentVisor.Model
         public ICollection<QueryPerson> QueryPersons { get; set; }
         public ICollection<QueryArticle> QueryArticles { get; set; }
         public ICollection<QueryIdentifier> QueryIdentifiers { get; set; }
-        public int Id { get; set; }
+        
         public string Name { get; set; }
         public string Info { get; set; }
 
@@ -157,8 +170,5 @@ namespace DocumentVisor.Model
         {
             return $"<li>{Division.Name}; {InnerSecretaryNumber}; от {InnerSecretaryDateTime:dd.MM.yyyy}; {LinkedActionsString} исполн. {LinkedPersonsString}</li>";
         }
-
-        public byte[] BlobData { get; set; }
-
     }
 }

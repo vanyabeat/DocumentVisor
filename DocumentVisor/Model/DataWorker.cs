@@ -10,6 +10,39 @@ namespace DocumentVisor.Model
 {
     public class DataWorker
     {
+        #region QueryBlobData
+        public static int CreateQueryBlobData(int queryId, uint size, byte[] data)
+        {
+            using var db = new ApplicationContext();
+            int result = -1;
+            var checkIsExist = db.QueriesBlobDatas.Any(el => el.Id == queryId);
+            if (!checkIsExist)
+            {
+                var entity =  db.QueriesBlobDatas.Add(new QueryBlobData { Id = queryId, BytesSize = size, Data = data});
+                db.SaveChanges();
+                result = entity.Entity.Id;
+            }
+
+            return result;
+        }
+
+        public static int EditQueryBlobData(int queryId, uint size, byte[] data)
+        {
+            int result = -1;
+            using (var db = new ApplicationContext())
+            {
+                var n = db.QueriesBlobDatas.FirstOrDefault(d => d.Id == queryId);
+                n.BytesSize = size;
+                n.Data = data;
+                db.SaveChanges();
+                result = n.Id;
+            }
+
+            return result;
+        }
+
+
+        #endregion
         #region IdentifierTypes
         public static ObservableCollection<IdentifierType> GetAllIdentifierTypes()
         {
@@ -809,6 +842,7 @@ namespace DocumentVisor.Model
                 result = entity.Entity.Id;
             }
 
+            DataWorker.CreateQueryBlobData(result, 0, null);
             return result;
         }
 
@@ -849,6 +883,48 @@ namespace DocumentVisor.Model
             entity.IsCd = newHasCd;
             entity.Various = newVarious;
             entity.Empty = newEmpty;
+            db.SaveChanges();
+            result = entity.Id;
+            return result;
+        }
+
+        public static int EditQueryImport(
+            string queryGuid,
+            string newInfo,
+            int hasCd,
+            int isEmpty,
+            string jsonIds,
+            int outputDivisionId,
+            string outputNumber,
+            long outputNumberDate,
+            string blobData64
+        )
+        {
+            var result = -1;
+            using var db = new ApplicationContext();
+            var entity = db.Queries.FirstOrDefault(d => d.Guid == queryGuid);
+            entity.Info = newInfo;
+            entity.HasCd = hasCd;
+            entity.IsEmpty = isEmpty;
+            entity.OutputSecretaryDate = outputNumberDate;
+            entity.OutputSecretaryNumber = outputNumber;
+            entity.OutputDivisionId = outputDivisionId;
+            var data64 = Convert.FromBase64String(blobData64);
+            EditQueryBlobData(entity.Id, (uint)data64.Length, data64);
+
+            //entity.PrivacyId = newPrivacy.Id;
+            //entity.DivisionId = newDivision.Id;
+            //entity.SignPersonId = newSignPerson.Id;
+            //entity.TypeId = newType.Id;
+            //entity.OuterSecretaryDateTime = newQueryOuterSecretaryDateTime;
+            //entity.OuterSecretaryNumber = newQueryOuterSecretaryNumber;
+            //entity.InnerSecretaryDateTime = newQueryInnerSecretaryDateTime;
+            //entity.InnerSecretaryNumber = newQueryInnerSecretaryNumber;
+            //entity.CentralSecretaryDateTime = newQueryCentralSecretaryDateTime;
+            //entity.CentralSecretaryNumber = newQueryCentralSecretaryNumber;
+            //entity.IsCd = newHasCd;
+            //entity.Various = newVarious;
+            //entity.Empty = newEmpty;
             db.SaveChanges();
             result = entity.Id;
             return result;

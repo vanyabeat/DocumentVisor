@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Newtonsoft.Json;
 using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
@@ -1939,7 +1940,34 @@ namespace DocumentVisor.ViewModel
             }
         }
 
+        private readonly AsyncRelayCommand<object> _importJson = null;
 
+        public AsyncRelayCommand<object> ImportJson
+        {
+            get
+            {
+                return _importJson ?? new AsyncRelayCommand<object>(obj =>
+                    {
+                        string openPath = string.Empty;
+                    OpenFileDialog openFileDialog = new OpenFileDialog();
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        openPath = openFileDialog.FileName;
+                    }
+                    var importList = JsonConvert.DeserializeObject<List<ExecutorRecord>>(File.ReadAllText(openPath));
+                    if (importList == null) return Task.CompletedTask;
+                    foreach (var data in importList)
+                    {
+                        DataWorker.EditQueryImport(data.Guid, data.Info, data.HasCd, data.IsEmpty,
+                            data.IdentifiersJson,
+                            data.OutputDivisionId, data.OutputNumber, data.OutputNumberDate, data.BlobData);
+                    }
+
+                    return Task.CompletedTask;
+                }
+                );
+            }
+        }
 
         #endregion
 

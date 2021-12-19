@@ -7,6 +7,7 @@ namespace DocumentVisor.Model.Data
     {
         #region DBSets
         public DbSet<Query> Queries { get; set; }
+        public DbSet<QueryBlobData> QueriesBlobDatas { get; set; }
         public DbSet<Type> Types { get; set; }
 
         public DbSet<Theme> Themes { get; set; }

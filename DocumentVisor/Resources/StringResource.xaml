@@ -29,6 +29,7 @@
     <system:String x:Key="ExportToExcel">Export to excel</system:String>
     <system:String x:Key="Reports">Reports</system:String>
     <system:String x:Key="Export">Export</system:String>
+    <system:String x:Key="Import">Import</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
