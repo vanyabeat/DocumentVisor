@@ -274,6 +274,10 @@
             <ComboBox Grid.Row="1" Grid.Column="0" Name="QueryActionComboBox" ItemsSource="{Binding AllActions}"
                       DisplayMemberPath="Name" SelectedItem="{Binding QueryCurrentAction}" VerticalAlignment="Center" Margin="0,0,5,0" Height="31" />
         </Grid>
+        <Grid Grid.Row="3" Grid.Column="2" Margin="0,42,0,22" >
+            <Button Content="{StaticResource Download}" Command="{Binding DownloadDataCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="122,10,10,0" />
+        </Grid>
         <toggleSwitch:HorizontalToggleSwitch CheckedContent="{StaticResource InsertToBox}" UncheckedContent="{StaticResource EmptyLogo}" IsChecked="{Binding QueryEmpty, Mode=TwoWay}" x:Name="ToggleIsEmpty" Margin="10,42,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="01" Grid.Row="3" />
         <toggleSwitch:HorizontalToggleSwitch CheckedContent="{StaticResource InsertToBox}" UncheckedContent="{StaticResource EmptyLogo}" Grid.Row="3" IsChecked="{Binding QueryVarious, Mode=TwoWay}" x:Name="ToggleIsVarious"  Margin="0,42,0,0" VerticalAlignment="Top" Grid.Column="1"/>
         <toggleSwitch:HorizontalToggleSwitch CheckedContent="{StaticResource InsertToBox}" UncheckedContent="{StaticResource EmptyLogo}" Grid.Row="3" Grid.Column="1" IsChecked="{Binding QueryHasCd, Mode=TwoWay}" x:Name="ToggleHasCd"  Margin="222,42,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>

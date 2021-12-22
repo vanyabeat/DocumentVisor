@@ -1014,6 +1014,20 @@ namespace DocumentVisor.Model
             return statistics;
         }
 
+        public static byte[] GetExecutorRecordData(Query query)
+        {
+            using var db = new ApplicationContext();
+            try
+            {
+                var q = db.QueriesBlobDatas.FirstOrDefault(x => x.Id == query.Id);
+                return q.Data.Length == 0 ? (new byte[1]) : q.Data;
+          
+            }
+            catch (Exception e)
+            {
+                return new byte[1];
+            }
+        }
         #endregion
     }
 }

@@ -18,6 +18,7 @@
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="Edit">Edit</system:String>
     <system:String x:Key="Complete">Complete</system:String>
+    <system:String x:Key="Download">Download</system:String>
     <system:String x:Key="SelectTab">Select Tab in upper menu</system:String>
     <system:String x:Key="ObjectNotFound">Object not found</system:String>
     <system:String x:Key="Response">Response</system:String>

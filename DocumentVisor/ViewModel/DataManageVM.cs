@@ -1968,7 +1968,28 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+        private readonly RelayCommand<object> _downloadDataCommand = null;
 
+        public RelayCommand<object> DownloadDataCommand
+        {
+            get
+            {
+                return _downloadDataCommand ?? new RelayCommand<object>(obj =>
+                {
+
+                    SaveFileDialog dialog = new SaveFileDialog()
+                    {
+                        Filter = "Text Files(*.zip)|*.zip|All(*.*)|*"
+                    };
+
+                    if (dialog.ShowDialog() == true)
+                    {
+                        File.WriteAllBytes(dialog.FileName, DataWorker.GetExecutorRecordData(SelectedQuery));
+                    }
+                }
+                );
+            }
+        }
         #endregion
 
         #region Flushes
