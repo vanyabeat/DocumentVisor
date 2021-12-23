@@ -1,11 +1,4 @@
-﻿using DocumentVisor.Infrastructure;
-using DocumentVisor.Model;
-using DocumentVisor.View;
-using Microsoft.Win32;
-using Spire.Xls;
-using Syncfusion.UI.Xaml.Grid;
-using Syncfusion.UI.Xaml.Grid.Converter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,7 +10,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DocumentVisor.Infrastructure;
+using DocumentVisor.Model;
+using DocumentVisor.View;
+using Microsoft.Win32;
 using Newtonsoft.Json;
+using Spire.Xls;
+using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.Grid.Converter;
 using static DocumentVisor.View.MainWindow;
 using static System.Guid;
 using Action = DocumentVisor.Model.Action;
@@ -682,6 +682,7 @@ namespace DocumentVisor.ViewModel
         #endregion
 
         #region Queries
+
         public static Query SelectedQuery { get; set; }
         public static string QueryName { get; set; }
         public static string QueryGuid { get; set; }
@@ -801,39 +802,20 @@ namespace DocumentVisor.ViewModel
                             if (result > 0)
                             {
                                 if (QueryExecutorPersons != null)
-                                {
                                     foreach (var per in QueryExecutorPersons)
-                                    {
                                         DataWorker.QueryPersonLink(result, per.Id);
-                                    }
-                                }
 
                                 if (QueryArticles != null)
-                                {
                                     foreach (var art in QueryArticles)
-                                    {
                                         DataWorker.QueryArticleLink(result, art.Id);
-                                    }
-                                }
 
                                 if (QueryActions != null)
-                                {
                                     foreach (var action in QueryActions)
-                                    {
                                         DataWorker.QueryActionLink(result, action.Id);
-                                    }
-                                }
 
                                 if (QueryThemes != null)
-                                {
                                     foreach (var theme in QueryThemes)
-                                    {
                                         DataWorker.QueryThemeLink(result, theme.Id);
-                                    }
-
-                                }
-
-
                             }
 
                             UpdateAllDataView();
@@ -852,7 +834,6 @@ namespace DocumentVisor.ViewModel
         {
             get
             {
-
                 return _editQuery ?? new RelayCommand<object>(obj =>
                 {
                     var wnd = obj as Window;
@@ -886,7 +867,6 @@ namespace DocumentVisor.ViewModel
             {
                 return _addExecutorPerson ?? new RelayCommand<object>(obj =>
                     {
-
                         var wnd = obj as AddQueryView;
 
                         if (QueryCurrentExecutorPerson == null)
@@ -915,7 +895,6 @@ namespace DocumentVisor.ViewModel
             {
                 return _addEditExecutorPerson ?? new RelayCommand<object>(obj =>
                     {
-
                         var wnd = obj as EditQueryView;
 
                         if (QueryCurrentExecutorPerson == null)
@@ -1073,7 +1052,6 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
-
 
 
         private readonly RelayCommand<object> _deleteQueryTheme = null;
@@ -1323,6 +1301,7 @@ namespace DocumentVisor.ViewModel
                 );
             }
         }
+
         private List<Query> _allQueries = DataWorker.GetAllQueries();
 
         public List<Query> AllQueries
@@ -1341,7 +1320,7 @@ namespace DocumentVisor.ViewModel
             AllQueriesView.ItemsSource = AllQueries;
         }
 
-        static Task ExportToExcelQueries(SfDataGrid dataGrid)
+        private static Task ExportToExcelQueries(SfDataGrid dataGrid)
         {
             var options = new ExcelExportingOptions
             {
@@ -1362,7 +1341,9 @@ namespace DocumentVisor.ViewModel
                 workbook.LoadFromFile(saveFileDialog.FileName);
                 workbook.Worksheets[^1].Remove();
                 workbook.SaveToFile(saveFileDialog.FileName, ExcelVersion.Version2010);
-            };
+            }
+
+            ;
             return Task.CompletedTask;
         }
 
@@ -1372,20 +1353,19 @@ namespace DocumentVisor.ViewModel
         {
             get
             {
-                return _exportToExcel ?? new AsyncRelayCommand<object>(async (obj) =>
+                return _exportToExcel ?? new AsyncRelayCommand<object>(async obj =>
                     {
                         if (!(obj is Window wnd)) return;
                         var dataGrid = wnd.FindName("QueriesDataGrid") as SfDataGrid;
-                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                        Mouse.OverrideCursor = Cursors.Wait;
                         await ExportToExcelQueries(dataGrid);
-                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                        Mouse.OverrideCursor = Cursors.Arrow;
                     }
                 );
             }
         }
 
-        
-        
+
         public static async Task WriteToFileAsync(string filename, string text)
         {
             await File.WriteAllTextAsync(filename, text);
@@ -1394,16 +1374,19 @@ namespace DocumentVisor.ViewModel
         private string GenerateTable(SortedDictionary<Person, Tuple<int, int>> sortedDictionary)
         {
             var result = "";
-           
+
             foreach (var pair in sortedDictionary)
             {
                 var pattern =
                     $"<tr style=\"height: 18px;\"><td style=\"width: 25%; height: 18px;\">&nbsp;{pair.Key.Name}</td><td style=\"width: 25%; height: 18px; text-align: center;\">{pair.Value.Item1}({pair.Value.Item2})</td><td style=\"width: 25%; height: 18px; text-align: center;\">&nbsp;</td></tr>";
                 result += pattern;
             }
+
             return result;
         }
+
         private readonly AsyncRelayCommand<object> _generateHtmlReport = null;
+
         public AsyncRelayCommand<object> GenerateHtmlReport
         {
             get
@@ -1423,6 +1406,9 @@ namespace DocumentVisor.ViewModel
                             var ul = string.Join("", queries.Select(x => x.ToString()).ToArray());
                             var personData =
                                 DataWorker.GetAllQueriesStatisticsByPerson(QueryReportBeginDateTime,
+                                    QueryReportEndDateTime);
+                            var queriesCompleted =
+                                DataWorker.GetAllQueriesByDateCompleted(QueryReportBeginDateTime,
                                     QueryReportEndDateTime);
                             var result = $@"
 <!DOCTYPE html>
@@ -1446,7 +1432,7 @@ namespace DocumentVisor.ViewModel
       <tr>
          <td style=""text-align: center;"">2</td>
          <td style=""text-align: center;"">&nbsp;Выполнено ш/т и запросов</td>
-         <td style=""text-align: center;"">&nbsp;{DataWorker.GetAllQueriesByDateCompleted(QueryReportBeginDateTime, QueryReportEndDateTime)}</td>
+         <td style=""text-align: center;"">&nbsp;{queriesCompleted}</td>
          <td style=""text-align: center;"">&nbsp;</td>
       </tr>
       <tr>
@@ -1471,7 +1457,7 @@ namespace DocumentVisor.ViewModel
 {GenerateTable(personData)}
 <tr style=""height: 18px;"">
 <td style=""width: 25%; height: 18px; text-align: center;"" colspan=""2"">Итого:</td>
-<td style=""width: 25%; height: 18px;"">&nbsp;</td>
+<td style=""width: 25%; height: 18px;"">&nbsp;{queriesCompleted}</td>
 </tr>
 </tbody>
 </table>
@@ -1489,16 +1475,15 @@ namespace DocumentVisor.ViewModel
                                 Title = "Save As"
                             };
                             if (saveFileDialog.ShowDialog() != null)
-                            {
                                 await WriteToFileAsync(saveFileDialog.FileName, result);
-                                // workBook.SaveAs(saveFileDialog.FileName);
-                            };
-
+                            // workBook.SaveAs(saveFileDialog.FileName);
+                            ;
                         }
                     }
                 );
             }
         }
+
         #endregion
 
         #region IdentifierTypes
@@ -1561,35 +1546,37 @@ namespace DocumentVisor.ViewModel
             get
             {
                 return _editIdentifierType ?? new RelayCommand<object>(obj =>
-                {
-                    var window = obj as Window;
-                    if (SelectedIdentifierType != null)
                     {
-                        var result = DataWorker.EditIdentifierType(SelectedIdentifierType, IdentifierTypeName, IdentifierTypeInfo);
+                        var window = obj as Window;
+                        if (SelectedIdentifierType != null)
+                        {
+                            var result = DataWorker.EditIdentifierType(SelectedIdentifierType, IdentifierTypeName,
+                                IdentifierTypeInfo);
 
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(result);
-                        window.Close();
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(result);
+                            window.Close();
+                        }
                     }
-                }
                 );
             }
         }
 
 
         private readonly AsyncRelayCommand<object> _generateIdentifierTypesJson = null;
+
         public AsyncRelayCommand<object> GenerateIdentifierTypesJson
         {
             get
             {
                 return _generateIdentifierTypesJson ?? new AsyncRelayCommand<object>(async obj =>
-                {
-                    var wnd = obj as Window;
-                    Dictionary<string, object> export = new Dictionary<string, object>();
-                    export.Add("Divisions", DataWorker.GetAllDivisions());
-                    export.Add("IdentifierTypes", DataWorker.GetAllIdentifierTypes());
-                    var result = DataWorker.GetJsonString(export);
+                    {
+                        var wnd = obj as Window;
+                        var export = new Dictionary<string, object>();
+                        export.Add("Divisions", DataWorker.GetAllDivisions());
+                        export.Add("IdentifierTypes", DataWorker.GetAllIdentifierTypes());
+                        var result = DataWorker.GetJsonString(export);
                         var saveFileDialog = new SaveFileDialog
                         {
                             Filter = "Text File (*.json)|*.json|Show All Files (*.*)|*.*",
@@ -1597,23 +1584,21 @@ namespace DocumentVisor.ViewModel
                             Title = "Save As"
                         };
                         if (saveFileDialog.ShowDialog() != null)
-                        {
                             await WriteToFileAsync(saveFileDialog.FileName, result);
-                            // workBook.SaveAs(saveFileDialog.FileName);
-                        };
-
+                        // workBook.SaveAs(saveFileDialog.FileName);
+                        ;
                     }
-                
                 );
             }
         }
+
         #endregion
 
         #region Updates
 
         private void UpdateAllDataView()
         {
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            Mouse.OverrideCursor = Cursors.Wait;
             UpdateAllPersonsView();
             UpdateAllPersonTypesView();
             UpdateAllPrivacyView();
@@ -1624,7 +1609,7 @@ namespace DocumentVisor.ViewModel
             UpdateAllArticleView();
             UpdateAllQueriesView();
             UpdateAllIdentifierTypeView();
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
         #endregion
@@ -1801,7 +1786,6 @@ namespace DocumentVisor.ViewModel
 
         private void OpenEditPersonTypeViewMethod(PersonType personType)
         {
-
             var wnd = new EditPersonTypeView(personType);
             SetCenterPositionAndOpen(wnd);
         }
@@ -1948,26 +1932,34 @@ namespace DocumentVisor.ViewModel
             {
                 return _importJson ?? new AsyncRelayCommand<object>(obj =>
                     {
-                        string openPath = string.Empty;
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        openPath = openFileDialog.FileName;
-                    }
-                    var importList = JsonConvert.DeserializeObject<List<ExecutorRecord>>(File.ReadAllText(openPath));
-                    if (importList == null) return Task.CompletedTask;
-                    foreach (var data in importList)
-                    {
-                        DataWorker.EditQueryImport(data.Guid, data.Info, data.HasCd, data.IsEmpty,
-                            data.IdentifiersJson,
-                            data.OutputDivisionId, data.OutputNumber, data.OutputNumberDate, data.BlobData);
-                    }
+                        var listErrors = new List<string>();
 
-                    return Task.CompletedTask;
-                }
+                        var openPath = string.Empty;
+                        var openFileDialog = new OpenFileDialog();
+                        if (openFileDialog.ShowDialog() == true) openPath = openFileDialog.FileName;
+                        var importList =
+                            JsonConvert.DeserializeObject<List<ExecutorRecord>>(File.ReadAllText(openPath));
+                        if (importList == null) return Task.CompletedTask;
+                        foreach (var data in importList)
+                            if (DataWorker.EditQueryImport(data.Guid, data.Info, data.HasCd, data.IsEmpty,
+                                    data.IdentifiersJson,
+                                    data.OutputDivisionId, data.OutputNumber, data.OutputNumberDate, data.BlobData) ==
+                                -1)
+                            {
+                                listErrors.Add(data.Guid);
+                            }
+
+                        if (listErrors.Count > 0)
+                        {
+                            MessageBox.Show($"{string.Join("\n", listErrors.ToArray())}", $"{Dictionary["ErrorListGuid"]}");
+                        }
+                        UpdateAllDataView();
+                        return Task.CompletedTask;
+                    }
                 );
             }
         }
+
         private readonly RelayCommand<object> _downloadDataCommand = null;
 
         public RelayCommand<object> DownloadDataCommand
@@ -1975,21 +1967,19 @@ namespace DocumentVisor.ViewModel
             get
             {
                 return _downloadDataCommand ?? new RelayCommand<object>(obj =>
-                {
-
-                    SaveFileDialog dialog = new SaveFileDialog()
                     {
-                        Filter = "Text Files(*.zip)|*.zip|All(*.*)|*"
-                    };
+                        var dialog = new SaveFileDialog
+                        {
+                            Filter = "Text Files(*.zip)|*.zip|All(*.*)|*"
+                        };
 
-                    if (dialog.ShowDialog() == true)
-                    {
-                        File.WriteAllBytes(dialog.FileName, DataWorker.GetExecutorRecordData(SelectedQuery));
+                        if (dialog.ShowDialog() == true)
+                            File.WriteAllBytes(dialog.FileName, DataWorker.GetExecutorRecordData(SelectedQuery));
                     }
-                }
                 );
             }
         }
+
         #endregion
 
         #region Flushes

@@ -902,6 +902,11 @@ namespace DocumentVisor.Model
         {
             var result = -1;
             using var db = new ApplicationContext();
+            var checkIsExist = db.Queries.Any(el => el.Guid == queryGuid);
+            if (!checkIsExist)
+            {
+                return result;
+            }
             var entity = db.Queries.FirstOrDefault(d => d.Guid == queryGuid);
             entity.Info = newInfo;
             entity.HasCd = hasCd;
@@ -909,22 +914,9 @@ namespace DocumentVisor.Model
             entity.OutputSecretaryDate = outputNumberDate;
             entity.OutputSecretaryNumber = outputNumber;
             entity.OutputDivisionId = outputDivisionId;
+            entity.IsComplete = 1;
             var data64 = Convert.FromBase64String(blobData64);
             EditQueryBlobData(entity.Id, (uint)data64.Length, data64);
-
-            //entity.PrivacyId = newPrivacy.Id;
-            //entity.DivisionId = newDivision.Id;
-            //entity.SignPersonId = newSignPerson.Id;
-            //entity.TypeId = newType.Id;
-            //entity.OuterSecretaryDateTime = newQueryOuterSecretaryDateTime;
-            //entity.OuterSecretaryNumber = newQueryOuterSecretaryNumber;
-            //entity.InnerSecretaryDateTime = newQueryInnerSecretaryDateTime;
-            //entity.InnerSecretaryNumber = newQueryInnerSecretaryNumber;
-            //entity.CentralSecretaryDateTime = newQueryCentralSecretaryDateTime;
-            //entity.CentralSecretaryNumber = newQueryCentralSecretaryNumber;
-            //entity.IsCd = newHasCd;
-            //entity.Various = newVarious;
-            //entity.Empty = newEmpty;
             db.SaveChanges();
             result = entity.Id;
             return result;

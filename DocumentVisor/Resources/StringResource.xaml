@@ -31,6 +31,7 @@
     <system:String x:Key="Reports">Reports</system:String>
     <system:String x:Key="Export">Export</system:String>
     <system:String x:Key="Import">Import</system:String>
+    <system:String x:Key="ErrorListGuid">Error, guid not find:</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>

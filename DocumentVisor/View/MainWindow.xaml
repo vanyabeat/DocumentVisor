@@ -35,7 +35,7 @@
                             <syncfusion:GridTextColumn MappingName="Name"/>
                             <syncfusion:GridTextColumn MappingName="Info"/>
                             <syncfusion:GridTextColumn MappingName="Guid"/>
-                            <syncfusion:GridCheckBoxColumn MappingName="Сomplete"/>
+                            <syncfusion:GridCheckBoxColumn MappingName="Complete"/>
                             <syncfusion:GridTextColumn MappingName="Privacy.Name"/>
                             <syncfusion:GridTextColumn MappingName="Division.Name"/>
                             <syncfusion:GridTextColumn MappingName="SignPerson.Name"/>
