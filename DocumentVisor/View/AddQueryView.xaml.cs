@@ -15,6 +15,12 @@ namespace DocumentVisor.View
         public static DatePicker AllCentralSecretaryDatePicker;
         public static DataGrid AllExecutorPersons;
         public static DataGrid AllQueryThemes;
+
+        private static readonly ResourceDictionary Dictionary = new ResourceDictionary
+        {
+            Source = new Uri(@"pack://application:,,,/Resources/StringResource.xaml")
+        };
+
         public AddQueryView()
         {
             InitializeComponent();
@@ -27,6 +33,8 @@ namespace DocumentVisor.View
             DataManageVm.QueryInnerSecretaryDateTime = DateTime.Now;
             AllCentralSecretaryDatePicker = QueryCentralSecretaryDateTimePicker;
             DataManageVm.QueryCentralSecretaryDateTime = DateTime.Now;
+            QueryNameTextBox.Text = Dictionary["QueryDefaultName"].ToString() ?? string.Empty;
+            DataManageVm.QueryName = Dictionary["QueryDefaultName"].ToString();
         }
     }
 }

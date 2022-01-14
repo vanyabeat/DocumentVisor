@@ -832,7 +832,7 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="ReportsTab" Header="{StaticResource Reports}" >
-                <Grid Height="144" Margin="0,-500,0,0">
+                <Grid Margin="0,16,0,408">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -842,6 +842,8 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+
                     </Grid.RowDefinitions>
                     <Label Content="{StaticResource QueryStartDate}" HorizontalAlignment="Left"
                            VerticalAlignment="Center" Grid.Column="0" Margin="73,0,0,0" Height="26" Width="95" />
@@ -852,11 +854,17 @@
                     <DatePicker Grid.Column="1" Name="QueryEndSortDatetime" SelectedDate="{Binding QueryReportEndDateTime }"  Grid.Row="1" Margin="0,10,0,10" />
                     <Button Grid.Row="2" Grid.Column="1" Content="{StaticResource GenerateReport}" Command="{Binding GenerateHtmlReport}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                            HorizontalAlignment="Center" />
+                            HorizontalAlignment="Center" Margin="0,0,0,5" />
+                    <Button Grid.Row="3" Grid.Column="1" Content="{StaticResource GenerateReport}" Command="{Binding GenerateHtmlReport2}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            HorizontalAlignment="Center" Margin="0,5,0,0" />
                     <Button Grid.Row="2" Content="{StaticResource Export}" Command="{Binding GenerateIdentifierTypesJson}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             HorizontalAlignment="Center" Width="476" Margin="0,0,0,5" />
                     <Button Grid.Row="3" Content="{StaticResource Import}" Command="{Binding ImportJson}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            HorizontalAlignment="Center" Width="476" Margin="0,5,0,0" />
+                    <Button Grid.Row="4" Content="{StaticResource Backup}" Command="{Binding BackupDb}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             HorizontalAlignment="Center" Width="476" Margin="0,5,0,0" />
                 </Grid>

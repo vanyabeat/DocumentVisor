@@ -960,34 +960,57 @@ namespace DocumentVisor.Model
             return result.ToList();
         }
 
+        public static Tuple<int, SortedDictionary<string, SortedSet<string>>> GetReportByDivisions(DateTime begin, DateTime end)
+        {
+            var result = new SortedDictionary<string, SortedSet<string>>();
+            if (begin > end) return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(0, new SortedDictionary<string, SortedSet<string>>());
+            using var db = new ApplicationContext();
+            var queries = (from q in db.Queries
+                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
+                select q).ToList();
+            foreach (var query in queries)
+            {
+                var actions  = query.LinkedActions.Select(a => a.Name).ToList();
+                if (!result.ContainsKey(query.Division.Name))
+                {
+                    result.Add(query.Division.Name, new SortedSet<string>(actions));
+                }
+                else
+                {
+                    result[query.Division.Name].UnionWith(actions);
+                }
+
+            }
+
+            return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(queries.Count, result);
+        }
+
         public static int GetAllQueriesByDateCompleted(DateTime begin, DateTime end)
         {
             if (begin > end) return 0;
             using var db = new ApplicationContext();
-            var result = from q in db.Queries
-                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
-                select q;
+            var result = (from q in db.Queries
+                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1 
+                select q).ToList();
             return result.Count();
         }
 
         public static int GetAllQueriesNonComplete()
         {
             using var db = new ApplicationContext();
-            var result = from q in db.Queries
+            var result = (from q in db.Queries
                 where q.IsComplete == 0
-                select q;
+                select q).ToList();
             return result.Count();
         }
 
-        public static SortedDictionary<Person, Tuple<int, int>> GetAllQueriesStatisticsByPerson(DateTime begin, DateTime end)
+        public static SortedDictionary<Person, Tuple<int, int>> GetAllQueriesStatisticsByPerson(List<Query> queries)
         {
             using var db = new ApplicationContext();
-            var result = from q in db.Queries
-                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
-                select q;
             var statistics = new SortedDictionary<Person, Tuple<int, int>>();
-            foreach (var q in result)
+            foreach (var q in queries)
             {
+                if (!q.Complete) continue;
                 var person = q.LinkedPersons[0];
                 var complete = (q.IsEmpty == 1);
                 if (statistics.ContainsKey(person))
@@ -998,26 +1021,29 @@ namespace DocumentVisor.Model
                 }
                 else
                 {
-                    
+
                     statistics.Add(person, new Tuple<int, int>(1, (complete) ? 1 : 0));
                 }
-                
+
+
             }
             return statistics;
         }
 
         public static byte[] GetExecutorRecordData(Query query)
         {
+            var empty = Convert.FromBase64String(
+                "UEsDBAoAAAAAAIpqLFT9HIsaCwAAAAsAAAANAAAAZXJyb3IudHh0LnR4dNCf0YPRgdGC0L4hUEsBAj8ACgAAAAAAimosVP0cixoLAAAACwAAAA0AJAAAAAAAAAAgAAAAAAAAAGVycm9yLnR4dC50eHQKACAAAAAAAAEAGAAFLjn/nQfYAScWCAOeB9gB94d18J0H2AFQSwUGAAAAAAEAAQBfAAAANgAAAAAA");
             using var db = new ApplicationContext();
             try
             {
                 var q = db.QueriesBlobDatas.FirstOrDefault(x => x.Id == query.Id);
-                return q.Data.Length == 0 ? (new byte[1]) : q.Data;
+                return q.Data.Length == 0 ? (empty) : q.Data;
           
             }
             catch (Exception e)
             {
-                return new byte[1];
+                return empty;
             }
         }
         #endregion

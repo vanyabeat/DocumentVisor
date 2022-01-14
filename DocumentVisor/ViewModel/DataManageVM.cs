@@ -1384,6 +1384,64 @@ namespace DocumentVisor.ViewModel
 
             return result;
         }
+        private readonly AsyncRelayCommand<object> _generateHtmlReport2 = null;
+
+        private static string GenerateLiStrings(SortedDictionary<string, SortedSet<string>> data)
+        {
+            string result = "";
+
+            foreach (var d in data)
+            {
+                result += $"<li style=\"text-align: left;\">{d.Key}";
+                if (d.Value.Count != 0)
+                {
+                    result += $"({string.Join(", ", d.Value)})";
+                }
+
+                result += ";</li>";
+            }
+            return result;
+        }
+        public AsyncRelayCommand<object> GenerateHtmlReport2
+        {
+            get
+            {
+                return _generateHtmlReport2 ?? new AsyncRelayCommand<object>(async obj =>
+                    {
+                        var wnd = obj as Window;
+
+                        if (QueryReportBeginDateTime == null || QueryReportEndDateTime == null)
+                        {
+                            ShowMessageToUser(Dictionary["QueryActionNeedToSelect"].ToString());
+                        }
+                        else
+                        {
+                            var dicData =
+                                DataWorker.GetReportByDivisions(QueryReportBeginDateTime, QueryReportEndDateTime);
+
+                            var result = $@"
+<!DOCTYPE html>
+<html><body><p style=""text-align: center;""><span style=""text-decoration: underline;""><strong>Отчетный период с {QueryReportBeginDateTime:dd.MM.yyyy} по {QueryReportEndDateTime:dd.MM.yyyy}</strong></span></p><p style=""text-align: center;"">Выполнено {dicData.Item1} КРМ в интересах:</p><ul>
+{GenerateLiStrings(dicData.Item2)}
+</ul>
+</body>
+</html>
+";
+                            var saveFileDialog = new SaveFileDialog
+                            {
+                                Filter = "Text File (*.html)|*.htm|Show All Files (*.*)|*.*",
+                                FileName = "ReportDate",
+                                Title = "Save As"
+                            };
+                            if (saveFileDialog.ShowDialog() != null)
+                                await WriteToFileAsync(saveFileDialog.FileName, result);
+                            // workBook.SaveAs(saveFileDialog.FileName);
+                            ;
+                        }
+                    }
+                );
+            }
+        }
 
         private readonly AsyncRelayCommand<object> _generateHtmlReport = null;
 
@@ -1405,8 +1463,7 @@ namespace DocumentVisor.ViewModel
                                 DataWorker.GetAllQueriesByDate(QueryReportBeginDateTime, QueryReportEndDateTime);
                             var ul = string.Join("", queries.Select(x => x.ToString()).ToArray());
                             var personData =
-                                DataWorker.GetAllQueriesStatisticsByPerson(QueryReportBeginDateTime,
-                                    QueryReportEndDateTime);
+                                DataWorker.GetAllQueriesStatisticsByPerson(queries);
                             var queriesCompleted =
                                 DataWorker.GetAllQueriesByDateCompleted(QueryReportBeginDateTime,
                                     QueryReportEndDateTime);
@@ -1747,9 +1804,8 @@ namespace DocumentVisor.ViewModel
 
         private string GenerateRandomGuid()
         {
-            /// исправить
             var time = DateTime.Now;
-            var guid = NewGuid().ToString().Substring(0, 4);
+            var guid = new Random((int)time.Ticks).Next().ToString()?[..5];
             return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1, 3)}_{guid}";
         }
 
@@ -1954,6 +2010,28 @@ namespace DocumentVisor.ViewModel
                             MessageBox.Show($"{string.Join("\n", listErrors.ToArray())}", $"{Dictionary["ErrorListGuid"]}");
                         }
                         UpdateAllDataView();
+                        return Task.CompletedTask;
+                    }
+                );
+            }
+        }
+
+        private readonly AsyncRelayCommand<object> _backupDb = null;
+
+        public AsyncRelayCommand<object> BackupDb
+        {
+            get
+            {
+                return _backupDb ?? new AsyncRelayCommand<object>(obj =>
+                    {
+                        var dialog = new SaveFileDialog
+                        {
+                            Filter = "Text Files(*.db)|*.sqlite3|All(*.*)|*"
+                        };
+
+                        if (dialog.ShowDialog() == true)
+                            File.WriteAllBytes(dialog.FileName, File.ReadAllBytes("Supervisor.db"));
+
                         return Task.CompletedTask;
                     }
                 );
