@@ -98,10 +98,12 @@ namespace DocumentVisor.Model
         [NotMapped] public virtual string LinkedActionsString => string.Join(", ", LinkedActions);
         [NotMapped] public virtual string LinkedArticlesString => string.Join(", ", LinkedArticles);
         [NotMapped] public virtual string LinkedPersonsString => string.Join(", ", LinkedPersons);
+        [NotMapped] public virtual string LinkedIdentifiersString => string.Join(", ", LinkedIdentifiers);
         [NotMapped] public virtual List<Theme> LinkedThemes => DataWorker.GetAllQueryThemes(Id);
         [NotMapped] public virtual List<Action> LinkedActions => DataWorker.GetAllQueryAction(Id);
         [NotMapped] public virtual List<Article> LinkedArticles => DataWorker.GetAllQueryArticles(Id);
         [NotMapped] public virtual List<Person> LinkedPersons => DataWorker.GetAllQueryExecutors(Id);
+        [NotMapped] public virtual List<Identifier> LinkedIdentifiers => DataWorker.GetAllQueryIdentifiers(Id);
 
         public ICollection<QueryTheme> QueryThemes { get; set; }
         public ICollection<QueryAction> QueryActions { get; set; }
@@ -168,7 +170,7 @@ namespace DocumentVisor.Model
         #endregion
         public override string ToString()
         {
-            return $"<li>{Division.Name}; {InnerSecretaryNumber}; от {InnerSecretaryDateTime:dd.MM.yyyy}; {LinkedActionsString} исполн. {LinkedPersonsString}</li>";
+            return $"<li>{Division.Name}; {OuterSecretaryNumber}; от {OuterSecretaryDateTime:dd.MM.yyyy}; {LinkedActionsString} [исполн. {LinkedPersonsString}]</li>";
         }
     }
 }

@@ -788,9 +788,15 @@ namespace DocumentVisor.ViewModel
                     {
                         var wnd = obj as Window;
 
-                        if (QueryName == null || QueryName.Replace(" ", "").Length == 0)
+                        if (QueryName == null || QueryName.Replace(" ", "").Length == 0 || QueryType == null || QueryDivision == null || QueryGuid == null || QueryPrivacy == null || QuerySignPerson == null)
                         {
-                            ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                            // ShowMessageToUser(Dictionary["ArticleNameNeedToSelect"].ToString());
+                            SetRedBlockControl(wnd, "QueryNameTextBox");
+                            SetRedBlockControl(wnd, "QueryGuidTextBox");
+                            SetRedBlockControlComboBox(wnd, "QueryPrivacyComboBox");
+                            SetRedBlockControlComboBox(wnd, "QueryDivisionComboBox");
+                            SetRedBlockControlComboBox(wnd, "QueryQueryTypeComboBox");
+                            SetRedBlockControlComboBox(wnd, "QuerySignPersonComboBox");
                         }
                         else
                         {
@@ -1378,7 +1384,7 @@ namespace DocumentVisor.ViewModel
             foreach (var pair in sortedDictionary)
             {
                 var pattern =
-                    $"<tr style=\"height: 18px;\"><td style=\"width: 25%; height: 18px;\">&nbsp;{pair.Key.Name}</td><td style=\"width: 25%; height: 18px; text-align: center;\">{pair.Value.Item1}({pair.Value.Item2})</td><td style=\"width: 25%; height: 18px; text-align: center;\">&nbsp;</td></tr>";
+                    $"<tr style=\"height: 18px;\"><td style=\"width: 25%; height: 18px;\">&nbsp;{pair.Key.Name}</td><td style=\"width: 25%; height: 18px; text-align: center;\">{pair.Value.Item1} ({pair.Value.Item2})</td><td style=\"width: 25%; height: 18px; text-align: center;\">&nbsp;</td></tr>";
                 result += pattern;
             }
 
@@ -1392,7 +1398,7 @@ namespace DocumentVisor.ViewModel
 
             foreach (var d in data)
             {
-                result += $"<li style=\"text-align: left;\">{d.Key}";
+                result += $"<li style=\"text-align: left;\">{d.Key} ";
                 if (d.Value.Count != 0)
                 {
                     result += $"({string.Join(", ", d.Value)})";
@@ -1408,7 +1414,7 @@ namespace DocumentVisor.ViewModel
             {
                 return _generateHtmlReport2 ?? new AsyncRelayCommand<object>(async obj =>
                     {
-                        var wnd = obj as Window;
+                        var wnd = obj as MainWindow;
 
                         if (QueryReportBeginDateTime == null || QueryReportEndDateTime == null)
                         {
@@ -1434,9 +1440,14 @@ namespace DocumentVisor.ViewModel
                                 Title = "Save As"
                             };
                             if (saveFileDialog.ShowDialog() != null)
+                            {
                                 await WriteToFileAsync(saveFileDialog.FileName, result);
-                            // workBook.SaveAs(saveFileDialog.FileName);
-                            ;
+                                SetNullValuesToProperties();
+                                wnd.QueryBeginSortDatetime.SelectedDate = DateTime.Now;
+                                wnd.QueryEndSortDatetime.SelectedDate = DateTime.Now + TimeSpan.FromDays(1);
+                            }
+                                
+
                         }
                     }
                 );
@@ -1451,7 +1462,7 @@ namespace DocumentVisor.ViewModel
             {
                 return _generateHtmlReport ?? new AsyncRelayCommand<object>(async obj =>
                     {
-                        var wnd = obj as Window;
+                        var wnd = obj as MainWindow;
 
                         if (QueryReportBeginDateTime == null || QueryReportEndDateTime == null)
                         {
@@ -1461,7 +1472,7 @@ namespace DocumentVisor.ViewModel
                         {
                             var queries =
                                 DataWorker.GetAllQueriesByDate(QueryReportBeginDateTime, QueryReportEndDateTime);
-                            var ul = string.Join("", queries.Select(x => x.ToString()).ToArray());
+                            var ul = string.Join("", queries.Where(x => x.IsComplete == 1).Select(x => x.ToString()).ToArray());
                             var personData =
                                 DataWorker.GetAllQueriesStatisticsByPerson(queries);
                             var queriesCompleted =
@@ -1532,9 +1543,12 @@ namespace DocumentVisor.ViewModel
                                 Title = "Save As"
                             };
                             if (saveFileDialog.ShowDialog() != null)
+                            {
                                 await WriteToFileAsync(saveFileDialog.FileName, result);
-                            // workBook.SaveAs(saveFileDialog.FileName);
-                            ;
+                                SetNullValuesToProperties();
+                                wnd.QueryBeginSortDatetime.SelectedDate = DateTime.Now;
+                                wnd.QueryEndSortDatetime.SelectedDate = DateTime.Now + TimeSpan.FromDays(1);
+                            }
                         }
                     }
                 );
@@ -1749,6 +1763,7 @@ namespace DocumentVisor.ViewModel
             PersonInfo = null;
             PersonPhone = null;
             PersonType = null;
+            PersonRank = null;
             // PersonType
             PersonTypeName = null;
             PersonTypeInfo = null;
@@ -1795,7 +1810,7 @@ namespace DocumentVisor.ViewModel
             QueryArticles = null;
             QueryThemes = null;
             QueryReportBeginDateTime = DateTime.Now;
-            QueryReportEndDateTime = DateTime.Now;
+            QueryReportEndDateTime = DateTime.Now + TimeSpan.FromDays(1);
         }
 
         #endregion
@@ -1813,6 +1828,13 @@ namespace DocumentVisor.ViewModel
         {
             var block = window.FindName(blockName) as Control;
             block.BorderBrush = Brushes.Crimson;
+        }
+
+        private void SetRedBlockControlComboBox(Window window, string blockName)
+        {
+            var block = window.FindName(blockName) as ComboBox;
+            block.BorderBrush = Brushes.Crimson;
+            block.Background = Brushes.Crimson;
         }
 
         private void ClearTextFromStackPanelTextBox(Window window, string blockName)
@@ -1997,6 +2019,7 @@ namespace DocumentVisor.ViewModel
                             JsonConvert.DeserializeObject<List<ExecutorRecord>>(File.ReadAllText(openPath));
                         if (importList == null) return Task.CompletedTask;
                         foreach (var data in importList)
+                        {
                             if (DataWorker.EditQueryImport(data.Guid, data.Info, data.HasCd, data.IsEmpty,
                                     data.IdentifiersJson,
                                     data.OutputDivisionId, data.OutputNumber, data.OutputNumberDate, data.BlobData) ==
@@ -2004,12 +2027,30 @@ namespace DocumentVisor.ViewModel
                             {
                                 listErrors.Add(data.Guid);
                             }
+                            else
+                            {
+                                var identifiers = JsonConvert.DeserializeObject<List<Identifier>>(data.IdentifiersJson);
+                                var guid = data.Guid;
+                                if (identifiers != null)
+                                    foreach (var va in identifiers)
+                                    {
+                                        var id = DataWorker.CreateIdentifier(va.Content, va.IdentifierTypeId);
+                                        if (id != -1)
+                                        {
+                                            DataWorker.QueryIdentifierLink(DataWorker.GetQueryByGuid(guid), id);
+                                        }
+                                    }
+                            }
+
+                        }
+
 
                         if (listErrors.Count > 0)
                         {
                             MessageBox.Show($"{string.Join("\n", listErrors.ToArray())}", $"{Dictionary["ErrorListGuid"]}");
                         }
                         UpdateAllDataView();
+                        MessageBox.Show(Dictionary["Complete"].ToString());
                         return Task.CompletedTask;
                     }
                 );

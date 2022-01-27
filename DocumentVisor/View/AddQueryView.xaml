@@ -81,7 +81,14 @@
                       DisplayMemberPath="Name" SelectedItem="{Binding QueryType}" Grid.ColumnSpan="2" Grid.Column="0"
                       Margin="65,9,10,40" Grid.RowSpan="2" />
             <ComboBox Grid.Row="2" Grid.Column="1" Name="QuerySignPersonComboBox" ItemsSource="{Binding AllPersons}"
-                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" VerticalAlignment="Center" Height="30" Margin="0,0,10,0" />
+                      DisplayMemberPath="Name" SelectedItem="{Binding QuerySignPerson}" VerticalAlignment="Center" Height="30" Margin="0,0,10,0" >
+                <ComboBox.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FFB3B3B3" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.Background>
+            </ComboBox>
 
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">

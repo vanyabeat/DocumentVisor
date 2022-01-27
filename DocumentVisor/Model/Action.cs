@@ -12,7 +12,20 @@ namespace DocumentVisor.Model
         public ICollection<QueryAction> QueryActions { get; set; }
         public override string ToString()
         {
-            return $"{Name} ({Number})";
+            var result = "";
+            if (!string.IsNullOrEmpty(Name))
+            {
+                result += Name;
+            }
+            if (!string.IsNullOrEmpty(Number))
+            {
+                result += $" №{Number}";
+            }
+            if (!string.IsNullOrEmpty(Info))
+            {
+                result += $" ({Info})";
+            }
+            return result;
         }
 
         public int CompareTo(object obj)

@@ -69,6 +69,29 @@ namespace DocumentVisor.Model
             return result;
         }
 
+        public static int CreateIdentifier(string content, int typeId)
+        {
+            var result = -1;
+            using var db = new ApplicationContext();
+            var checkIsExist = db.Identifiers.Any(el => el.Content == content && el.IdentifierTypeId == typeId);
+            try
+            {
+                if (!checkIsExist)
+                {
+                    var entity = db.Identifiers.Add(new Identifier { Content = content, IdentifierTypeId = typeId });
+                    db.SaveChanges();
+                    result = entity.Entity.Id;
+                }
+            }
+            catch (Exception e)
+            {
+                ////
+            }
+
+
+            return result;
+        }
+
         public static string DeleteIdentifierType(IdentifierType idT)
         {
             var result = Dictionary["PersonTypeNotExist"].ToString();
@@ -102,6 +125,24 @@ namespace DocumentVisor.Model
             }
 
             return result;
+        }
+
+        public static IdentifierType GetIdentifierTypeById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.IdentifierTypes.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
+
+        public static Identifier GetIdentifierById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Identifiers.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
         }
         #endregion
         #region Person
@@ -618,7 +659,7 @@ namespace DocumentVisor.Model
         {
             var result = Dictionary["Insert"].ToString();
             using var db = new ApplicationContext();
-            var checkIsExist = db.Actions.Any(el => el.Name == name);
+            var checkIsExist = db.Actions.Any(el => el.Name == name && el.Number == number);
             if (!checkIsExist)
             {
                 db.Actions.Add(new Action {Name = name, Number = number, Info = info});
@@ -683,6 +724,13 @@ namespace DocumentVisor.Model
             return pos;
         }
 
+        public static int GetQueryByGuid(string id)
+        {
+            using var db = new ApplicationContext();
+            var pos = db.Queries.FirstOrDefault(p => p.Guid == id);
+            return pos.Id;
+        }
+
         public static List<Query> GetAllQueries()
         {
             using var db = new ApplicationContext();
@@ -732,6 +780,20 @@ namespace DocumentVisor.Model
             db.SaveChanges();
         }
 
+        public static void QueryIdentifierLink(int queryId, int identifierId)
+        {
+            using var db = new ApplicationContext();
+            var entity = db.QueryIdentifiers.Add(new QueryIdentifier { QueryId = queryId, IdentifierId = identifierId });
+            db.SaveChanges();
+        }
+
+        public static void QueryIdentifierUnLink(int identifierId)
+        {
+            using var db = new ApplicationContext();
+            db.QueryIdentifiers.RemoveRange(db.QueryIdentifiers.Where(x => x.QueryId == identifierId));
+            db.SaveChanges();
+        }
+
         public static void QueryArticleLink(int queryId, int articleId)
         {
             using var db = new ApplicationContext();
@@ -749,49 +811,32 @@ namespace DocumentVisor.Model
         public static List<Theme> GetAllQueryThemes(int queryId)
         {
             using var db = new ApplicationContext();
-            var themes = new List<Theme>();
-            foreach (var qt in db.QueryThemes.ToList().FindAll(item => item.QueryId == queryId))
-            {
-                themes.Add(GetThemeById(qt.ThemeId));
-            }
-
-            return themes;
+            return db.QueryThemes.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetThemeById(qt.ThemeId)).ToList();
         }
 
         public static List<Article> GetAllQueryArticles(int queryId)
         {
             using var db = new ApplicationContext();
-            var items = new List<Article>();
-            foreach (var qt in db.QueryArticles.ToList().FindAll(item => item.QueryId == queryId))
-            {
-                items.Add(GetArticleById(qt.ArticleId));
-            }
-
-            return items;
+            return db.QueryArticles.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetArticleById(qt.ArticleId)).ToList();
         }
 
         public static List<Action> GetAllQueryAction(int queryId)
         {
             using var db = new ApplicationContext();
-            var items = new List<Action>();
-            foreach (var qt in db.QueryActions.ToList().FindAll(item => item.QueryId == queryId))
-            {
-                items.Add(GetActionById(qt.ActionId));
-            }
+            return db.QueryActions.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetActionById(qt.ActionId)).ToList();
+        }
 
-            return items;
+
+        public static List<Identifier> GetAllQueryIdentifiers(int queryId)
+        {
+            using var db = new ApplicationContext();
+            return db.QueryIdentifiers.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetIdentifierById(qt.IdentifierId)).ToList();
         }
 
         public static List<Person> GetAllQueryExecutors(int queryId)
         {
             using var db = new ApplicationContext();
-            var items = new List<Person>();
-            foreach (var qt in db.QueryPersons.ToList().FindAll(item => item.QueryId == queryId))
-            {
-                items.Add(GetPersonById(qt.PersonId));
-            }
-
-            return items;
+            return db.QueryPersons.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetPersonById(qt.PersonId)).ToList();
         }
 
         public static int CreateQuery(string name,
@@ -915,7 +960,8 @@ namespace DocumentVisor.Model
             entity.OutputSecretaryNumber = outputNumber;
             entity.OutputDivisionId = outputDivisionId;
             entity.IsComplete = 1;
-            var data64 = Convert.FromBase64String(blobData64);
+            byte[] data64;
+            data64 = Convert.FromBase64String(blobData64 ?? "UEsDBAoAAAAAAIpqLFT9HIsaCwAAAAsAAAANAAAAZXJyb3IudHh0LnR4dNCf0YPRgdGC0L4hUEsBAj8ACgAAAAAAimosVP0cixoLAAAACwAAAA0AJAAAAAAAAAAgAAAAAAAAAGVycm9yLnR4dC50eHQKACAAAAAAAAEAGAAFLjn/nQfYAScWCAOeB9gB94d18J0H2AFQSwUGAAAAAAEAAQBfAAAANgAAAAAA");
             EditQueryBlobData(entity.Id, (uint)data64.Length, data64);
             db.SaveChanges();
             result = entity.Id;
@@ -966,11 +1012,11 @@ namespace DocumentVisor.Model
             if (begin > end) return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(0, new SortedDictionary<string, SortedSet<string>>());
             using var db = new ApplicationContext();
             var queries = (from q in db.Queries
-                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
+                where q.OutputSecretaryDate >= begin.Ticks && q.OutputSecretaryDate <= end.Ticks && q.IsComplete == 1
                 select q).ToList();
             foreach (var query in queries)
             {
-                var actions  = query.LinkedActions.Select(a => a.Name).ToList();
+                var actions  = query.LinkedActions.Select(a => a.ToString()).ToList();
                 if (!result.ContainsKey(query.Division.Name))
                 {
                     result.Add(query.Division.Name, new SortedSet<string>(actions));

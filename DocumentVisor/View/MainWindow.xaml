@@ -32,27 +32,33 @@
                                            SelectedItem="{Binding SelectedQuery}">
 
                         <syncfusion:SfDataGrid.Columns>
-                            <syncfusion:GridTextColumn MappingName="Name"/>
-                            <syncfusion:GridTextColumn MappingName="Info"/>
-                            <syncfusion:GridTextColumn MappingName="Guid"/>
-                            <syncfusion:GridCheckBoxColumn MappingName="Complete"/>
-                            <syncfusion:GridTextColumn MappingName="Privacy.Name"/>
-                            <syncfusion:GridTextColumn MappingName="Division.Name"/>
-                            <syncfusion:GridTextColumn MappingName="SignPerson.Name"/>
-                            <syncfusion:GridTextColumn MappingName="LinkedPersonsString"/>
-                            <syncfusion:GridTextColumn MappingName="Type.Name"/>
-                            <syncfusion:GridDateTimeColumn MappingName="OuterSecretaryDateTime"/>
-                            <syncfusion:GridTextColumn MappingName="OuterSecretaryNumber"/>
-                            <syncfusion:GridDateTimeColumn MappingName="InnerSecretaryDateTime"/>
-                            <syncfusion:GridTextColumn MappingName="InnerSecretaryNumber"/>
-                            <syncfusion:GridDateTimeColumn MappingName="CentralSecretaryDateTime"/>
-                            <syncfusion:GridTextColumn MappingName="CentralSecretaryNumber"/>
-                            <syncfusion:GridCheckBoxColumn MappingName="IsCd"/>
-                            <syncfusion:GridCheckBoxColumn MappingName="Various"/>
-                            <syncfusion:GridCheckBoxColumn MappingName="Empty"/>
-                            <syncfusion:GridTextColumn MappingName="LinkedArticlesString"/>
-                            <syncfusion:GridTextColumn MappingName="LinkedActionsString"/>
-                            <syncfusion:GridTextColumn MappingName="LinkedThemesString"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryName}" MappingName="Name"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryInfo}" MappingName="Info"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryGuid}" MappingName="Guid"/>
+                            <syncfusion:GridCheckBoxColumn HeaderText="{StaticResource Complete}" MappingName="Complete"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryPrivacy}" MappingName="Privacy.Name"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryDivision}" MappingName="Division.Name"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QuerySignPerson}" MappingName="SignPerson.Name"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryExecutorPerson}" MappingName="LinkedPersonsString"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryType}" MappingName="Type.Name"/>
+                            <syncfusion:GridDateTimeColumn HeaderText="{StaticResource QueryOuterSecretaryDate}" MappingName="OuterSecretaryDateTime"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryOuterSecretaryNumber}" MappingName="OuterSecretaryNumber"/>
+                            <syncfusion:GridDateTimeColumn HeaderText="{StaticResource QueryInnerSecretaryDate}" MappingName="InnerSecretaryDateTime"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryInnerSecretaryNumber}" MappingName="InnerSecretaryNumber"/>
+                            <syncfusion:GridDateTimeColumn HeaderText="{StaticResource QueryCentralSecretaryDate}" MappingName="CentralSecretaryDateTime"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryCentralSecretaryNumber}" MappingName="CentralSecretaryNumber"/>
+                            <syncfusion:GridDateTimeColumn HeaderText="{StaticResource QueryCentralSecretaryDate}" MappingName="CentralSecretaryDateTime"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryCentralSecretaryNumber}" MappingName="CentralSecretaryNumber"/>
+                            <syncfusion:GridDateTimeColumn HeaderText="{StaticResource QueryOutputSecretaryDate}" MappingName="OutputSecretaryDateTime"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryOutputSecretaryNumber}" MappingName="OutputSecretaryNumber"/>
+                            <syncfusion:GridCheckBoxColumn HeaderText="{StaticResource QueryHasCd}" MappingName="IsCd"/>
+                            <syncfusion:GridCheckBoxColumn HeaderText="{StaticResource QueryVarious}" MappingName="Various"/>
+                            <syncfusion:GridCheckBoxColumn HeaderText="{StaticResource QueryEmpty}" MappingName="Empty"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryArticle}" MappingName="LinkedArticlesString"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryAction}" MappingName="LinkedActionsString"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource QueryTheme}" MappingName="LinkedThemesString"/>
+                            <syncfusion:GridTextColumn HeaderText="{StaticResource Identifiers}" MappingName="LinkedIdentifiersString"/>
+                            
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                     <Grid Grid.Row="1">

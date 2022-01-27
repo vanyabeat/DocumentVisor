@@ -33,6 +33,7 @@
     <system:String x:Key="Import">Import</system:String>
     <system:String x:Key="ErrorListGuid">Error, guid not find:</system:String>
     <system:String x:Key="Backup">💾Backup💾</system:String>
+    <system:String x:Key="Identifiers">Identifiers</system:String>
     <!--END GUI STRING-->
     <!--QUERY-->
     <system:String x:Key="QueryGuid">GUID</system:String>
@@ -63,15 +64,17 @@
     <system:String x:Key="QueryInnerSecretaryNumber">In Sec Num</system:String>
     <system:String x:Key="QueryCentralSecretaryNumber">Cent Sec Num</system:String>
     <system:String x:Key="QueryCentralSecretaryDate">Cent Sec Date</system:String>
+    <system:String x:Key="QueryOutputSecretaryDate">Output Sec Num</system:String>
+    <system:String x:Key="QueryOutputSecretaryNumber">Output Sec Date</system:String>
     <system:String x:Key="QueryArticle">Query Article</system:String>
     <system:String x:Key="QueryAction">Query Action</system:String>
     <system:String x:Key="QueryArticleNeedToSelect">Query Article need to select</system:String>
     <system:String x:Key="QueryActionNeedToSelect">Query Article need to select</system:String>
     <system:String x:Key="QueryStartDate">Query StartDate</system:String>
-    <system:String x:Key="QueryEndDate">Query EndDate</system:String>
+    <system:String x:Key="QueryEndDate">Query EndDate</system:String> 
     <system:String x:Key="GenerateReport">Generate Report</system:String>
     <system:String x:Key="QueryEditWindow">Query Edit Window</system:String>
-    <system:String x:Key="QueryDefaultName">KRM "PIPA"</system:String>
+    <system:String x:Key="QueryDefaultName">KRM "ZALUPA"</system:String>
     
     <!--END QUERY-->
     <!--PERSON-->
