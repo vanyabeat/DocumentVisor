@@ -18,12 +18,15 @@ namespace DocumentVisor.Model
 
         public int CompareTo(object obj)
         {
-            return obj switch
+            switch (obj)
             {
-                null => 1,
-                Article otherArticle => this.Id.CompareTo(otherArticle.Id),
-                _ => throw new ArgumentException("Object is not a Article")
-            };
+                case null:
+                    return 1;
+                case Article otherArticle:
+                    return this.Id.CompareTo(otherArticle.Id);
+                default:
+                    throw new ArgumentException("Object is not a Article");
+            }
         }
     }
 }

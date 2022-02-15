@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DocumentVisor.Model.Data
 {
@@ -95,8 +96,8 @@ namespace DocumentVisor.Model.Data
                 .WithMany(c => c.QueryIdentifiers)
                 .HasForeignKey(bc => bc.IdentifierId);
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned())
-                .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            // foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned())
+            //     .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

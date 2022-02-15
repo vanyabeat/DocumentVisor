@@ -30,12 +30,15 @@ namespace DocumentVisor.Model
 
         public int CompareTo(object obj)
         {
-            return obj switch
+            switch (obj)
             {
-                null => 1,
-                Action otherAction => this.Id.CompareTo(otherAction.Id),
-                _ => throw new ArgumentException("Object is not a Action")
-            };
+                case null:
+                    return 1;
+                case Action otherAction:
+                    return this.Id.CompareTo(otherAction.Id);
+                default:
+                    throw new ArgumentException("Object is not a Action");
+            }
         }
     }
 }

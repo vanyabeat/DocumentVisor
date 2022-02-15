@@ -42,7 +42,6 @@ namespace DocumentVisor.View
             DataManageVm.QueryReportEndDateTime = DateTime.Now + TimeSpan.FromDays(1);
             AllDatePickerBegin.SelectedDate = DateTime.Now;
             AllDatePickerEnd.SelectedDate = DateTime.Now + TimeSpan.FromDays(1); ;
-
         }
     }
 }

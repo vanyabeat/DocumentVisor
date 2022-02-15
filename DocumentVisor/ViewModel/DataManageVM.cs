@@ -882,7 +882,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var person = DataWorker.GetPersonById(QueryCurrentExecutorPerson.Id);
-                            QueryExecutorPersons ??= new SortedSet<Person>();
+                            QueryExecutorPersons = QueryExecutorPersons ?? new SortedSet<Person>();
                             QueryExecutorPersons.Add(person);
                             QueryCurrentExecutorPerson = null;
                             wnd.ExecutorPersonsDataGrid.Items.Refresh();
@@ -910,7 +910,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var person = DataWorker.GetPersonById(QueryCurrentExecutorPerson.Id);
-                            QueryExecutorPersons ??= new SortedSet<Person>();
+                            QueryExecutorPersons = QueryExecutorPersons ?? new SortedSet<Person>();
                             QueryExecutorPersons.Add(person);
                             QueryCurrentExecutorPerson = null;
                             wnd.ExecutorPersonsDataGrid.Items.Refresh();
@@ -939,7 +939,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var theme = DataWorker.GetThemeById(QueryCurrentTheme.Id);
-                            QueryThemes ??= new SortedSet<Theme>();
+                            QueryThemes = QueryThemes ?? new SortedSet<Theme>();
                             QueryThemes.Add(theme);
                             QueryCurrentTheme = null;
                             wnd.QueryThemesDataGrid.Items.Refresh();
@@ -967,7 +967,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var theme = DataWorker.GetThemeById(QueryCurrentTheme.Id);
-                            QueryThemes ??= new SortedSet<Theme>();
+                            QueryThemes = QueryThemes ?? new SortedSet<Theme>();
                             QueryThemes.Add(theme);
                             QueryCurrentTheme = null;
                             wnd.QueryThemesDataGrid.Items.Refresh();
@@ -1104,7 +1104,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var article = DataWorker.GetArticleById(QueryCurrentArticle.Id);
-                            QueryArticles ??= new SortedSet<Article>();
+                            QueryArticles = QueryArticles ?? new SortedSet<Article>();
                             QueryArticles.Add(article);
                             QueryCurrentArticle = null;
                             wnd.QueryArticlesDataGrid.Items.Refresh();
@@ -1132,7 +1132,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var article = DataWorker.GetArticleById(QueryCurrentArticle.Id);
-                            QueryArticles ??= new SortedSet<Article>();
+                            QueryArticles = QueryArticles ?? new SortedSet<Article>();
                             QueryArticles.Add(article);
                             QueryCurrentArticle = null;
                             wnd.QueryArticlesDataGrid.Items.Refresh();
@@ -1215,7 +1215,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var action = DataWorker.GetActionById(QueryCurrentAction.Id);
-                            QueryActions ??= new SortedSet<Action>();
+                            QueryActions = QueryActions ?? new SortedSet<Action>();
                             QueryActions.Add(action);
                             QueryCurrentAction = null;
                             wnd.QueryActionDataGrid.Items.Refresh();
@@ -1243,7 +1243,7 @@ namespace DocumentVisor.ViewModel
                         else
                         {
                             var action = DataWorker.GetActionById(QueryCurrentAction.Id);
-                            QueryActions ??= new SortedSet<Action>();
+                            QueryActions = QueryActions ?? new SortedSet<Action>();
                             QueryActions.Add(action);
                             QueryCurrentAction = null;
                             wnd.QueryActionDataGrid.Items.Refresh();
@@ -1345,7 +1345,7 @@ namespace DocumentVisor.ViewModel
                 workBook.SaveAs(saveFileDialog.FileName);
                 var workbook = new Workbook();
                 workbook.LoadFromFile(saveFileDialog.FileName);
-                workbook.Worksheets[^1].Remove();
+                workbook.Worksheets[workbook.Worksheets.Count - 1].Remove();
                 workbook.SaveToFile(saveFileDialog.FileName, ExcelVersion.Version2010);
             }
 
@@ -1372,9 +1372,10 @@ namespace DocumentVisor.ViewModel
         }
 
 
-        public static async Task WriteToFileAsync(string filename, string text)
+        public static Task WriteToFileAsync(string filename, string text)
         {
-            await File.WriteAllTextAsync(filename, text);
+            File.WriteAllText(filename, text);
+            return Task.CompletedTask;
         }
 
         private string GenerateTable(SortedDictionary<Person, Tuple<int, int>> sortedDictionary)
@@ -1820,7 +1821,7 @@ namespace DocumentVisor.ViewModel
         private string GenerateRandomGuid()
         {
             var time = DateTime.Now;
-            var guid = new Random((int)time.Ticks).Next().ToString()?[..5];
+            var guid = new Random((int)time.Ticks).Next().ToString();
             return $"{time.Day}{time.Month}{time.Year.ToString().Substring(1, 3)}_{guid}";
         }
 

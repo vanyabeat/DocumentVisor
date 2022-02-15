@@ -13,17 +13,19 @@ namespace DocumentVisor.Model
         #region QueryBlobData
         public static int CreateQueryBlobData(int queryId, uint size, byte[] data)
         {
-            using var db = new ApplicationContext();
-            int result = -1;
-            var checkIsExist = db.QueriesBlobDatas.Any(el => el.Id == queryId);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                var entity =  db.QueriesBlobDatas.Add(new QueryBlobData { Id = queryId, BytesSize = size, Data = data});
-                db.SaveChanges();
-                result = entity.Entity.Id;
-            }
+                int result = -1;
+                var checkIsExist = db.QueriesBlobDatas.Any(el => el.Id == queryId);
+                if (!checkIsExist)
+                {
+                    var entity = db.QueriesBlobDatas.Add(new QueryBlobData { Id = queryId, BytesSize = size, Data = data });
+                    db.SaveChanges();
+                    result = entity.Entity.Id;
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static int EditQueryBlobData(int queryId, uint size, byte[] data)
@@ -46,8 +48,10 @@ namespace DocumentVisor.Model
         #region IdentifierTypes
         public static ObservableCollection<IdentifierType> GetAllIdentifierTypes()
         {
-            using var db = new ApplicationContext();
-            return new ObservableCollection<IdentifierType>(db.IdentifierTypes);
+            using (var db = new ApplicationContext())
+            {
+                return new ObservableCollection<IdentifierType>(db.IdentifierTypes);
+            }
         }
 
         public static string GetJsonString(object obj)
@@ -57,39 +61,44 @@ namespace DocumentVisor.Model
         public static string CreateIdentifierType(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.IdentifierTypes.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.IdentifierTypes.Add(new IdentifierType { Name = name, Info = info });
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
+                var checkIsExist = db.IdentifierTypes.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.IdentifierTypes.Add(new IdentifierType { Name = name, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
+
+                return result;
             }
 
-            return result;
         }
 
         public static int CreateIdentifier(string content, int typeId)
         {
             var result = -1;
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Identifiers.Any(el => el.Content == content && el.IdentifierTypeId == typeId);
-            try
+            using (var db = new ApplicationContext())
             {
-                if (!checkIsExist)
+                var checkIsExist = db.Identifiers.Any(el => el.Content == content && el.IdentifierTypeId == typeId);
+                try
                 {
-                    var entity = db.Identifiers.Add(new Identifier { Content = content, IdentifierTypeId = typeId });
-                    db.SaveChanges();
-                    result = entity.Entity.Id;
+                    if (!checkIsExist)
+                    {
+                        var entity = db.Identifiers.Add(new Identifier {Content = content, IdentifierTypeId = typeId});
+                        db.SaveChanges();
+                        result = entity.Entity.Id;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                ////
-            }
+                catch (Exception e)
+                {
+                    ////
+                }
 
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeleteIdentifierType(IdentifierType idT)
@@ -149,25 +158,29 @@ namespace DocumentVisor.Model
 
         public static List<Person> GetAllPersons()
         {
-            using var db = new ApplicationContext();
-            var result = db.Persons.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Persons.ToList();
+                return result;
+            }
         }
 
         public static string CreatePerson(string name, string info, string phone, string rank, PersonType personType)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Persons.Any(el => el.Name == name && el.Phone == phone && el.Type == personType);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Persons.Add(
-                    new Person {Name = name, Phone = phone, Info = info, Rank = rank, TypeId = personType.Id});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
+                var checkIsExist = db.Persons.Any(el => el.Name == name && el.Phone == phone && el.Type == personType);
+                if (!checkIsExist)
+                {
+                    db.Persons.Add(
+                        new Person { Name = name, Phone = phone, Info = info, Rank = rank, TypeId = personType.Id });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeletePerson(Person person)
@@ -228,23 +241,28 @@ namespace DocumentVisor.Model
 
         public static ObservableCollection<PersonType> GetAllPersonTypes()
         {
-            using var db = new ApplicationContext();
-            return new ObservableCollection<PersonType>(db.PersonTypes);
+            using (var db = new ApplicationContext())
+            {
+                return new ObservableCollection<PersonType>(db.PersonTypes);
+            }
+           
         }
 
         public static string CreatePersonType(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.PersonTypes.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.PersonTypes.Add(new PersonType {Name = name, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
+                var checkIsExist = db.PersonTypes.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.PersonTypes.Add(new PersonType { Name = name, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeletePersonType(PersonType personType)
@@ -297,24 +315,29 @@ namespace DocumentVisor.Model
 
         public static List<Privacy> GetAllPrivacies()
         {
-            using var db = new ApplicationContext();
-            var result = db.Privacies.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Privacies.ToList();
+                return result;
+            }
+
         }
 
         public static string CreatePrivacy(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Privacies.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Privacies.Add(new Privacy {Name = name, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
+                var checkIsExist = db.Privacies.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.Privacies.Add(new Privacy { Name = name, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeletePrivacy(Privacy privacy)
@@ -367,24 +390,28 @@ namespace DocumentVisor.Model
 
         public static List<Theme> GetAllThemes()
         {
-            using var db = new ApplicationContext();
-            var result = db.Themes.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Themes.ToList();
+                return result;
+            }
         }
 
         public static string CreateTheme(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Themes.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Themes.Add(new Theme {Name = name, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
+                var checkIsExist = db.Themes.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.Themes.Add(new Theme { Name = name, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeleteTheme(Theme theme)
@@ -437,15 +464,17 @@ namespace DocumentVisor.Model
 
         public static List<Division> GetAllDivisions()
         {
-            using var db = new ApplicationContext();
-            var result = db.Divisions.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Divisions.ToList();
+                return result;
+            }
         }
 
         public static string CreateDivision(string name, string address, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
+            using (var db = new ApplicationContext()){
             var checkIsExist = db.Divisions.Any(el => el.Name == name);
             if (!checkIsExist)
             {
@@ -455,6 +484,7 @@ namespace DocumentVisor.Model
             }
 
             return result;
+            }
         }
 
         public static string DeleteDivision(Division division)
@@ -508,24 +538,28 @@ namespace DocumentVisor.Model
 
         public static List<Article> GetAllArticles()
         {
-            using var db = new ApplicationContext();
-            var result = db.Articles.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Articles.ToList();
+                return result;
+            }
         }
 
         public static string CreateArticle(string name, string extendedName, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Articles.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Articles.Add(new Article {Name = name, ExtendedName = extendedName, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
-            }
+                var checkIsExist = db.Articles.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.Articles.Add(new Article { Name = name, ExtendedName = extendedName, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
 
-            return result;
+                return result;
+            }
         }
 
         public static string DeleteArticle(Article article)
@@ -580,23 +614,26 @@ namespace DocumentVisor.Model
 
         public static List<Type> GetAllQueryTypes()
         {
-            using var db = new ApplicationContext();
-            var result = db.Types.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Types.ToList();
+                return result;
+            }
         }
 
         public static string CreateQueryType(string name, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Types.Any(el => el.Name == name);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Types.Add(new Type {Name = name, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
+                var checkIsExist = db.Types.Any(el => el.Name == name);
+                if (!checkIsExist)
+                {
+                    db.Types.Add(new Type { Name = name, Info = info });
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
             }
-
             return result;
         }
 
@@ -650,21 +687,26 @@ namespace DocumentVisor.Model
 
         public static List<Action> GetAllActions()
         {
-            using var db = new ApplicationContext();
-            var result = db.Actions.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Actions.ToList();
+                return result;
+            }
+
         }
 
         public static string CreateAction(string name, string number, string info)
         {
             var result = Dictionary["Insert"].ToString();
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Actions.Any(el => el.Name == name && el.Number == number);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                db.Actions.Add(new Action {Name = name, Number = number, Info = info});
-                db.SaveChanges();
-                result = Dictionary["Complete"].ToString();
+                var checkIsExist = db.Actions.Any(el => el.Name == name && el.Number == number);
+                if (!checkIsExist)
+                {
+                    db.Actions.Add(new Action {Name = name, Number = number, Info = info});
+                    db.SaveChanges();
+                    result = Dictionary["Complete"].ToString();
+                }
             }
 
             return result;
@@ -708,9 +750,11 @@ namespace DocumentVisor.Model
 
         public static Action GetActionById(int id)
         {
-            using var db = new ApplicationContext();
-            var pos = db.Actions.FirstOrDefault(p => p.Id == id);
-            return pos;
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Actions.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
         }
 
         #endregion
@@ -719,124 +763,171 @@ namespace DocumentVisor.Model
 
         public static Query GetQueryById(int id)
         {
-            using var db = new ApplicationContext();
-            var pos = db.Queries.FirstOrDefault(p => p.Id == id);
-            return pos;
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Queries.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
         }
 
         public static int GetQueryByGuid(string id)
         {
-            using var db = new ApplicationContext();
-            var pos = db.Queries.FirstOrDefault(p => p.Guid == id);
-            return pos.Id;
+            using (var db = new ApplicationContext())
+            {
+                var pos = db.Queries.FirstOrDefault(p => p.Guid == id);
+                return pos.Id;
+            }
         }
 
         public static List<Query> GetAllQueries()
         {
-            using var db = new ApplicationContext();
-            var result = db.Queries.ToList();
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var result = db.Queries.ToList();
+                return result;
+            }
         }
 
         public static void QueryPersonLink(int queryId, int personId)
         {
-            using var db = new ApplicationContext();
-            var entity = db.QueryPersons.Add(new QueryPerson {QueryId = queryId, PersonId = personId});
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.QueryPersons.Add(new QueryPerson { QueryId = queryId, PersonId = personId });
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryPersonUnLink(int queryId)
         {
-            using var db = new ApplicationContext();
-            db.QueryPersons.RemoveRange(db.QueryPersons.Where(x => x.QueryId == queryId));
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                db.QueryPersons.RemoveRange(db.QueryPersons.Where(x => x.QueryId == queryId));
+                db.SaveChanges();
+            }
         }
 
         public static void QueryActionLink(int queryId, int actionId)
         {
-            using var db = new ApplicationContext();
-            var entity = db.QueryActions.Add(new QueryAction {QueryId = queryId, ActionId = actionId});
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.QueryActions.Add(new QueryAction { QueryId = queryId, ActionId = actionId });
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryActionUnLink(int queryId)
         {
-            using var db = new ApplicationContext();
-            db.QueryActions.RemoveRange(db.QueryActions.Where(x => x.QueryId == queryId));
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                db.QueryActions.RemoveRange(db.QueryActions.Where(x => x.QueryId == queryId));
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryThemeLink(int queryId, int themeId)
         {
-            using var db = new ApplicationContext();
-            var entity = db.QueryThemes.Add(new QueryTheme {QueryId = queryId, ThemeId = themeId});
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.QueryThemes.Add(new QueryTheme { QueryId = queryId, ThemeId = themeId });
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryThemeUnLink(int queryId)
         {
-            using var db = new ApplicationContext();
-            db.QueryThemes.RemoveRange(db.QueryThemes.Where(x => x.QueryId == queryId));
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                db.QueryThemes.RemoveRange(db.QueryThemes.Where(x => x.QueryId == queryId));
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryIdentifierLink(int queryId, int identifierId)
         {
-            using var db = new ApplicationContext();
-            var entity = db.QueryIdentifiers.Add(new QueryIdentifier { QueryId = queryId, IdentifierId = identifierId });
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.QueryIdentifiers.Add(new QueryIdentifier { QueryId = queryId, IdentifierId = identifierId });
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryIdentifierUnLink(int identifierId)
         {
-            using var db = new ApplicationContext();
-            db.QueryIdentifiers.RemoveRange(db.QueryIdentifiers.Where(x => x.QueryId == identifierId));
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                db.QueryIdentifiers.RemoveRange(db.QueryIdentifiers.Where(x => x.QueryId == identifierId));
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryArticleLink(int queryId, int articleId)
         {
-            using var db = new ApplicationContext();
-            var entity = db.QueryArticles.Add(new QueryArticle {QueryId = queryId, ArticleId = articleId});
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.QueryArticles.Add(new QueryArticle { QueryId = queryId, ArticleId = articleId });
+                db.SaveChanges();
+            }
+
         }
 
         public static void QueryArticleUnLink(int queryId)
         {
-            using var db = new ApplicationContext();
-            db.QueryArticles.RemoveRange(db.QueryArticles.Where(x => x.QueryId == queryId));
-            db.SaveChanges();
+            using (var db = new ApplicationContext())
+            {
+                db.QueryArticles.RemoveRange(db.QueryArticles.Where(x => x.QueryId == queryId));
+                db.SaveChanges();
+            }
+
         }
 
         public static List<Theme> GetAllQueryThemes(int queryId)
         {
-            using var db = new ApplicationContext();
-            return db.QueryThemes.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetThemeById(qt.ThemeId)).ToList();
+            using (var db = new ApplicationContext())
+            {
+                return db.QueryThemes.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetThemeById(qt.ThemeId)).ToList();
+            }
+         
         }
 
         public static List<Article> GetAllQueryArticles(int queryId)
         {
-            using var db = new ApplicationContext();
-            return db.QueryArticles.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetArticleById(qt.ArticleId)).ToList();
+            using (var db = new ApplicationContext())
+            {
+                return db.QueryArticles.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetArticleById(qt.ArticleId)).ToList();
+            }
         }
 
         public static List<Action> GetAllQueryAction(int queryId)
         {
-            using var db = new ApplicationContext();
-            return db.QueryActions.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetActionById(qt.ActionId)).ToList();
+            using (var db = new ApplicationContext())
+            {
+                return db.QueryActions.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetActionById(qt.ActionId)).ToList();
+            }
+
         }
 
 
         public static List<Identifier> GetAllQueryIdentifiers(int queryId)
         {
-            using var db = new ApplicationContext();
-            return db.QueryIdentifiers.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetIdentifierById(qt.IdentifierId)).ToList();
+            using (var db = new ApplicationContext())
+            {
+                return db.QueryIdentifiers.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetIdentifierById(qt.IdentifierId)).ToList();
+            }
         }
 
         public static List<Person> GetAllQueryExecutors(int queryId)
         {
-            using var db = new ApplicationContext();
-            return db.QueryPersons.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetPersonById(qt.PersonId)).ToList();
+            using (var db = new ApplicationContext())
+            {
+                return db.QueryPersons.ToList().FindAll(item => item.QueryId == queryId).Select(qt => GetPersonById(qt.PersonId)).ToList();
+            }
         }
 
         public static int CreateQuery(string name,
@@ -859,36 +950,38 @@ namespace DocumentVisor.Model
         )
         {
             var result = -1;
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Queries.Any(el => el.Name == name && el.Guid == guid);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
-                var entity = db.Queries.Add(new Query
+                var checkIsExist = db.Queries.Any(el => el.Name == name && el.Guid == guid);
+                if (!checkIsExist)
                 {
-                    Name = name,
-                    Info = info,
-                    Guid = guid,
-                    PrivacyId = privacy.Id,
-                    DivisionId = division.Id,
-                    SignPersonId = signPerson.Id,
-                    TypeId = type.Id,
-                    OuterSecretaryDateTime = queryOuterSecretaryDateTime,
-                    OuterSecretaryNumber = queryOuterSecretaryNumber,
-                    InnerSecretaryDateTime = queryInnerSecretaryDateTime,
-                    InnerSecretaryNumber = queryInnerSecretaryNumber,
-                    CentralSecretaryDateTime = queryCentralSecretaryDateTime,
-                    CentralSecretaryNumber = queryCentralSecretaryNumber,
-                    IsCd = hasCd,
-                    Empty = empty,
-                    Various = various,
-                    Complete = complete
-                });
-                db.SaveChanges();
-                result = entity.Entity.Id;
-            }
+                    var entity = db.Queries.Add(new Query
+                    {
+                        Name = name,
+                        Info = info,
+                        Guid = guid,
+                        PrivacyId = privacy.Id,
+                        DivisionId = division.Id,
+                        SignPersonId = signPerson.Id,
+                        TypeId = type.Id,
+                        OuterSecretaryDateTime = queryOuterSecretaryDateTime,
+                        OuterSecretaryNumber = queryOuterSecretaryNumber,
+                        InnerSecretaryDateTime = queryInnerSecretaryDateTime,
+                        InnerSecretaryNumber = queryInnerSecretaryNumber,
+                        CentralSecretaryDateTime = queryCentralSecretaryDateTime,
+                        CentralSecretaryNumber = queryCentralSecretaryNumber,
+                        IsCd = hasCd,
+                        Empty = empty,
+                        Various = various,
+                        Complete = complete
+                    });
+                    db.SaveChanges();
+                    result = entity.Entity.Id;
+                }
 
-            DataWorker.CreateQueryBlobData(result, 0, null);
-            return result;
+                DataWorker.CreateQueryBlobData(result, 0, null);
+                return result;
+            }
         }
 
         public static int EditQuery(Query oldQuery, string newName,
@@ -910,27 +1003,30 @@ namespace DocumentVisor.Model
         )
         {
             var result = -1;
-            using var db = new ApplicationContext();
-            var entity = db.Queries.FirstOrDefault(d => d.Id == oldQuery.Id);
-            entity.Name = newName;
-            entity.Info = newInfo;
-            entity.Guid = newGuid;
-            entity.PrivacyId = newPrivacy.Id;
-            entity.DivisionId = newDivision.Id;
-            entity.SignPersonId = newSignPerson.Id;
-            entity.TypeId = newType.Id;
-            entity.OuterSecretaryDateTime = newQueryOuterSecretaryDateTime;
-            entity.OuterSecretaryNumber = newQueryOuterSecretaryNumber;
-            entity.InnerSecretaryDateTime = newQueryInnerSecretaryDateTime;
-            entity.InnerSecretaryNumber = newQueryInnerSecretaryNumber;
-            entity.CentralSecretaryDateTime = newQueryCentralSecretaryDateTime;
-            entity.CentralSecretaryNumber = newQueryCentralSecretaryNumber;
-            entity.IsCd = newHasCd;
-            entity.Various = newVarious;
-            entity.Empty = newEmpty;
-            db.SaveChanges();
-            result = entity.Id;
-            return result;
+            using (var db = new ApplicationContext())
+            {
+                var entity = db.Queries.FirstOrDefault(d => d.Id == oldQuery.Id);
+                entity.Name = newName;
+                entity.Info = newInfo;
+                entity.Guid = newGuid;
+                entity.PrivacyId = newPrivacy.Id;
+                entity.DivisionId = newDivision.Id;
+                entity.SignPersonId = newSignPerson.Id;
+                entity.TypeId = newType.Id;
+                entity.OuterSecretaryDateTime = newQueryOuterSecretaryDateTime;
+                entity.OuterSecretaryNumber = newQueryOuterSecretaryNumber;
+                entity.InnerSecretaryDateTime = newQueryInnerSecretaryDateTime;
+                entity.InnerSecretaryNumber = newQueryInnerSecretaryNumber;
+                entity.CentralSecretaryDateTime = newQueryCentralSecretaryDateTime;
+                entity.CentralSecretaryNumber = newQueryCentralSecretaryNumber;
+                entity.IsCd = newHasCd;
+                entity.Various = newVarious;
+                entity.Empty = newEmpty;
+                db.SaveChanges();
+                result = entity.Id;
+                return result;
+            }
+
         }
 
         public static int EditQueryImport(
@@ -946,26 +1042,28 @@ namespace DocumentVisor.Model
         )
         {
             var result = -1;
-            using var db = new ApplicationContext();
-            var checkIsExist = db.Queries.Any(el => el.Guid == queryGuid);
-            if (!checkIsExist)
+            using (var db = new ApplicationContext())
             {
+                var checkIsExist = db.Queries.Any(el => el.Guid == queryGuid);
+                if (!checkIsExist)
+                {
+                    return result;
+                }
+                var entity = db.Queries.FirstOrDefault(d => d.Guid == queryGuid);
+                entity.Info = newInfo;
+                entity.HasCd = hasCd;
+                entity.IsEmpty = isEmpty;
+                entity.OutputSecretaryDate = outputNumberDate;
+                entity.OutputSecretaryNumber = outputNumber;
+                entity.OutputDivisionId = outputDivisionId;
+                entity.IsComplete = 1;
+                byte[] data64;
+                data64 = Convert.FromBase64String(blobData64 ?? "UEsDBAoAAAAAAIpqLFT9HIsaCwAAAAsAAAANAAAAZXJyb3IudHh0LnR4dNCf0YPRgdGC0L4hUEsBAj8ACgAAAAAAimosVP0cixoLAAAACwAAAA0AJAAAAAAAAAAgAAAAAAAAAGVycm9yLnR4dC50eHQKACAAAAAAAAEAGAAFLjn/nQfYAScWCAOeB9gB94d18J0H2AFQSwUGAAAAAAEAAQBfAAAANgAAAAAA");
+                EditQueryBlobData(entity.Id, (uint)data64.Length, data64);
+                db.SaveChanges();
+                result = entity.Id;
                 return result;
             }
-            var entity = db.Queries.FirstOrDefault(d => d.Guid == queryGuid);
-            entity.Info = newInfo;
-            entity.HasCd = hasCd;
-            entity.IsEmpty = isEmpty;
-            entity.OutputSecretaryDate = outputNumberDate;
-            entity.OutputSecretaryNumber = outputNumber;
-            entity.OutputDivisionId = outputDivisionId;
-            entity.IsComplete = 1;
-            byte[] data64;
-            data64 = Convert.FromBase64String(blobData64 ?? "UEsDBAoAAAAAAIpqLFT9HIsaCwAAAAsAAAANAAAAZXJyb3IudHh0LnR4dNCf0YPRgdGC0L4hUEsBAj8ACgAAAAAAimosVP0cixoLAAAACwAAAA0AJAAAAAAAAAAgAAAAAAAAAGVycm9yLnR4dC50eHQKACAAAAAAAAEAGAAFLjn/nQfYAScWCAOeB9gB94d18J0H2AFQSwUGAAAAAAEAAQBfAAAANgAAAAAA");
-            EditQueryBlobData(entity.Id, (uint)data64.Length, data64);
-            db.SaveChanges();
-            result = entity.Id;
-            return result;
         }
 
         public static int EditQueryLinkedData(Query query, SortedSet<Person> persons, SortedSet<Article> articles,
@@ -999,98 +1097,115 @@ namespace DocumentVisor.Model
         public static List<Query> GetAllQueriesByDate(DateTime begin, DateTime end)
         {
             if (begin > end) return new List<Query>();
-            using var db = new ApplicationContext();
-            var result = from q in db.Queries
-                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks
-                select q;
-            return result.ToList();
+            using (var db = new ApplicationContext())
+            {
+                var result = from q in db.Queries
+                    where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks
+                    select q;
+                return result.ToList();
+            }
         }
 
-        public static Tuple<int, SortedDictionary<string, SortedSet<string>>> GetReportByDivisions(DateTime begin, DateTime end)
+        public static Tuple<int, SortedDictionary<string, SortedSet<string>>> GetReportByDivisions(DateTime begin,
+            DateTime end)
         {
             var result = new SortedDictionary<string, SortedSet<string>>();
-            if (begin > end) return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(0, new SortedDictionary<string, SortedSet<string>>());
-            using var db = new ApplicationContext();
-            var queries = (from q in db.Queries
-                where q.OutputSecretaryDate >= begin.Ticks && q.OutputSecretaryDate <= end.Ticks && q.IsComplete == 1
-                select q).ToList();
-            foreach (var query in queries)
+            if (begin > end)
+                return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(0,
+                    new SortedDictionary<string, SortedSet<string>>());
+            using (var db = new ApplicationContext())
             {
-                var actions  = query.LinkedActions.Select(a => a.ToString()).ToList();
-                if (!result.ContainsKey(query.Division.Name))
+                var queries = (from q in db.Queries
+                    where q.OutputSecretaryDate >= begin.Ticks && q.OutputSecretaryDate <= end.Ticks &&
+                          q.IsComplete == 1
+                    select q).ToList();
+                foreach (var query in queries)
                 {
-                    result.Add(query.Division.Name, new SortedSet<string>(actions));
-                }
-                else
-                {
-                    result[query.Division.Name].UnionWith(actions);
+                    var actions = query.LinkedActions.Select(a => a.ToString()).ToList();
+                    if (!result.ContainsKey(query.Division.Name))
+                    {
+                        result.Add(query.Division.Name, new SortedSet<string>(actions));
+                    }
+                    else
+                    {
+                        result[query.Division.Name].UnionWith(actions);
+                    }
                 }
 
+                return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(queries.Count, result);
             }
-
-            return new Tuple<int, SortedDictionary<string, SortedSet<string>>>(queries.Count, result);
         }
 
         public static int GetAllQueriesByDateCompleted(DateTime begin, DateTime end)
         {
             if (begin > end) return 0;
-            using var db = new ApplicationContext();
-            var result = (from q in db.Queries
-                where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1 
-                select q).ToList();
-            return result.Count();
+            using (var db = new ApplicationContext())
+            {
+                var result = (from q in db.Queries
+                    where q.InnerSecretaryDate >= begin.Ticks && q.InnerSecretaryDate <= end.Ticks && q.IsComplete == 1
+                    select q).ToList();
+                return result.Count();
+            }
         }
 
         public static int GetAllQueriesNonComplete()
         {
-            using var db = new ApplicationContext();
-            var result = (from q in db.Queries
-                where q.IsComplete == 0
-                select q).ToList();
-            return result.Count();
+            using (var db = new ApplicationContext())
+            {
+                var result = (from q in db.Queries
+                    where q.IsComplete == 0
+                    select q).ToList();
+                return result.Count();
+            }
+
         }
 
         public static SortedDictionary<Person, Tuple<int, int>> GetAllQueriesStatisticsByPerson(List<Query> queries)
         {
-            using var db = new ApplicationContext();
-            var statistics = new SortedDictionary<Person, Tuple<int, int>>();
-            foreach (var q in queries)
+            using (var db = new ApplicationContext())
             {
-                if (!q.Complete) continue;
-                var person = q.LinkedPersons[0];
-                var complete = (q.IsEmpty == 1);
-                if (statistics.ContainsKey(person))
+                var statistics = new SortedDictionary<Person, Tuple<int, int>>();
+                foreach (var q in queries)
                 {
-                    var it1 = statistics[person].Item1;
-                    var it2 = statistics[person].Item2;
-                    statistics[person] = new Tuple<int, int>(++it1, (complete) ? ++it2 : it2);
+                    if (!q.Complete) continue;
+                    var person = q.LinkedPersons[0];
+                    var complete = (q.IsEmpty == 1);
+                    if (statistics.ContainsKey(person))
+                    {
+                        var it1 = statistics[person].Item1;
+                        var it2 = statistics[person].Item2;
+                        statistics[person] = new Tuple<int, int>(++it1, (complete) ? ++it2 : it2);
+                    }
+                    else
+                    {
+
+                        statistics.Add(person, new Tuple<int, int>(1, (complete) ? 1 : 0));
+                    }
+
+
                 }
-                else
-                {
-
-                    statistics.Add(person, new Tuple<int, int>(1, (complete) ? 1 : 0));
-                }
-
-
+                return statistics;
             }
-            return statistics;
         }
 
         public static byte[] GetExecutorRecordData(Query query)
         {
             var empty = Convert.FromBase64String(
                 "UEsDBAoAAAAAAIpqLFT9HIsaCwAAAAsAAAANAAAAZXJyb3IudHh0LnR4dNCf0YPRgdGC0L4hUEsBAj8ACgAAAAAAimosVP0cixoLAAAACwAAAA0AJAAAAAAAAAAgAAAAAAAAAGVycm9yLnR4dC50eHQKACAAAAAAAAEAGAAFLjn/nQfYAScWCAOeB9gB94d18J0H2AFQSwUGAAAAAAEAAQBfAAAANgAAAAAA");
-            using var db = new ApplicationContext();
-            try
+            using (var db = new ApplicationContext())
             {
-                var q = db.QueriesBlobDatas.FirstOrDefault(x => x.Id == query.Id);
-                return q.Data.Length == 0 ? (empty) : q.Data;
-          
+                try
+                {
+                    var q = db.QueriesBlobDatas.FirstOrDefault(x => x.Id == query.Id);
+                    return q.Data.Length == 0 ? (empty) : q.Data;
+
+                }
+                catch (Exception e)
+                {
+                    return empty;
+                }
             }
-            catch (Exception e)
-            {
-                return empty;
-            }
+
         }
         #endregion
     }

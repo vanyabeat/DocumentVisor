@@ -25,12 +25,15 @@ namespace DocumentVisor.Model
 
         public int CompareTo(object obj)
         {
-            return obj switch
+            switch (obj)
             {
-                null => 1,
-                Person otherPerson => this.Id.CompareTo(otherPerson.Id),
-                _ => throw new ArgumentException("Object is not a Person")
-            };
+                case null:
+                    return 1;
+                case Person otherPerson:
+                    return this.Id.CompareTo(otherPerson.Id);
+                default:
+                    throw new ArgumentException("Object is not a Person");
+            }
         }
     }
 }
