@@ -5,6 +5,9 @@ using System.Windows.Input;
 
 namespace DocumentVisor.Infrastructure
 {
+    /// <summary>
+    /// Класс AsyncCommandBase реализиующий интерфейс <see cref="ICommand"/>
+    /// </summary>
     public abstract class AsyncCommandBase : ICommand
     {
         public event EventHandler CanExecuteChanged
@@ -55,7 +58,11 @@ namespace DocumentVisor.Infrastructure
             }
         }
     }
-
+    /// <summary>
+    /// Класс AsyncCommandBase реализиующий асинхронную реализацию
+    /// интерфейса <see cref="ICommand"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class AsyncCommandBase<T> : ICommand
     {
         public event EventHandler CanExecuteChanged
