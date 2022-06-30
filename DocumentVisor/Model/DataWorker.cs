@@ -91,7 +91,7 @@ namespace DocumentVisor.Model
                         result = entity.Entity.Id;
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     ////
                 }
@@ -1200,7 +1200,7 @@ namespace DocumentVisor.Model
                     return q.Data.Length == 0 ? (empty) : q.Data;
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return empty;
                 }

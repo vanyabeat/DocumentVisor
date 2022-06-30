@@ -8,6 +8,6 @@ namespace DocumentVisor.Model
     {
         public int Id { get; set; }
         public uint BytesSize { get; set; }
-        [Annotations.CanBeNull] public byte[] Data { get; set; }
+        public byte[] Data { get; set; }
     }
 }
