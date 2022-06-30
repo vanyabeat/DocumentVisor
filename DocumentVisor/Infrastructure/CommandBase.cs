@@ -4,10 +4,8 @@ using System.Windows.Input;
 
 namespace DocumentVisor.Infrastructure
 {
-    /// <summary>Provides a base implementation of the <see cref="ICommand"/> interface. </summary>
     public abstract class CommandBase : ICommand
     {
-        /// <summary>Occurs when changes occur that affect whether or not the command should execute. </summary>
         public event EventHandler CanExecuteChanged
         {
             add
@@ -21,9 +19,6 @@ namespace DocumentVisor.Infrastructure
             }
         }
 
-        /// <summary>Tries to execute the command by checking the <see cref="CanExecute"/> property 
-        /// and executes the command only when it can be executed. </summary>
-        /// <returns>True if command has been executed; false otherwise. </returns>
         public bool TryExecute()
         {
             if (!this.CanExecute())
@@ -45,30 +40,19 @@ namespace DocumentVisor.Infrastructure
             return this.CanExecute();
         }
 
-        /// <summary>Defines the method that determines whether the command can execute in its current state.</summary>
-        /// <returns>true if this command can be executed; otherwise, false.</returns>
         public abstract bool CanExecute();
 
-        /// <summary>Defines the method to be called when the command is invoked. </summary>
         public abstract void Execute();
     }
 
-    /// <summary>Provides an implementation of the <see cref="ICommand"/> interface. </summary>
-    /// <typeparam name="T">The type of the command parameter. </typeparam>
     public abstract class CommandBase<T> : ICommand
     {
-        /// <summary>Occurs when changes occur that affect whether or not the command should execute. </summary>
         public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
-
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        /// <summary>Tries to execute the command by calling the <see cref="CanExecute"/> method 
-        /// and executes the command only when it can be executed. </summary>
-        /// <param name="parameter">Data used by the command.</param>
-        /// <returns>True if command has been executed; false otherwise. </returns>
         public bool TryExecute(T parameter)
         {
             if (!this.CanExecute(parameter))
@@ -91,16 +75,9 @@ namespace DocumentVisor.Infrastructure
             this.Execute((T)parameter);
         }
 
-        /// <summary>Gets a value indicating whether the command can execute in its current state. </summary>
-        /// <returns>true if this command can be executed; otherwise, false.</returns>
-        /// <param name="parameter">Data used by the command.</param>
         [DebuggerStepThrough]
         public abstract bool CanExecute(T parameter);
 
-        /// <summary>
-        /// Defines the method to be called when the command is invoked.
-        /// </summary>
-        /// <param name="parameter">Data used by the command.</param>
         public abstract void Execute(T parameter);
     }
 }
